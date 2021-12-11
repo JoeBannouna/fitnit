@@ -1,0 +1,18 @@
+{
+  "name": "fitness-webapp",
+  "version": "1.0.0",
+  "description": "A fitness app",
+  "main": "server.js",
+  "dependencies": {
+    "tailwindcss": "^3.0.0"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js",
+    "tailwind": "npx tailwindcss -i ./src/style.css -o ./src/output.css --watch",
+    "dev": "http-server ./src -c-1"
+  },
+  "author": "Joe Bannouna",
+  "license": "ISC"
+}

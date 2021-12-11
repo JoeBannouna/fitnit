@@ -1,0 +1,94 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+body {
+  font-family: 'Titillium Web', sans-serif;
+  overscroll-behavior-x: none;
+}
+
+.timer-section {
+  height: calc(100vh - 3.75rem);
+  /* width: 75%; */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  transition: 0.3s;
+}
+
+.exercises-section {
+  height: calc(100vh - 3.75rem);
+  transition: 0.3s;
+}
+
+ul.main-dropdown-ul li:nth-of-type(2).selected ~ hr {
+  margin-left: 80px;
+  width: 80px;
+}
+ul.main-dropdown-ul li:nth-of-type(3).selected ~ hr.navbar-hr {
+  margin-left: 198px;
+  width: 124px;
+}
+ul.main-dropdown-ul li:nth-of-type(4).selected ~ hr.navbar-hr {
+  margin-left: 360px;
+  width: 52px;
+}
+ul.main-dropdown-ul li:nth-of-type(5).selected ~ hr.navbar-hr {
+  margin-left: 450px;
+  width: 157px;
+}
+
+ul.main-dropdown-ul li.selected {
+  color: rgba(96, 165, 250);
+}
+
+hr.navbar-hr {
+  height: 0.25rem;
+  width: 25%;
+  margin-top: 27px;
+  border: none;
+  transition: 0.3s ease-in-out;
+  position: absolute;
+  width: 42px;
+}
+
+.navbar-menu {
+  height: 2.75rem;
+  margin: 0.5rem;
+  margin-right: 1.75rem;
+}
+
+.exercises-section-button {
+  position: absolute;
+  background: gray;
+  height: 60px;
+  width: 20px;
+  transform: translateX(-20px);
+  top: 50%;
+  border-bottom-left-radius: 10px;
+  border-top-left-radius: 10px;
+}
+
+.rainbow-text {
+  transition: 0.3s;
+}
+
+.rainbow-text:hover {
+  background-image: linear-gradient(to left, red, violet, indigo, blue, green, yellow, orange, red);
+  -webkit-background-clip: text;
+  -moz-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  animation: rainbow 10s infinite alternate;
+  background-size: 100px;
+}
+
+@keyframes rainbow {
+  from {
+    background-position-x: 0%;
+  }
+  to {
+    background-position-x: 100%;
+  }
+}

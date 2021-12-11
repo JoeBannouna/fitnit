@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Fitness web app</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Titillium+Web:wght@300;700&display=swap" rel="stylesheet" />
+
+    <link
+      rel="stylesheet"
+      href="https://use.fontawesome.com/releases/v5.15.4/css/all.css"
+      integrity="sha384-DyZ88mC6Up2uqS4h/KRgHuoeGwBcD4Ng9SiP4dIRy0EXTlnuz47vAwmeGwVChigm"
+      crossorigin="anonymous"
+    />
+
+    <link href="output.css" rel="stylesheet" />
+  </head>
+  <body>
+    <nav class="flex items-center justify-between flex-wrap bg-slate-50">
+      <div class="flex items-center flex-shrink-0 text-black mr-6 ml-5">
+        <span class="font-semibold text-6xl tracking-tight">FitNit</span>
+      </div>
+      <div class="block lg:hidden">
+        <button
+          class="flex items-center px-3 py-2 border rounded text-black border-gray-400 hover:border-gray-600 main-dropdown-button mr-10"
+          onclick="$('#main-dropdown').slideToggle()"
+        >
+          <svg class="fill-current h-3 w-3" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+            <title>Menu</title>
+            <path d="M0 3h20v2H0V3zm0 6h20v2H0V9zm0 6h20v2H0v-2z" />
+          </svg>
+        </button>
+      </div>
+      <div class="w-full block flex-grow lg:flex lg:items-center lg:w-auto bg-inherit">
+        <div class="hidden lg:block bg-inherit absolute lg:static w-full lg:w-auto ml-auto mr-10 z-10" id="main-dropdown">
+          <ul class="main-dropdown-ul flex lg:gap-10 flex-col lg:flex-row shadow-lg lg:shadow-none">
+            <li class="hover:text-blue-400 cursor-pointer whitespace-nowrap mx-auto my-2.5 lg:m-0 selected">Home</li>
+            <li class="hover:text-blue-400 cursor-pointer whitespace-nowrap mx-auto my-2.5 lg:m-0">How to use</li>
+            <li class="hover:text-blue-400 cursor-pointer whitespace-nowrap mx-auto my-2.5 lg:m-0">Trending workouts</li>
+            <li class="hover:text-blue-400 cursor-pointer whitespace-nowrap mx-auto my-2.5 lg:m-0">Donate</li>
+            <li class="hover:text-blue-400 cursor-pointer whitespace-nowrap mx-auto my-2.5 lg:m-0">Post your own workout</li>
+            <button
+              class="px-4 py-2 leading-none border rounded text-black border-black hover:border-transparent hover:text-white hover:bg-blue-400 m-4 lg:m-0"
+            >
+              Login / Signup
+            </button>
+            <hr class="bg-blue-400 hidden lg:block navbar-hr" />
+          </ul>
+          <div></div>
+        </div>
+      </div>
+    </nav>
+    <div class="current-page">
+      <div class="main-app flex">
+        <div class="timer-section w-full lg:w-3/4">
+          <h2 class="text-4xl font-bold text-center select-none mt-auto">Current Exercise</h2>
+          <h2 class="text-9xl font-bold text-center select-none text-blue-400">60</h2>
+          <div class="control-panel mt-auto w-full">
+            <div class="bg-blue-400 h-2 w-1/2"></div>
+            <div class="flex justify-center p-4 w-full bg-gray-200">
+              <button class="main-button text-gray-600 h-12 w-12 rounded-full text-xl mr-auto"><i class="fas fa-random"></i></button>
+              <button class="main-button text-blue-400 h-12 w-12 rounded-full text-xl mx-5"><i class="fas fa-backward"></i></button>
+              <button class="main-button text-blue-400 bg-gray-600 h-12 w-12 rounded-full text-lg"><i class="fas fa-play"></i></button>
+              <button class="main-button text-blue-400 h-12 w-12 rounded-full text-xl mx-5"><i class="fas fa-forward"></i></button>
+              <button class="main-button text-gray-600 h-12 w-12 rounded-full text-xl ml-auto"><i class="fas fa-music"></i></button>
+            </div>
+          </div>
+        </div>
+        <div class="exercises-section bg-gray-100 w-0 lg:w-1/4 flex flex-row align-center overflow-x-hidden">
+          <button class="exercises-section-button">❱</button>
+          <div class="w-full flex flex-col h-full overflow-x-hidden duration-300" id="all-workouts-section">
+            <button class="border border-black rounded-full p-2.5 my-6 mx-10 w-auto rainbow-text">
+              <span class="text mr-2"><i class="fas fa-plus"></i></span> Add workout
+            </button>
+            <span class="w-full flex flex-col" id="workouts-container"></span>
+          </div>
+          <div class="duration-300 overflow-x-hidden w-0" id="single-workout-section">
+            <div class="p-2 bg-gradient-to-r from-blue-700 to-cyan-300 text-white flex">
+              <button class="ml-3 mr-5" onclick="workoutsToggle()"><i class="fas fa-arrow-left"></i></button>
+              <div class="w-full flex">
+                <input type="text" value="Hello" class="bg-transparent outline-none cursor-pointer w-1/2" onchange="changeWorkoutName()" />
+                <button class="ml-auto bg-white text-gray-700 text-sm py-2 px-4 rounded shadow hidden" onclick="saveWorkoutName()">Save</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+    <script src="./js/libs/swiped-events.js"></script>
+    <script src="./js/script.js"></script>
+  </body>
+</html>
