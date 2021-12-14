@@ -9,7 +9,6 @@ body {
 
 .timer-section {
   height: calc(100vh - 3.75rem);
-  /* width: 75%; */
   display: flex;
   justify-content: center;
   align-items: center;
@@ -53,12 +52,6 @@ hr.navbar-hr {
   width: 42px;
 }
 
-.navbar-menu {
-  height: 2.75rem;
-  margin: 0.5rem;
-  margin-right: 1.75rem;
-}
-
 .exercises-section-button {
   position: absolute;
   background: gray;
@@ -91,4 +84,28 @@ hr.navbar-hr {
   to {
     background-position-x: 100%;
   }
+}
+
+/* width */
+::-webkit-scrollbar {
+  width: 4px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  background: #d1d1d1;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: rgb(174, 174, 174);
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: rgb(128, 128, 128);
+}
+
+.workout-gear-button:hover > span i {
+  transform: rotate(120deg);
 }
