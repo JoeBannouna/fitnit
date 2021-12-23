@@ -43,16 +43,34 @@ export const workouts: WorkoutType[] = [
     exercises: [
       {
         id: 'dwniod',
-        name: 'Push-ups',
+        name: 'Squats',
         type: 'REPS',
         amount: 20,
         inbetween: 2,
       },
       {
         id: 'dwniud',
-        name: 'Arm circles',
+        name: 'Leg raises',
         type: 'TIMED',
         amount: 60,
+      },
+      {
+        id: 'dwdwdw',
+        name: 'Cath raises',
+        type: 'REPS',
+        amount: 40,
+      },
+      {
+        id: 'downww',
+        name: 'Jumping squats',
+        type: 'REPS',
+        amount: 80,
+      },
+      {
+        id: 'uiwyei',
+        name: 'Lunges',
+        type: 'TIMED',
+        amount: 45,
       },
     ],
   },

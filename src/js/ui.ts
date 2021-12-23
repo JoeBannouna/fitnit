@@ -1,6 +1,7 @@
 import { workouts, WorkoutType } from './global';
 import Workout from './models/Workout';
 import ANIMATIONS from './ui/animations';
+import { exerciseBar, workoutBar } from './ui/templates';
 
 // Dropdown button
 $('.main-dropdown-button').on('click', () => $('#main-dropdown').slideToggle());
@@ -50,19 +51,7 @@ exercisesButton.addEventListener('swiped-right', exercisesPanelToggle);
 const workoutsContainer = document.getElementById('workouts-container');
 
 function renderWorkouts() {
-  const workoutsHTML = workouts
-    .map((workout, index) => {
-      return `<div class="flex workout">
-                <button class="bg-white mx-6 my-3 px-4 py-3 rounded-l-lg mr-0 shadow flex w-full text-left" onclick="UI.selectWorkout('${index}')">
-                  <strong class="mr-2 text-lg self-center">${index + 1}</strong> <span class="text-sm my-auto">${workout.name}</span>
-                </button>
-                <button class="workout-gear-button bg-white mx-6 my-3 px-4 py-3 rounded-r-lg ml-0 shadow flex text-gray-500 items-center" onclick="UI.loadWorkout('${index}')">
-                  <span class="ml-auto text-lg"><i class="fas fa-cog duration-300"></i></span>
-                </button>
-              </div>`;
-    })
-    .join('');
-
+  const workoutsHTML = workouts.map(workoutBar).join('');
   workoutsContainer.innerHTML = workoutsHTML;
 }
 
@@ -88,7 +77,7 @@ function toggleWorkoutsSection() {
 }
 
 // Loading a workout
-let currentWorkout: WorkoutType;
+export let currentWorkout: WorkoutType;
 const changeWorkoutNameInput = document.getElementById('change-workout-name-input') as HTMLInputElement;
 const changeWorkoutNameButton = document.getElementById('change-workout-name-button');
 const changeWorkoutNameEditButton = document.getElementById('change-workout-name-edit-button');
@@ -106,15 +95,24 @@ function defaultWorkoutNameUI() {
   changeWorkoutNameInput.readOnly = true;
 }
 
-function loadWorkout(index: number) {
-  // Set current workout id
-  currentWorkout = workouts[index];
+const singleExercisesSection = document.getElementById('single-exercises-section');
 
-  // Render HTML
+function loadWorkout(index?: number) {
+  // SET CURRENT WORKOUT ID
+  if (index != null) currentWorkout = workouts[index];
+
+  // RENDERING HTML
+
+  // Title area
   changeWorkoutNameInput.value = currentWorkout.name;
   defaultWorkoutNameUI();
 
-  // Animate
+  // Exercises
+  const exercisesHTML = currentWorkout.exercises.map(exerciseBar).join('');
+  singleExercisesSection.innerHTML = '<div><div class="dropzone h-px w-full" id="exercise-dropzone-0"></div></div>';
+  singleExercisesSection.innerHTML += exercisesHTML;
+
+  // ANIMATE
   toggleWorkoutsSection();
 }
 
@@ -140,6 +138,7 @@ UI.ANIMATIONS = ANIMATIONS;
 export default UI;
 
 // JUST FOR TESTING
-// window.workouts = workouts;
+// @ts-ignore
+window.workouts = workouts;
 
-// ANIMATIONS.fadeIn(document.getElementById('thismodal'));
+// ANIMATIONS.showModal(document.getElementById('modal-element'));

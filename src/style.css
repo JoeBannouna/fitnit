@@ -5,6 +5,7 @@
 body {
   font-family: 'Titillium Web', sans-serif;
   overscroll-behavior-x: none;
+  overscroll-behavior-y: none;
 }
 
 .timer-section {
@@ -89,6 +90,7 @@ hr.navbar-hr {
 /* width */
 ::-webkit-scrollbar {
   width: 4px;
+  height: 4px;
 }
 
 /* Track */

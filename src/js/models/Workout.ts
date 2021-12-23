@@ -33,7 +33,7 @@ class Workout {
     }
   }
 
-  static swapExercises(exerciseId1: ExercisesType, exerciseId2: ExercisesType) {
+  static moveExercise(workoutId: WorkoutType['id'], exerciseId: ExercisesType['id'], newIndex: number) {
     // Change position of both exercises in database / localStorage
     return true;
   }

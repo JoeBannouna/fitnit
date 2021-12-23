@@ -3,3 +3,5 @@ import './libs/swiped-events';
 
 // @ts-ignore
 window.UI = UI;
+
+import './ui/drag';

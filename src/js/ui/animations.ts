@@ -1,3 +1,5 @@
+import { addMultipleClasses, removeMultipleClasses } from '../utils';
+
 // Default modal animations
 function fadeIn(element: HTMLElement) {
   element.style.display = 'block';
@@ -10,20 +12,38 @@ function fadeOut(element: HTMLElement) {
   setTimeout(() => (element.style.display = 'none'), 300);
 }
 
-// function fadeIn(modalElement) {
-//   modalElement.style.display = 'block';
-//   setTimeout(() => (modalElement.style.opacity = 1), 0);
-// }
+function showModal(modalElement: HTMLElement) {
+  const modalRect = document.querySelector('.modal-rect') as HTMLElement;
+  modalElement.classList.remove('hidden');
 
-// function fadeOut(modalElement) {
-//   modalElement.style.transition = '0.3s';
-//   modalElement.style.opacity = 0;
-//   setTimeout(() => (modalElement.style.display = 'none'), 300);
-// }
+  setTimeout(() => {
+    removeMultipleClasses(modalElement, ['opacity-0', 'ease-in', 'duration-200']);
+    removeMultipleClasses(modalRect, ['ease-in', 'duration-200', 'opacity-0', 'translate-y-4', 'sm:translate-y-0', 'sm:scale-95']);
+
+    addMultipleClasses(modalElement, ['opacity-100', 'ease-out', 'duration-300']);
+    addMultipleClasses(modalRect, ['ease-out', 'duration-300', 'opacity-100', 'translate-y-0', 'sm:scale-100']);
+  }, 0);
+}
+
+function hideModal(modalElement: HTMLElement) {
+  const modalRect = document.querySelector('.modal-rect') as HTMLElement;
+
+  removeMultipleClasses(modalElement, ['opacity-100', 'ease-out', 'duration-300']);
+  removeMultipleClasses(modalRect, ['ease-out', 'duration-300', 'opacity-100', 'translate-y-0', 'sm:scale-100']);
+
+  addMultipleClasses(modalElement, ['opacity-0', 'ease-in', 'duration-200']);
+  addMultipleClasses(modalRect, ['ease-in', 'duration-200', 'opacity-0', 'translate-y-4', 'sm:translate-y-0', 'sm:scale-95']);
+
+  setTimeout(() => modalElement.classList.add('hidden'), 300);
+}
+
+// function renderModal(modalTemplate: Function<string>);
 
 const ANIMATIONS = {
   fadeIn,
   fadeOut,
+  showModal,
+  hideModal,
 };
 
 export default ANIMATIONS;
