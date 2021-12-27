@@ -20,6 +20,7 @@
     <link href="output.css" rel="stylesheet" />
   </head>
   <body>
+    <span id="alerts-container"></span>
     <span id="modal-container"></span>
 
     <nav class="flex items-center justify-between flex-wrap bg-slate-50">
@@ -35,7 +36,7 @@
         </button>
       </div>
       <div class="w-full block flex-grow lg:flex lg:items-center lg:w-auto bg-inherit">
-        <div class="hidden lg:block bg-inherit absolute lg:static w-full lg:w-auto ml-auto mr-10 z-10" id="main-dropdown">
+        <div class="hidden lg:block bg-inherit absolute lg:static w-full lg:w-auto ml-auto mr-10 z-40" id="main-dropdown">
           <ul class="main-dropdown-ul flex lg:gap-10 flex-col lg:flex-row shadow-lg lg:shadow-none">
             <li class="hover:text-blue-400 cursor-pointer whitespace-nowrap mx-auto my-2.5 lg:m-0 selected">Home</li>
             <li class="hover:text-blue-400 cursor-pointer whitespace-nowrap mx-auto my-2.5 lg:m-0">How to use</li>
@@ -91,6 +92,11 @@
         </div>
       </div>
     </div>
+    <script>
+      document
+        .querySelectorAll('button')
+        .forEach(button => (button.onclick = button.onclick !== null ? button.onclick : () => alert("This button doesn't work yet, Sorry!")));
+    </script>
     <script src="./main.js" type="module"></script>
   </body>
 </html>

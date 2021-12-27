@@ -37,13 +37,26 @@ function hideModal(modalElement: HTMLElement) {
   setTimeout(() => modalElement.classList.add('hidden'), 300);
 }
 
-// function renderModal(modalTemplate: Function<string>);
+const modalContainer = document.getElementById('modal-container');
+function renderModal(modalTemplate: (...args: any[]) => string) {
+  modalContainer.innerHTML = modalTemplate();
+  const modalElement = modalContainer.children[0] as HTMLElement;
+  
+  const modalCancelButton = document.getElementById('modal-cancel-button');
+  modalCancelButton.onclick = () => hideModal(modalElement);
+  
+  showModal(modalElement);
+}
 
-const ANIMATIONS = {
-  fadeIn,
-  fadeOut,
-  showModal,
-  hideModal,
-};
+const alertContainer = document.getElementById('alert-container');
+function renderAlert(alertTemplate: (...args: any[]) => string) {
+  alertContainer.innerHTML = alertTemplate();
+  const alertElement = alertContainer.children[0] as HTMLElement;
 
-export default ANIMATIONS;
+  // const alertCancelButton = document.getElementById('alert-cancel-button');
+  // alertCancelButton.onclick = () => hideModal(alertElement);
+
+  showModal(alertElement);
+}
+
+export { fadeIn, fadeOut, showModal, hideModal, renderModal, renderAlert };

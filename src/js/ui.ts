@@ -1,7 +1,8 @@
 import { workouts, WorkoutType } from './global';
 import Workout from './models/Workout';
-import ANIMATIONS from './ui/animations';
-import { exerciseBar, workoutBar } from './ui/templates';
+import { fadeIn, fadeOut, hideModal, renderModal } from './ui/animations';
+import { defaultModal, deleteExerciseModal, exerciseBar, exerciseModal, workoutBar } from './ui/templates';
+import { exerciseImageDropzoneUpload } from './ui/upload';
 
 // Dropdown button
 $('.main-dropdown-button').on('click', () => $('#main-dropdown').slideToggle());
@@ -66,12 +67,12 @@ function toggleWorkoutsSection() {
   if (workoutsIsOpen) {
     allWorkoutSection.style.width = '0';
     singleWorkoutSection.style.width = '100%';
-    ANIMATIONS.fadeOut(exercisesButton);
+    fadeOut(exercisesButton);
   } else {
     renderWorkouts();
     allWorkoutSection.style.width = '100%';
     singleWorkoutSection.style.width = '0';
-    ANIMATIONS.fadeIn(exercisesButton);
+    fadeIn(exercisesButton);
   }
   workoutsIsOpen = !workoutsIsOpen;
 }
@@ -127,13 +128,30 @@ function saveWorkoutName() {
 changeWorkoutNameEditButton.onclick = changeWorkoutName;
 changeWorkoutNameButton.onclick = saveWorkoutName;
 
+function showExerciseModal(index: number) {
+  const exercise = currentWorkout.exercises[index];
+  renderModal(() => exerciseModal(index, exercise));
+  exerciseImageDropzoneUpload();
+}
+
+function showDeleteExerciseAlert(index: number) {
+  const exercise = currentWorkout.exercises[index];
+  renderModal(() => deleteExerciseModal());
+}
+
+function hideDeleteExerciseAlert(button: HTMLElement) {
+  const alertElement = button.parentElement.parentElement.parentElement;
+  hideModal(alertElement);
+}
+
 const UI: any = {
   toggleWorkoutsSection,
   loadWorkout,
+  showExerciseModal,
+  showDeleteExerciseAlert,
+  hideDeleteExerciseAlert,
   // deleteWorkout,
 };
-
-UI.ANIMATIONS = ANIMATIONS;
 
 export default UI;
 
@@ -141,4 +159,4 @@ export default UI;
 // @ts-ignore
 window.workouts = workouts;
 
-// ANIMATIONS.showModal(document.getElementById('modal-element'));
+// showModal(document.getElementById('modal-element'));
