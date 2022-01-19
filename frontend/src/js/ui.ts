@@ -2,7 +2,7 @@ import { ExerciseType, workouts, WorkoutType } from './global';
 import Exercise from './models/Exercise';
 import Workout from './models/Workout';
 import { fadeIn, fadeOut, hideModal, renderAlert, renderModal } from './ui/animations';
-import { defaultModal, deleteExerciseAlert, exerciseBar, exerciseModal, newExerciseModal, workoutBar } from './ui/templates';
+import { deleteExerciseAlert, exerciseBar, exerciseModal, newExerciseModal, newWorkoutModal, workoutBar } from './ui/templates';
 import { exerciseImageDropzoneUpload } from './ui/upload';
 import { arrayRemoveItem } from './utils';
 
@@ -188,6 +188,29 @@ function changeInbetween(string: 'up' | 'down') {
   input.value = newVal.toString();
   span.innerHTML = newVal.toString();
 }
+
+const newWorkoutButton = document.getElementById('add-workout-button');
+newWorkoutButton.onclick = () => {
+  renderModal(() => newWorkoutModal());
+
+  const form = document.getElementById('modal-rect') as HTMLFormElement;
+  const name = document.getElementById('workout-name') as HTMLInputElement;
+  name.focus()
+  
+  form.onsubmit = e => {
+    e.preventDefault();
+    (e.submitter as HTMLButtonElement).disabled = true;
+    
+    new Workout({
+      name: name.value,
+      rest: 5,
+      exercises: [],
+    });
+
+    renderWorkouts()
+    hideModal(document.getElementById('modal-container').children[0] as HTMLElement);
+  };
+};
 
 const newExerciseButton = document.getElementById('add-exercise-button');
 newExerciseButton.onclick = () => {

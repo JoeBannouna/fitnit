@@ -1,10 +1,19 @@
-import { ExerciseType, WorkoutType } from '../global';
+import { ExerciseType, loggedin, modifyWorkouts, workouts, WorkoutType } from '../global';
+import StorageWrapper from './StorageWrapper';
 
 // Workout class connects UI to backend (database or localStorage)
 class Workout {
   constructor(workout: WorkoutType) {
     // Save the workout to backend or localStorage
     // Return workout object to UI so it could be updated to the local state
+    
+    if (loggedin) {
+
+    } else {
+      if (StorageWrapper.createWorkout(workout)) {
+        modifyWorkouts(StorageWrapper.fetchWorkouts());
+      }
+    }
   }
 
   static checkIfIdExists(id: string) {

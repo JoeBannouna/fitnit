@@ -20,6 +20,23 @@
     <link href="output.css" rel="stylesheet" />
   </head>
   <body>
+    <div class="loading-screen flex justify-center items-center w-screen h-screen bg-blue-400 z-[60] absolute text-white">
+      <div class="loading-screen-content hidden">
+        <div class="flex justify-center items-center">
+          <h2 class="text-6xl font-bold animate-[sideSlide_1s_ease-in-out] overflow-hidden p-3">Loading</h2>
+          <svg class="animate-spin ml-3 h-20 w-20 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+            <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+            <path
+              class="opacity-75"
+              fill="currentColor"
+              d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+            ></path>
+          </svg>
+          <!-- <img src="/assets/logos/logo1.png" alt="Logo" class="h-28 w-28 m-4 animate-spin" /> -->
+        </div>
+      </div>
+    </div>
+
     <span id="modal-container"></span>
     <span id="alert-container"></span>
 
@@ -73,7 +90,7 @@
         <div class="exercises-section bg-gray-100 w-0 lg:w-1/4 flex flex-row align-center overflow-x-hidden">
           <button class="exercises-section-button outline-none select-none">❱</button>
           <div class="w-full flex flex-col h-full overflow-x-hidden duration-300" id="all-workouts-section">
-            <button class="border border-black rounded-full p-2.5 my-6 mx-10 w-auto rainbow-text">
+            <button class="border border-black rounded-full p-2.5 my-6 mx-10 w-auto rainbow-text" id="add-workout-button">
               <span class="text mr-2"><i class="fas fa-plus"></i></span> Add workout
             </button>
             <span class="w-full flex flex-col" id="workouts-container"></span>
@@ -89,7 +106,10 @@
             </div>
             <div id="single-exercises-section"></div>
             <div class="flex justify-center items-center p-4">
-              <button class="bg-gradient-to-r from-blue-700 to-cyan-400 hover:from-blue-800 hover:to-cyan-500 text-white px-4 py-2 rounded-lg outline-none w-full" id="add-exercise-button">
+              <button
+                class="bg-gradient-to-r from-blue-700 to-cyan-400 hover:from-blue-800 hover:to-cyan-500 text-white px-4 py-2 rounded-lg outline-none w-full"
+                id="add-exercise-button"
+              >
                 <span class="text mr-2"><i class="fas fa-plus"></i></span> Add exercise
               </button>
             </div>
@@ -98,9 +118,9 @@
       </div>
     </div>
     <script>
-      document
-        .querySelectorAll('button')
-        .forEach(button => (button.onclick = button.onclick !== null ? button.onclick : () => alert("This button doesn't work yet, Sorry!")));
+      // document
+      //   .querySelectorAll('button')
+      //   .forEach(button => (button.onclick = button.onclick !== null ? button.onclick : () => alert("This button doesn't work yet, Sorry!")));
     </script>
     <script src="./main.js" type="module"></script>
   </body>

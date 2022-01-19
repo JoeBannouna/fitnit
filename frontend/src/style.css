@@ -87,6 +87,15 @@ hr.navbar-hr {
   }
 }
 
+@keyframes sideSlide {
+  from {
+    width: 0%;
+  }
+  to {
+    width: 70%;
+  }
+}
+
 /* width */
 ::-webkit-scrollbar {
   width: 4px;
@@ -111,3 +120,4 @@ hr.navbar-hr {
 .workout-gear-button:hover > span i {
   transform: rotate(120deg);
 }
+
