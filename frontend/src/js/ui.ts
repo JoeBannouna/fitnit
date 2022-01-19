@@ -1,8 +1,10 @@
-import { workouts, WorkoutType } from './global';
+import { ExerciseType, workouts, WorkoutType } from './global';
+import Exercise from './models/Exercise';
 import Workout from './models/Workout';
-import { fadeIn, fadeOut, hideModal, renderModal } from './ui/animations';
-import { defaultModal, deleteExerciseModal, exerciseBar, exerciseModal, workoutBar } from './ui/templates';
+import { fadeIn, fadeOut, hideModal, renderAlert, renderModal } from './ui/animations';
+import { defaultModal, deleteExerciseAlert, exerciseBar, exerciseModal, newExerciseModal, workoutBar } from './ui/templates';
 import { exerciseImageDropzoneUpload } from './ui/upload';
+import { arrayRemoveItem } from './utils';
 
 // Dropdown button
 $('.main-dropdown-button').on('click', () => $('#main-dropdown').slideToggle());
@@ -96,7 +98,12 @@ function defaultWorkoutNameUI() {
   changeWorkoutNameInput.readOnly = true;
 }
 
-const singleExercisesSection = document.getElementById('single-exercises-section');
+export function renderExercisesHTML() {
+  const singleExercisesSection = document.getElementById('single-exercises-section');
+  const exercisesHTML = currentWorkout.exercises.map(exerciseBar).join('');
+  singleExercisesSection.innerHTML = '<div><div class="dropzone h-px w-full" id="exercise-dropzone-0"></div></div>';
+  singleExercisesSection.innerHTML += exercisesHTML;
+}
 
 function loadWorkout(index?: number) {
   // SET CURRENT WORKOUT ID
@@ -109,9 +116,7 @@ function loadWorkout(index?: number) {
   defaultWorkoutNameUI();
 
   // Exercises
-  const exercisesHTML = currentWorkout.exercises.map(exerciseBar).join('');
-  singleExercisesSection.innerHTML = '<div><div class="dropzone h-px w-full" id="exercise-dropzone-0"></div></div>';
-  singleExercisesSection.innerHTML += exercisesHTML;
+  renderExercisesHTML();
 
   // ANIMATE
   toggleWorkoutsSection();
@@ -135,8 +140,7 @@ function showExerciseModal(index: number) {
 }
 
 function showDeleteExerciseAlert(index: number) {
-  const exercise = currentWorkout.exercises[index];
-  renderModal(() => deleteExerciseModal());
+  renderAlert(() => deleteExerciseAlert(index));
 }
 
 function hideDeleteExerciseAlert(button: HTMLElement) {
@@ -144,13 +148,65 @@ function hideDeleteExerciseAlert(button: HTMLElement) {
   hideModal(alertElement);
 }
 
+function deleteExercise(deleteButton: HTMLButtonElement, index: number) {
+  deleteButton.disabled = true;
+  const exercise = currentWorkout.exercises[index];
+  if (Exercise.delete(exercise.id)) {
+    fadeOut(document.getElementById('alert-container').children[0] as HTMLElement);
+    hideModal(document.getElementById('modal-container').children[0] as HTMLElement);
+
+    arrayRemoveItem(currentWorkout.exercises, index);
+
+    renderExercisesHTML();
+  } else {
+    deleteButton.disabled = false;
+  }
+}
+
+function updateExerciseModalValues(event: InputEvent) {
+  const typeInput = event.target as HTMLInputElement;
+  const type = typeInput.value as ExerciseType['type'];
+
+  if (type == 'TIMED-REPS') {
+    document.querySelector('.timed-reps').classList.remove('hidden');
+  } else {
+    document.querySelector('.timed-reps').classList.add('hidden');
+  }
+}
+
+function changeInbetween(string: 'up' | 'down') {
+  const input = document.getElementById('inbetween-input') as HTMLInputElement;
+  const span = document.getElementById('inbetween-span');
+
+  let newVal;
+  if (string == 'up') {
+    newVal = parseFloat(input.value) + 1;
+  } else {
+    newVal = parseFloat(input.value) == 0 ? 0 : parseFloat(input.value) - 1;
+  }
+
+  input.value = newVal.toString();
+  span.innerHTML = newVal.toString();
+}
+
+const newExerciseButton = document.getElementById('add-exercise-button');
+newExerciseButton.onclick = () => {
+  renderModal(() => newExerciseModal());
+  exerciseImageDropzoneUpload();
+};
+
 const UI: any = {
   toggleWorkoutsSection,
   loadWorkout,
+  // deleteWorkout,
+
   showExerciseModal,
+  updateExerciseModalValues,
+  changeInbetween,
+
   showDeleteExerciseAlert,
   hideDeleteExerciseAlert,
-  // deleteWorkout,
+  deleteExercise,
 };
 
 export default UI;

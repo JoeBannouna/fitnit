@@ -41,10 +41,10 @@ const modalContainer = document.getElementById('modal-container');
 function renderModal(modalTemplate: (...args: any[]) => string) {
   modalContainer.innerHTML = modalTemplate();
   const modalElement = modalContainer.children[0] as HTMLElement;
-  
+
   const modalCancelButton = document.getElementById('modal-cancel-button');
   modalCancelButton.onclick = () => hideModal(modalElement);
-  
+
   showModal(modalElement);
 }
 
@@ -53,10 +53,11 @@ function renderAlert(alertTemplate: (...args: any[]) => string) {
   alertContainer.innerHTML = alertTemplate();
   const alertElement = alertContainer.children[0] as HTMLElement;
 
-  // const alertCancelButton = document.getElementById('alert-cancel-button');
-  // alertCancelButton.onclick = () => hideModal(alertElement);
+  const alertCancelButtons = document.querySelectorAll('.alert-cancel-button');
+  alertCancelButtons.forEach((alertCancelButton: HTMLElement) => (alertCancelButton.onclick = () => fadeOut(alertElement)));
 
-  showModal(alertElement);
+  fadeIn(alertElement);
+  console.log(alertElement);
 }
 
 export { fadeIn, fadeOut, showModal, hideModal, renderModal, renderAlert };

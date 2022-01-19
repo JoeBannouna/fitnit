@@ -1,3 +1,5 @@
+import { UPLOAD_EXERCISE_IMAGE_URL } from "../global";
+
 function hideUploadedImage() {
   const dropzone = document.getElementById('exerciseImageDropzone');
   const imageContainer = document.getElementById('exercise-uploaded-image-container');
@@ -71,7 +73,7 @@ function readAndUploadFile(file: File) {
 
           return xhr;
         },
-        url: 'http://127.0.0.1:3000/',
+        url: UPLOAD_EXERCISE_IMAGE_URL,
         type: 'POST',
         data: e2.target.result,
         contentType: 'application/octet-stream',

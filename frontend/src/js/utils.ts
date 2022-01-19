@@ -6,7 +6,14 @@ function arrayMove(arr: any[], old_index: any, new_index: any) {
     }
   }
   arr.splice(new_index, 0, arr.splice(old_index, 1)[0]);
-  return arr; // for testing
+  // return arr; // for testing
+}
+
+function arrayRemoveItem(arr: any[], index: number) {
+  if (index > -1) {
+    arr.splice(index, 1);
+  }
+  // return arr;
 }
 
 function getTranslateY(myElement: HTMLElement) {
@@ -23,4 +30,4 @@ function removeMultipleClasses(element: HTMLElement, classesArr: string[]) {
   classesArr.forEach(className => element.classList.remove(className));
 }
 
-export { arrayMove, getTranslateY, addMultipleClasses, removeMultipleClasses };
+export { arrayMove, arrayRemoveItem, getTranslateY, addMultipleClasses, removeMultipleClasses };

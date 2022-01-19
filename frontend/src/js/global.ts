@@ -1,9 +1,8 @@
-// Global variables
-
-export type ExercisesType = {
+// Global types
+export type ExerciseType = {
   id: string;
   name: string;
-  type: 'TIMED' | 'REPS' | 'TIMED-REPS';
+  type: 'TIMED' | 'REPS' | 'TIMED-REPS' | 'VIDEO';
   amount: number;
   inbetween?: number;
 };
@@ -12,9 +11,10 @@ export type WorkoutType = {
   id: string;
   name: string;
   rest: number;
-  exercises: ExercisesType[];
+  exercises: ExerciseType[];
 };
 
+// Global variables
 export const workouts: WorkoutType[] = [
   {
     id: 'wdubdbwk',
@@ -25,6 +25,12 @@ export const workouts: WorkoutType[] = [
         id: 'nwonso',
         name: 'Push-ups',
         type: 'REPS',
+        amount: 20,
+      },
+      {
+        id: 'nwonso',
+        name: 'Wide Push-ups',
+        type: 'TIMED-REPS',
         amount: 20,
         inbetween: 2,
       },
@@ -75,3 +81,6 @@ export const workouts: WorkoutType[] = [
     ],
   },
 ];
+
+// Endpoint URLs
+export const UPLOAD_EXERCISE_IMAGE_URL = 'http://127.0.0.1:3000/';

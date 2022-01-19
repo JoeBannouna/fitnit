@@ -1,4 +1,4 @@
-import { ExercisesType, WorkoutType } from '../global';
+import { ExerciseType, WorkoutType } from '../global';
 
 // Workout class connects UI to backend (database or localStorage)
 class Workout {
@@ -33,7 +33,7 @@ class Workout {
     }
   }
 
-  static moveExercise(workoutId: WorkoutType['id'], exerciseId: ExercisesType['id'], newIndex: number) {
+  static moveExercise(workoutId: WorkoutType['id'], exerciseId: ExerciseType['id'], newIndex: number) {
     // Change position of both exercises in database / localStorage
     return true;
   }

@@ -1,8 +1,8 @@
-import { ExercisesType } from '../global';
+import { ExerciseType } from '../global';
 
 // Exercise class connects UI to backend (database or localStorage)
 class Exercise {
-  constructor(exercise: ExercisesType) {
+  constructor(exercise: ExerciseType) {
     // Save the exercise to backend or localStorage
     // Return exercise object to UI so it could be updated to the local state
     exercise.id = Exercise.newExerciseIndexId().toString();
@@ -20,6 +20,10 @@ class Exercise {
     // If no, save it in localStorage
 
     // Return true if changed, false if failed
+    return true;
+  }
+
+  static delete(id: string) {
     return true;
   }
 

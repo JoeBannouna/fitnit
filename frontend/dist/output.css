@@ -520,8 +520,17 @@ Ensure the default browser behavior of the `hidden` attribute.
   left: 0px;
 }
 
+.inset-x-0 {
+  left: 0px;
+  right: 0px;
+}
+
 .top-0 {
   top: 0px;
+}
+
+.bottom-full {
+  bottom: 100%;
 }
 
 .left-0 {
@@ -620,9 +629,29 @@ Ensure the default browser behavior of the `hidden` attribute.
   margin-right: 1.5rem;
 }
 
+.my-0 {
+  margin-top: 0px;
+  margin-bottom: 0px;
+}
+
 .my-8 {
   margin-top: 2rem;
   margin-bottom: 2rem;
+}
+
+.mx-2 {
+  margin-left: 0.5rem;
+  margin-right: 0.5rem;
+}
+
+.my-0\.5 {
+  margin-top: 0.125rem;
+  margin-bottom: 0.125rem;
+}
+
+.my-\[2px\] {
+  margin-top: 2px;
+  margin-bottom: 2px;
 }
 
 .mr-6 {
@@ -681,8 +710,8 @@ Ensure the default browser behavior of the `hidden` attribute.
   margin-top: 0.5rem;
 }
 
-.mr-1 {
-  margin-right: 0.25rem;
+.mb-2 {
+  margin-bottom: 0.5rem;
 }
 
 .mt-4 {
@@ -697,12 +726,20 @@ Ensure the default browser behavior of the `hidden` attribute.
   margin-top: 1.5rem;
 }
 
-.mb-2 {
-  margin-bottom: 0.5rem;
+.mt-\[-1px\] {
+  margin-top: -1px;
 }
 
-.mr-1\.5 {
-  margin-right: 0.375rem;
+.mb-\[1px\] {
+  margin-bottom: 1px;
+}
+
+.mt-\[1px\] {
+  margin-top: 1px;
+}
+
+.mb-4 {
+  margin-bottom: 1rem;
 }
 
 .block {
@@ -769,12 +806,20 @@ Ensure the default browser behavior of the `hidden` attribute.
   height: 1.5rem;
 }
 
+.h-4 {
+  height: 1rem;
+}
+
 .h-0 {
   height: 0px;
 }
 
 .h-7 {
   height: 1.75rem;
+}
+
+.h-24 {
+  height: 6rem;
 }
 
 .min-h-screen {
@@ -813,16 +858,20 @@ Ensure the default browser behavior of the `hidden` attribute.
   width: 33.333333%;
 }
 
+.w-4 {
+  width: 1rem;
+}
+
 .w-\[calc\(100\%-1rem\)\] {
   width: calc(100% - 1rem);
 }
 
-.w-2\/3 {
-  width: 66.666667%;
-}
-
 .w-7 {
   width: 1.75rem;
+}
+
+.w-2\/3 {
+  width: 66.666667%;
 }
 
 .flex-shrink-0 {
@@ -843,6 +892,11 @@ Ensure the default browser behavior of the `hidden` attribute.
   transform: var(--tw-transform);
 }
 
+.rotate-45 {
+  --tw-rotate: 45deg;
+  transform: var(--tw-transform);
+}
+
 .scale-x-105 {
   --tw-scale-x: 1.05;
   transform: var(--tw-transform);
@@ -852,12 +906,49 @@ Ensure the default browser behavior of the `hidden` attribute.
   transform: var(--tw-transform);
 }
 
+@-webkit-keyframes bounce {
+  0%, 100% {
+    transform: translateY(-25%);
+    -webkit-animation-timing-function: cubic-bezier(0.8,0,1,1);
+            animation-timing-function: cubic-bezier(0.8,0,1,1);
+  }
+
+  50% {
+    transform: none;
+    -webkit-animation-timing-function: cubic-bezier(0,0,0.2,1);
+            animation-timing-function: cubic-bezier(0,0,0.2,1);
+  }
+}
+
+@keyframes bounce {
+  0%, 100% {
+    transform: translateY(-25%);
+    -webkit-animation-timing-function: cubic-bezier(0.8,0,1,1);
+            animation-timing-function: cubic-bezier(0.8,0,1,1);
+  }
+
+  50% {
+    transform: none;
+    -webkit-animation-timing-function: cubic-bezier(0,0,0.2,1);
+            animation-timing-function: cubic-bezier(0,0,0.2,1);
+  }
+}
+
+.animate-bounce {
+  -webkit-animation: bounce 1s infinite;
+          animation: bounce 1s infinite;
+}
+
 .cursor-pointer {
   cursor: pointer;
 }
 
 .cursor-move {
   cursor: move;
+}
+
+.cursor-auto {
+  cursor: auto;
 }
 
 .touch-none {
@@ -1038,11 +1129,6 @@ Ensure the default browser behavior of the `hidden` attribute.
   background-color: rgb(255 255 255 / var(--tw-bg-opacity));
 }
 
-.bg-green-100 {
-  --tw-bg-opacity: 1;
-  background-color: rgb(220 252 231 / var(--tw-bg-opacity));
-}
-
 .bg-gray-500 {
   --tw-bg-opacity: 1;
   background-color: rgb(107 114 128 / var(--tw-bg-opacity));
@@ -1073,6 +1159,11 @@ Ensure the default browser behavior of the `hidden` attribute.
   background-color: rgb(74 222 128 / var(--tw-bg-opacity));
 }
 
+.bg-gray-300 {
+  --tw-bg-opacity: 1;
+  background-color: rgb(209 213 219 / var(--tw-bg-opacity));
+}
+
 .bg-blue-500 {
   --tw-bg-opacity: 1;
   background-color: rgb(59 130 246 / var(--tw-bg-opacity));
@@ -1088,9 +1179,8 @@ Ensure the default browser behavior of the `hidden` attribute.
   background-color: rgb(239 68 68 / var(--tw-bg-opacity));
 }
 
-.bg-blue-800 {
-  --tw-bg-opacity: 1;
-  background-color: rgb(30 64 175 / var(--tw-bg-opacity));
+.bg-\[\#3d3d3d50\] {
+  background-color: #3d3d3d50;
 }
 
 .bg-opacity-75 {
@@ -1108,6 +1198,14 @@ Ensure the default browser behavior of the `hidden` attribute.
 
 .to-cyan-300 {
   --tw-gradient-to: #67e8f9;
+}
+
+.to-cyan-400 {
+  --tw-gradient-to: #22d3ee;
+}
+
+.bg-\[length\:100px_100px\] {
+  background-size: 100px 100px;
 }
 
 .fill-current {
@@ -1128,6 +1226,18 @@ Ensure the default browser behavior of the `hidden` attribute.
 
 .p-6 {
   padding: 1.5rem;
+}
+
+.p-0\.5 {
+  padding: 0.125rem;
+}
+
+.p-0 {
+  padding: 0px;
+}
+
+.p-1 {
+  padding: 0.25rem;
 }
 
 .px-3 {
@@ -1153,6 +1263,16 @@ Ensure the default browser behavior of the `hidden` attribute.
 .py-3 {
   padding-top: 0.75rem;
   padding-bottom: 0.75rem;
+}
+
+.py-1 {
+  padding-top: 0.25rem;
+  padding-bottom: 0.25rem;
+}
+
+.py-1\.5 {
+  padding-top: 0.375rem;
+  padding-bottom: 0.375rem;
 }
 
 .pt-4 {
@@ -1537,6 +1657,61 @@ hr.navbar-hr {
   transform: rotate(120deg);
 }
 
+@keyframes bounce {
+  0%, 100% {
+    transform: translateY(-25%);
+    -webkit-animation-timing-function: cubic-bezier(0.8,0,1,1);
+            animation-timing-function: cubic-bezier(0.8,0,1,1);
+  }
+
+  50% {
+    transform: none;
+    -webkit-animation-timing-function: cubic-bezier(0,0,0.2,1);
+            animation-timing-function: cubic-bezier(0,0,0.2,1);
+  }
+}
+
+.hover\:animate-bounce:hover {
+  -webkit-animation: bounce 1s infinite;
+          animation: bounce 1s infinite;
+}
+
+@-webkit-keyframes pulse {
+  50% {
+    opacity: .5;
+  }
+}
+
+@keyframes pulse {
+  50% {
+    opacity: .5;
+  }
+}
+
+.hover\:animate-pulse:hover {
+  -webkit-animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+          animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+@-webkit-keyframes ping {
+  75%, 100% {
+    transform: scale(2);
+    opacity: 0;
+  }
+}
+
+@keyframes ping {
+  75%, 100% {
+    transform: scale(2);
+    opacity: 0;
+  }
+}
+
+.hover\:animate-ping:hover {
+  -webkit-animation: ping 1s cubic-bezier(0, 0, 0.2, 1) infinite;
+          animation: ping 1s cubic-bezier(0, 0, 0.2, 1) infinite;
+}
+
 .hover\:border-gray-600:hover {
   --tw-border-opacity: 1;
   border-color: rgb(75 85 99 / var(--tw-border-opacity));
@@ -1564,6 +1739,15 @@ hr.navbar-hr {
 .hover\:bg-blue-700:hover {
   --tw-bg-opacity: 1;
   background-color: rgb(29 78 216 / var(--tw-bg-opacity));
+}
+
+.hover\:from-blue-800:hover {
+  --tw-gradient-from: #1e40af;
+  --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to, rgb(30 64 175 / 0));
+}
+
+.hover\:to-cyan-500:hover {
+  --tw-gradient-to: #06b6d4;
 }
 
 .hover\:text-blue-400:hover {

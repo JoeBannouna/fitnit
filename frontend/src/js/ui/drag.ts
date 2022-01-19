@@ -1,6 +1,6 @@
 import interact from 'interactjs';
 import Workout from '../models/Workout';
-import { currentWorkout } from '../ui';
+import { currentWorkout, renderExercisesHTML } from '../ui';
 import { arrayMove } from '../utils';
 import { exerciseBar } from './templates';
 
@@ -173,15 +173,9 @@ interact('.dropzone').dropzone({
       currentDragElement.setAttribute('data-x', '0');
 
       // Re-render the exercises
-      const singleExercisesSection = document.getElementById('single-exercises-section');
       if (Workout.moveExercise(currentWorkout.id, currentWorkout.exercises[currentDragId].id, newIndex)) {
         arrayMove(currentWorkout.exercises, currentDragId, newIndex);
-
-        setTimeout(() => {
-          const exercisesHTML = currentWorkout.exercises.map(exerciseBar).join('');
-          singleExercisesSection.innerHTML = '<div class="bg-blue-800"><div class="dropzone bg-green-100 h-px w-full" id="exercise-dropzone-0"></div></div>';
-          singleExercisesSection.innerHTML += exercisesHTML;
-        }, 100);
+        setTimeout(renderExercisesHTML, 100);
       }
     }
   },
