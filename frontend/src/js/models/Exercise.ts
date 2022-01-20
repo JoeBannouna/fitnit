@@ -1,4 +1,4 @@
-import { ExerciseType } from '../global';
+import { ExerciseType } from '../types';
 
 // Exercise class connects UI to backend (database or localStorage)
 class Exercise {

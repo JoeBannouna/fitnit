@@ -1,4 +1,4 @@
-import { ExerciseType, WorkoutType } from '../global';
+import { ExerciseType, WorkoutType } from '../types';
 
 export function exerciseBar(exercise: ExerciseType, index: number) {
   return (
@@ -292,7 +292,7 @@ export function newWorkoutModal() {
             
             <div class="flex mt-6 flex-col">
               <div class="text-center mr-3 h-full w-full">
-                <input class="rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-base font-medium text-gray-700 focus:outline-none w-full h-12" id="workout-name" placeholder="Workout name">
+                <input class="rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-base font-medium text-gray-700 focus:outline-none w-full h-12" id="workout-name" placeholder="Workout name" autocomplete="off">
               </div>
             </div>
           </div>

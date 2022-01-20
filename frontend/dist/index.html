@@ -76,7 +76,7 @@
         <div class="timer-section w-full lg:w-3/4">
           <h2 class="text-4xl font-bold text-center select-none mt-auto">Current Exercise</h2>
           <h2 class="text-9xl font-bold text-center select-none text-blue-400">60</h2>
-          <div class="control-panel mt-auto w-full">
+          <div class="now-playing-bar mt-auto w-full">
             <div class="bg-blue-400 h-2 w-1/2"></div>
             <div class="flex justify-center p-4 w-full bg-gray-200">
               <button class="main-button text-gray-600 h-12 w-12 rounded-full text-xl mr-auto"><i class="fas fa-random"></i></button>
@@ -87,8 +87,8 @@
             </div>
           </div>
         </div>
-        <div class="exercises-section bg-gray-100 w-0 lg:w-1/4 flex flex-row align-center overflow-x-hidden">
-          <button class="exercises-section-button outline-none select-none">❱</button>
+        <div class="control-panel bg-gray-100 w-0 lg:w-1/4 flex flex-row align-center overflow-x-hidden">
+          <button class="control-panel-button outline-none select-none">❱</button>
           <div class="w-full flex flex-col h-full overflow-x-hidden duration-300" id="all-workouts-section">
             <button class="border border-black rounded-full p-2.5 my-6 mx-10 w-auto rainbow-text" id="add-workout-button">
               <span class="text mr-2"><i class="fas fa-plus"></i></span> Add workout
@@ -97,12 +97,12 @@
           </div>
           <div class="duration-300 overflow-x-hidden w-0" id="single-workout-section">
             <div class="p-2 bg-gradient-to-r from-blue-700 to-cyan-300 text-white flex sticky top-0 z-30">
-              <button class="ml-3 mr-3" onclick="UI.toggleWorkoutsSection()"><i class="fas fa-arrow-left"></i></button>
-              <div class="w-full flex">
+              <button class="ml-3 mr-3" id="workout-back-button"><i class="fas fa-arrow-left"></i></button>
+              <form class="w-full flex" id="change-workout-name-form">
                 <input type="text" class="bg-transparent outline-none px-2 rounded w-full" id="change-workout-name-input" readonly />
-                <button class="ml-2 outline-none bg-gray-200 text-gray-900 text-sm py-2 px-4 rounded shadow" id="change-workout-name-edit-button">Edit</button>
-                <button class="ml-2 outline-none bg-white text-gray-700 text-sm py-2 px-4 rounded shadow hidden" id="change-workout-name-button">Save</button>
-              </div>
+                <button class="ml-2 outline-none bg-gray-200 text-gray-900 text-sm py-2 px-4 rounded shadow" id="change-workout-name-edit-button"  type="button">Edit</button>
+                <button class="ml-2 outline-none bg-white text-gray-700 text-sm py-2 px-4 rounded shadow hidden" id="change-workout-name-button" type="button">Save</button>
+              </form>
             </div>
             <div id="single-exercises-section"></div>
             <div class="flex justify-center items-center p-4">

@@ -1,56 +1,74 @@
+import { WorkoutType } from './types';
 import StorageWrapper from './models/StorageWrapper';
 
-// Global types
-export type ExerciseType = {
-  id?: string;
-  img?: string;
-  name: string;
-  type: 'TIMED' | 'REPS' | 'TIMED-REPS' | 'VIDEO';
-  amount: number;
-  inbetween?: number;
-};
+// State variables
+export let loggedIn = false;
+export const modifyLoggedIn = (val: boolean) => (loggedIn = val);
 
-export type WorkoutType = {
-  id?: string;
-  name: string;
-  rest: number;
-  exercises: ExerciseType[];
-};
+export let currentWorkout: WorkoutType;
+export const modifyCurrentWorkout = (val: WorkoutType) => (currentWorkout = val);
 
-// localStorage.clear();
+export let workouts: WorkoutType[];
 
-StorageWrapper.checkLocalStorageVariables();
+if (loggedIn) {
+} else {
+  // localStorage.clear();
 
-// StorageWrapper.createWorkout({
-//   exercises: [],
-//   name: 'Test1',
-//   rest: 5,
-// });
+  StorageWrapper.checkLocalStorageVariables();
 
-// StorageWrapper.createWorkout({
-//   exercises: [],
-//   name: 'Test2',
-//   rest: 5,
-// });
+  // StorageWrapper.createWorkout({
+  //   exercises: [
+  //     {
+  //       amount: 40,
+  //       name: 'Exercise 1',
+  //       type: 'TIMED'
+  //     },
+  //     {
+  //       amount: 40,
+  //       name: 'Exercise 2',
+  //       type: 'TIMED'
+  //     },
+  //     {
+  //       amount: 40,
+  //       name: 'Exercise 3',
+  //       type: 'TIMED'
+  //     },
+  //     {
+  //       amount: 40,
+  //       name: 'Exercise 4',
+  //       type: 'TIMED'
+  //     },
+  //   ],
+  //   name: 'Test1',
+  //   rest: 5,
+  // });
 
-// StorageWrapper.createWorkout({
-//   exercises: [],
-//   name: 'Test3',
-//   rest: 5,
-// });
+  // StorageWrapper.createWorkout({
+  //   exercises: [],
+  //   name: 'Test2',
+  //   rest: 5,
+  // });
 
-// StorageWrapper.deleteWorkout(1);
+  // StorageWrapper.createWorkout({
+  //   exercises: [],
+  //   name: 'Test3',
+  //   rest: 5,
+  // });
 
-// StorageWrapper.addExercise(1, {
-//   amount: 60,
-//   name: 'Push ups',
-//   type: 'TIMED',
-// });
+  // StorageWrapper.deleteWorkout(1);
 
-// console.log(StorageWrapper.fetchWorkouts());
+  // StorageWrapper.addExercise(1, {
+  //   amount: 60,
+  //   name: 'Push ups',
+  //   type: 'TIMED',
+  // });
 
-// Global variables
-export let workouts: WorkoutType[] = StorageWrapper.fetchWorkouts();
+  // console.log(StorageWrapper.fetchWorkouts());
+
+  // Global variables
+  workouts = StorageWrapper.fetchWorkouts();
+}
+
 // export const workouts: WorkoutType[] = [
 //   {
 //     id: 'wdubdbwk',
@@ -118,14 +136,9 @@ export let workouts: WorkoutType[] = StorageWrapper.fetchWorkouts();
 //   },
 // ];
 
-export const modifyWorkouts = (val: WorkoutType[]) => {
-  workouts = val;
-}
+export const modifyWorkouts = (val: WorkoutType[]) => (workouts = val);
 
-console.log(workouts)
-
-// Statevariables
-export let loggedin = false;
+console.log(workouts);
 
 // Endpoint URLs
 export const UPLOAD_EXERCISE_IMAGE_URL = 'http://127.0.0.1:3000/';

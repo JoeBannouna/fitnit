@@ -44,6 +44,7 @@ function renderModal(modalTemplate: (...args: any[]) => string) {
 
   const modalCancelButton = document.getElementById('modal-cancel-button');
   modalCancelButton.onclick = () => hideModal(modalElement);
+  document.onkeyup = e => e.code == 'Escape' && hideModal(modalElement);
 
   showModal(modalElement);
 }

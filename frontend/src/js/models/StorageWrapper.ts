@@ -1,4 +1,4 @@
-import { ExerciseType, WorkoutType } from '../global';
+import { ExerciseType, WorkoutType } from "../types";
 
 class StorageWrapper {
   static fetchWorkoutsIndexes() {

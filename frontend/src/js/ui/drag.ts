@@ -1,8 +1,8 @@
 import interact from 'interactjs';
+import { currentWorkout } from '../global';
 import Workout from '../models/Workout';
-import { currentWorkout, renderExercisesHTML } from '../ui';
+import { renderExercisesHTML } from './exercise';
 import { arrayMove } from '../utils';
-import { exerciseBar } from './templates';
 
 const currentDrag = () => document.querySelector('.current-drag').parentElement.parentElement.parentElement;
 
