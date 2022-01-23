@@ -99,9 +99,25 @@
             <div class="p-2 bg-gradient-to-r from-blue-700 to-cyan-300 text-white flex sticky top-0 z-30">
               <button class="ml-3 mr-3" id="workout-back-button"><i class="fas fa-arrow-left"></i></button>
               <form class="w-full flex" id="change-workout-name-form">
-                <input type="text" class="bg-transparent outline-none px-2 rounded w-full" id="change-workout-name-input" readonly />
-                <button class="ml-2 outline-none bg-gray-200 text-gray-900 text-sm py-2 px-4 rounded shadow" id="change-workout-name-edit-button"  type="button">Edit</button>
-                <button class="ml-2 outline-none bg-white text-gray-700 text-sm py-2 px-4 rounded shadow hidden" id="change-workout-name-button" type="button">Save</button>
+                <input type="text" class="bg-transparent outline-none px-2 rounded w-full" id="change-workout-name-input" readonly required />
+                <button class="ml-2 outline-none bg-gray-200 text-gray-900 text-sm py-2 px-4 rounded shadow" id="change-workout-name-edit-button" type="button">
+                  Edit
+                </button>
+                <button class="ml-2 outline-none bg-white text-gray-700 text-sm py-2 px-4 rounded shadow hidden" id="change-workout-name-button" type="submit">
+                  Save
+                </button>
+              </form>
+            </div>
+            <div class="flex justify-center items-center p-3 mt-2 relative">
+              <button class="border border-gray-400 bg-gray-200 rounded-xl p-3" id="rest-button">
+                <span class="font-bold">Rest intervals:</span>
+                <span id="rest-span"></span>
+                <span>seconds</span>
+              </button>
+              <form class="flex opacity-0 duration-300 absolute top-full bg-white rounded shadow-xl shadow-gray-300 z-30 hidden" id="rest-form">
+                <div class="bg-white rounded h-4 w-4 absolute rotate-45 bottom-3/4 right-2/3"></div>
+                <input type="number" class="bg-transparent outline-none rounded-l px-4 py-2 w-full" id="rest-input" />
+                <button type="submit" class="bg-blue-400 text-white rounded-r px-4 py-2 w-full">Save</button>
               </form>
             </div>
             <div id="single-exercises-section"></div>

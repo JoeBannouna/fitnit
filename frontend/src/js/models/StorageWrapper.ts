@@ -53,24 +53,35 @@ class StorageWrapper {
   static deleteWorkout(index: number) {
     localStorage.removeItem('workout-' + index);
     this.removeWorkoutIndex(index);
+    return true;
   }
 
   static addExercise(workoutIndex: number, exercise: ExerciseType) {
     const workout = this.fetchWorkout(workoutIndex);
     workout.exercises.push(exercise);
     this.updateWorkout(workoutIndex, workout);
+    return true;
   }
 
   static removeExercise(workoutIndex: number, exerciseIndex: number) {
     const workout = this.fetchWorkout(workoutIndex);
     workout.exercises.splice(exerciseIndex, 1);
     this.updateWorkout(workoutIndex, workout);
+    return true;
   }
 
   static updateExercises(workoutIndex: number, exercises: ExerciseType[]) {
     const workout = this.fetchWorkout(workoutIndex);
     workout.exercises = exercises;
     this.updateWorkout(workoutIndex, workout);
+    return true;
+  }
+
+  static updateExercise(workoutIndex: number, exerciseIndex: number, exercise: ExerciseType) {
+    const workout = this.fetchWorkout(workoutIndex);
+    workout.exercises[exerciseIndex] = exercise;
+    this.updateWorkout(workoutIndex, workout);
+    return true;
   }
 
   private static checkLocalStorageVariable(localStorageString: string, defaultValue: string) {

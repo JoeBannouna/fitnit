@@ -1,9 +1,10 @@
-import { currentWorkout } from '../global';
+import { currentWorkout, currentWorkoutIndex, loggedIn } from '../global';
 import Exercise from '../models/Exercise';
-import { ExerciseType } from '../types';
+import { ExerciseType, NormalExerciseType, VideoExerciseType } from '../types';
 import { fadeOut, hideModal, renderAlert, renderModal } from './animations';
-import { deleteExerciseAlert, exerciseBar, exerciseModal, newExerciseModal } from './templates';
+import { deleteAlert, exerciseBar, exerciseModal, newExerciseModal, normalExerciseInputs, videoExerciseInputs } from './templates';
 import { exerciseImageDropzoneUpload } from './upload';
+import { loadVideoFromUrl, onYouTubeIframeAPIReady } from './youtube';
 
 // Exercise
 function renderExercisesHTML() {
@@ -15,12 +16,25 @@ function renderExercisesHTML() {
 
 function showExerciseModal(index: number) {
   const exercise = currentWorkout.exercises[index];
-  renderModal(() => exerciseModal(index, exercise));
-  exerciseImageDropzoneUpload();
+  renderModal(() => exerciseModal(index, exercise, loggedIn));
+  if (loggedIn) exerciseImageDropzoneUpload();
+
+  if (exercise.type == 'VIDEO') {
+    // Load IFrame youtube API
+    onYouTubeIframeAPIReady(() => loadVideoFromUrl(exercise.url));
+
+    // Listing for change in youtube url input
+    const videoInput = document.getElementById('video-url') as HTMLInputElement;
+    videoInput.oninput = e => loadVideoFromUrl((e.target as HTMLInputElement).value);
+  }
+
+  const form = document.getElementById('update-exercise-form') as HTMLFormElement;
+  form.onsubmit = e => submitNewExerciseValues(e, 'update');
 }
 
 function showDeleteExerciseAlert(index: number) {
-  renderAlert(() => deleteExerciseAlert(index));
+  renderAlert(() => deleteAlert('Delete exercise', 'Are you sure you want to delete this item?', `UI.deleteExercise(this, ${index})`));
+  (document.getElementById('alert-cancel-button') as HTMLButtonElement).focus();
 }
 
 function hideDeleteExerciseAlert(button: HTMLElement) {
@@ -30,17 +44,12 @@ function hideDeleteExerciseAlert(button: HTMLElement) {
 
 function deleteExercise(deleteButton: HTMLButtonElement, index: number) {
   deleteButton.disabled = true;
-  const exercise = currentWorkout.exercises[index];
-  if (Exercise.delete(exercise.id)) {
-    fadeOut(document.getElementById('alert-container').children[0] as HTMLElement);
-    hideModal(document.getElementById('modal-container').children[0] as HTMLElement);
 
-    currentWorkout.exercises.splice(index, 1);
+  Exercise.delete(currentWorkoutIndex, index);
+  renderExercisesHTML();
 
-    renderExercisesHTML();
-  } else {
-    deleteButton.disabled = false;
-  }
+  fadeOut(document.getElementById('alert-container').children[0] as HTMLElement);
+  hideModal(document.getElementById('modal-container').children[0] as HTMLElement);
 }
 
 function updateExerciseModalValues(event: InputEvent) {
@@ -69,19 +78,94 @@ function changeInbetween(string: 'up' | 'down') {
   span.innerHTML = newVal.toString();
 }
 
+const submitVals = (mode: 'update' | 'new', exercise: ExerciseType, index = 0) => {
+  if (mode == 'update') {
+    Exercise.update(currentWorkoutIndex, index, exercise);
+  } else if (mode == 'new') {
+    new Exercise(currentWorkoutIndex, exercise);
+  }
+};
+
+function submitNewExerciseValues(e: SubmitEvent, mode: 'update' | 'new') {
+  e.preventDefault();
+  (e.submitter as HTMLButtonElement).disabled = true;
+
+  const exerciseInputsType = document.getElementById('exerciseInputsType') as HTMLInputElement;
+  const name = document.getElementById('modal-title') as HTMLInputElement;
+  const index = document.getElementById('exercise-index') as HTMLInputElement;
+
+  if (exerciseInputsType.value == 'normal') {
+    const amount = document.getElementById('exercise-amount') as HTMLInputElement;
+    const type = document.getElementById('exercise-type') as HTMLInputElement;
+    const inbetween = document.getElementById('inbetween-input') as HTMLInputElement;
+
+    const exercise = {} as NormalExerciseType;
+    exercise.name = name.value;
+    exercise.amount = parseFloat(amount.value);
+    exercise.type = type.value as NormalExerciseType['type'];
+    if (exercise.type == 'TIMED-REPS') exercise.inbetween = parseFloat(inbetween.value);
+
+    if (loggedIn) {
+      // Process image upload and ID here??
+    }
+
+    submitVals(mode, exercise, parseFloat(index.value));
+    renderExercisesHTML();
+    hideModal(document.getElementById('modal-container').children[0] as HTMLElement);
+  } else if (exerciseInputsType.value == 'video') {
+    const url = document.getElementById('video-url') as HTMLInputElement;
+
+    const exercise = {} as VideoExerciseType;
+    exercise.name = name.value;
+    exercise.url = url.value;
+    exercise.type = 'VIDEO';
+
+    if (loggedIn) {
+      // Process image upload and ID here??
+    }
+
+    submitVals(mode, exercise, parseFloat(index.value));
+    renderExercisesHTML();
+    hideModal(document.getElementById('modal-container').children[0] as HTMLElement);
+  }
+}
+
+function renderNewExerciseModal() {
+  renderModal(() => newExerciseModal(loggedIn));
+  if (loggedIn) exerciseImageDropzoneUpload();
+
+  // Switching between modes
+  const changeExerciseInputsType = document.getElementById('change-exercise-inputs-type');
+  const exerciseInputsTypeSection = document.getElementById('exerciseInputsTypeSection');
+  const normalButton = changeExerciseInputsType.children[0] as HTMLButtonElement;
+  const videoButton = changeExerciseInputsType.children[1] as HTMLButtonElement;
+
+  normalButton.onclick = () => {
+    normalButton.disabled = true;
+    videoButton.disabled = false;
+    exerciseInputsTypeSection.innerHTML = normalExerciseInputs(loggedIn);
+  };
+
+  videoButton.onclick = () => {
+    videoButton.disabled = true;
+    normalButton.disabled = false;
+    exerciseInputsTypeSection.innerHTML = videoExerciseInputs();
+
+    // Load IFrame youtube API
+    onYouTubeIframeAPIReady();
+
+    // Listing for change in youtube url input
+    const videoInput = document.getElementById('video-url') as HTMLInputElement;
+    videoInput.oninput = e => loadVideoFromUrl((e.target as HTMLInputElement).value);
+  };
+
+  // Submitting the form
+  const form = document.getElementById('new-exercise-form') as HTMLFormElement;
+  form.onsubmit = e => submitNewExerciseValues(e, 'new');
+}
+
+// Creating a new exercise
 const newExerciseButton = document.getElementById('add-exercise-button');
-newExerciseButton.onclick = () => {
-  renderModal(() => newExerciseModal());
-  exerciseImageDropzoneUpload();
-};
+newExerciseButton.onclick = renderNewExerciseModal;
 
-export {
-  renderExercisesHTML,
-  showExerciseModal,
-  updateExerciseModalValues,
-  changeInbetween,
-
-  showDeleteExerciseAlert,
-  hideDeleteExerciseAlert,
-  deleteExercise,
-};
+export { renderExercisesHTML, showExerciseModal, updateExerciseModalValues, changeInbetween, showDeleteExerciseAlert, hideDeleteExerciseAlert, deleteExercise };

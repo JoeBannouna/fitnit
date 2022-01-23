@@ -1,5 +1,5 @@
 import interact from 'interactjs';
-import { currentWorkout } from '../global';
+import { currentWorkout, currentWorkoutIndex } from '../global';
 import Workout from '../models/Workout';
 import { renderExercisesHTML } from './exercise';
 import { arrayMove } from '../utils';
@@ -173,10 +173,11 @@ interact('.dropzone').dropzone({
       currentDragElement.setAttribute('data-x', '0');
 
       // Re-render the exercises
-      if (Workout.moveExercise(currentWorkout.id, currentWorkout.exercises[currentDragId].id, newIndex)) {
-        arrayMove(currentWorkout.exercises, currentDragId, newIndex);
-        setTimeout(renderExercisesHTML, 100);
-      }
+      const arr = [...currentWorkout.exercises]
+      arrayMove(arr, currentDragId, newIndex);
+      Workout.updateExercisesPosition(currentWorkoutIndex, arr);
+      setTimeout(renderExercisesHTML, 100);
+      
     }
   },
 });

@@ -1,0 +1,12 @@
+Try to fix modal position on phone
+Send info alerts for appropriate things
+Put a limit on the amount of workouts and exercises a user can have
+Implement Routines (weekly, monthly, etc..)
+Implement fullscreen (to fix mobile screen irritations)
+Add a "Can't find your workouts? Sign in to access them." when user has no workouts and is not signed in
+
+
+✅Implement the ability to make a "youtube video" exercise
+✅Ability to create, edit, and delete exercises
+✅Workout Name cannot be empty
+✅Ability to edit, and delete workouts

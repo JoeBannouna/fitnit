@@ -17,35 +17,58 @@ class Workout {
     }
   }
 
+  static updateExercisesPosition(index: number, exercises: ExerciseType[]) {
+    if (loggedIn) {
+    } else {
+      if (StorageWrapper.updateExercises(index, exercises)) {
+        workouts[index].exercises = exercises;
+      }
+    }
+  }
+
   static checkIfIdExists(id: string) {
     // If logged in, make a database request
     // If not, check localStorage
   }
 
-  static editName(id: string, name: string) {
+  static editName(index: number, name: string) {
     // Check if user is logged in
     // If yes, save it in database
     // If no, save it in localStorage
 
-    // Return true if changed, false if failed
-    return true;
+    if (loggedIn) {
+    } else {
+      if (StorageWrapper.updateWorkout(index, { ...workouts[index], name })) {
+        workouts[index].name = name;
+      }
+    }
   }
 
-  // This function is for local / logged off use only
-  static newWorkoutIndexId() {
-    if (localStorage.getItem('currentWorkoutIndex') == null) {
-      localStorage.setItem('currentWorkoutIndex', '0');
-      return 0;
+  static editRest(index: number, rest: number) {
+    // Check if user is logged in
+    // If yes, save it in database
+    // If no, save it in localStorage
+
+    if (loggedIn) {
     } else {
-      const index = parseFloat(localStorage.getItem('currentWorkoutIndex')) + 1;
-      localStorage.setItem('currentWorkoutIndex', index.toString());
-      return index;
+      if (StorageWrapper.updateWorkout(index, { ...workouts[index], rest })) {
+        workouts[index].rest = rest;
+      }
     }
   }
 
   static moveExercise(workoutId: WorkoutType['id'], exerciseId: ExerciseType['id'], newIndex: number) {
     // Change position of both exercises in database / localStorage
     return true;
+  }
+
+  static delete(index: number) {
+    if (loggedIn) {
+    } else {
+      if (StorageWrapper.deleteWorkout(index)) {
+        workouts.splice(index, 1);
+      }
+    }
   }
 }
 

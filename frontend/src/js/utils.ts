@@ -1,3 +1,5 @@
+import { ExerciseType } from './types';
+
 function arrayMove(arr: any[], old_index: any, new_index: any) {
   if (new_index >= arr.length) {
     var k = new_index - arr.length + 1;
@@ -23,4 +25,11 @@ function removeMultipleClasses(element: HTMLElement, classesArr: string[]) {
   classesArr.forEach(className => element.classList.remove(className));
 }
 
-export { arrayMove, getTranslateY, addMultipleClasses, removeMultipleClasses };
+function verifyUserInput(value: any, max: number, canBeNothing: boolean = false) {
+  const string = typeof value == 'string' && value.length <= max && (canBeNothing || value.trim().length > 0);
+  const number = typeof value == 'number' && value <= max && (canBeNothing ? value >= 0 : value > 0);
+
+  return string || number;
+}
+
+export { arrayMove, getTranslateY, addMultipleClasses, removeMultipleClasses, verifyUserInput };

@@ -1,32 +1,29 @@
-import { ExerciseType, WorkoutType } from '../types';
+import { ExerciseType, NormalExerciseType, VideoExerciseType, WorkoutType } from '../types';
 
 export function exerciseBar(exercise: ExerciseType, index: number) {
   return (
     /* html */
     `<div class="duration-300 relative" id="exercise-${index}">
-      <div class="flex exercise bg-transparent z-20 translate-y-0 duration-300 touch-none select-none relative" id="${exercise.id}">
-        <div class="flex flex-col justify-center">
-          <button class="mx-4 text-2xl text-gray-700 upper-arrow-button scale-x-105 cursor-move outline-none h-full draggable yes-drop">
-            <i class="fas fa-bars"></i>
+        <div class="flex exercise bg-transparent z-20 translate-y-0 duration-300 relative" id="${exercise.id}">
+          <div class="flex flex-col justify-center">
+            <button class="mx-4 text-2xl text-gray-700 upper-arrow-button scale-x-105 cursor-move outline-none h-full touch-none select-none draggable yes-drop">
+              <i class="fas fa-bars"></i>
+            </button>
+          </div>
+          <div class="bg-white my-3 px-4 py-3 rounded-l-lg mr-0 shadow flex w-full text-left overflow-x-auto">
+            <input class="text-sm w-full outline-none select-none" value="${exercise.name}" readonly>
+          </div>
+          <div class="workout-gear-button bg-white mx-0 my-3 w-32 py-3 shadow flex justify-center items-center text-blue-500">
+            <strong class="text-lg self-center">${exercise.type == 'VIDEO' ? '<i class="fab fa-youtube"></i>' : exercise.amount}</strong>
+          </div>
+          <button class="workout-gear-button bg-white mx-3 my-3 px-4 py-3 rounded-r-lg ml-0 shadow flex text-gray-500 items-center" onclick="UI.showExerciseModal(${index})">
+            <span class="ml-auto text-lg"><i class="fas fa-cog duration-300"></i></span>
           </button>
         </div>
-        <div class="bg-white my-3 px-4 py-3 rounded-l-lg mr-0 shadow flex w-full text-left overflow-x-auto">
-          <!--strong class="mr-2 text-lg self-center">${index + 1}</strong-->
-          <!--span class="text-sm my-auto whitespace-nowrap">${exercise.name}</span-->
-          <input class="text-sm w-full outline-none select-none" value="${exercise.name}" readonly>
-        </div>
-        <button class="workout-gear-button bg-white mx-0 my-3 px-4 py-3 shadow flex text-blue-500 items-center" onclick="">
-          <strong class="mr-2 text-lg self-center">${exercise.amount}</strong>
-        </button>
-        <button 
-          class="workout-gear-button bg-white mx-3 my-3 px-4 py-3 rounded-r-lg ml-0 shadow flex text-gray-500 items-center"
-          onclick="UI.showExerciseModal(${index})"
-        >
-          <span class="ml-auto text-lg"><i class="fas fa-cog duration-300"></i></span>
-        </button>
       </div>
-    </div>
-    <div><div class="dropzone h-px w-full" id="exercise-dropzone-${index + 1}"></div></div>`
+      <div>
+      <div class="dropzone h-px w-full" id="exercise-dropzone-${index + 1}"></div>
+    </div>`
   );
 }
 
@@ -37,8 +34,11 @@ export function workoutBar(workout: WorkoutType, index: number) {
       <button class="bg-white mx-6 my-3 px-4 py-3 rounded-l-lg mr-0 shadow flex w-full text-left" onclick="UI.selectWorkout('${index}')">
         <strong class="mr-2 text-lg self-center">${index + 1}</strong> <span class="text-sm my-auto">${workout.name}</span>
       </button>
-      <button class="workout-gear-button bg-white mx-6 my-3 px-4 py-3 rounded-r-lg ml-0 shadow flex text-gray-500 items-center" onclick="UI.loadWorkout('${index}')">
+      <button class="workout-gear-button bg-white my-3 px-4 py-3 ml-0 shadow flex text-gray-500 items-center" onclick="UI.loadWorkout('${index}')">
         <span class="ml-auto text-lg"><i class="fas fa-cog duration-300"></i></span>
+      </button>
+      <button class="bg-white mx-6 my-3 px-4 py-3 rounded-r-lg ml-0 shadow flex text-red-400 hover:text-red-600 items-center" onclick="UI.showDeleteWorkoutAlert('${index}')">
+        <span class="ml-auto text-lg"><i class="far fa-trash-alt"></i></span>
       </button>
     </div>`
   );
@@ -89,101 +89,237 @@ export function defaultModal() {
   );
 }
 
-export function exerciseModal(index: number, exercise: ExerciseType) {
+function loggedInExerciseImageUploadSection() {
   return (
     /* html */
-    `<div
-      class="fixed z-50 inset-0 overflow-y-auto ease-out duration-300 hidden opacity-0"
-      aria-labelledby="modal-title"
-      role="dialog"
-      aria-modal="true"
-      id="modal-element"
-    >
-      <div class="flex items-end justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
-        <div class="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity" aria-hidden="true"></div>
-        <span class="hidden sm:inline-block sm:align-middle sm:h-screen" aria-hidden="true">&#8203;</span>
-        <div class="modal-rect w-full inline-block align-bottom bg-gray-100 rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95">
-          <div class="px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
-            <div id="exercise-uploaded-image-container"></div>
-            
-            <label class="myLabel" id="exerciseImageDropzone">
-              <div class="border-dashed border-2 border-gray-400 bg-blue-50 p-6 text-center rounded cursor-pointer">
-                <div class="text-gray-700 text-8xl my-8"><i class="fas fa-file-upload"></i></div>
-                <div class="text-gray-700 text-lg font-bold mt-4">Drag and drop or click here</div>
-                <div>Upload an image or GIF file for exercise</div>
-                <div>(Maximum file size is 5 MB)</div>
-              </div>
-              <input type="file" hidden id="exerciseImageDropzoneInput" />
-            </label>
+    `<span>
+      <div id="exercise-uploaded-image-container"></div>
+      
+      <label class="myLabel" id="exerciseImageDropzone">
+        <div class="border-dashed border-2 border-gray-400 bg-blue-50 p-6 text-center rounded cursor-pointer">
+          <div class="text-gray-700 text-8xl my-8"><i class="fas fa-file-upload"></i></div>
+          <div class="text-gray-700 text-lg font-bold mt-4">Drag and drop or click here</div>
+          <div>Upload an image or GIF file for exercise</div>
+          <div>(Maximum file size is 5 MB)</div>
+        </div>
+        <input type="file" hidden id="exerciseImageDropzoneInput" />
+      </label>
 
-            <div class="mt-2 hidden" id="uploaded-image-progress-bar">
-              <h3 class="text-md mb-1">Uploading...</h3>
-              <div class="w-full h-2 rounded bg-gray-600">
-                <div class="h-full bg-green-400 rounded duration-200"></div>
-              </div>
-            </div>
-
-            <div class="flex h-24 mt-6 flex-col">
-              <div class="text-center mr-3 h-full w-full">
-                <input class="rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-base font-medium text-gray-700 focus:outline-none w-full h-12" id="modal-title" value="${
-                  exercise.name
-                }">
-              </div>
-
-              <div class="flex items-center justify-center h-full w-full mt-2 relative select-none bg-white">
-                <div class="flex w-full h-12 text-black bg-white rounded-md border border-gray-300 shadow-sm px-2 py-1.5 edit-exercise-type">
-                  <input 
-                    type="number" 
-                    value="${exercise.amount}" 
-                    class="w-full outline-none p-1" 
-                    onchange="this.value = this.value < 0 ? 0 : this.value"
-                  >
-                  <select class="bg-white w-full outline-none" onchange="UI.updateExerciseModalValues(event)">
-                    <option ${exercise.type == 'TIMED' ? 'selected' : ''} value="TIMED">seconds</option>
-                    <option ${exercise.type == 'REPS' ? 'selected' : ''} value="REPS">reps</option>
-                    <option ${exercise.type == 'TIMED-REPS' ? 'selected' : ''} value="TIMED-REPS">timed reps</option>
-                  </select>
-                  <div class="bg-white h-full w-full">
-                    <div class="timed-reps flex p-1${exercise.type == 'TIMED-REPS' ? '' : ' hidden'}">
-                      <div>per</div>
-                      <div class="flex mx-2">
-                        <span id="inbetween-span">${exercise.type == 'TIMED-REPS' ? exercise.inbetween : '5'}</span>
-                        <input hidden value="${exercise.type == 'TIMED-REPS' ? exercise.inbetween : '5'}" id="inbetween-input">
-                      </div>
-                      <div>seconds</div>
-                      <div class="ml-2 flex flex-col">
-                        <button class="h-3 w-4 p-0.5 bg-gray-300 outline-none mb-[1px]" onclick="UI.changeInbetween('up')">
-                          <img src="/assets/icons/up.svg" class="h-full w-full">
-                        </button>
-                        <button class="h-3 w-4 p-0.5 bg-gray-300 outline-none mt-[1px]" onclick="UI.changeInbetween('down')">
-                          <img src="/assets/icons/down.svg" class="h-full w-full">
-                        </button>
-                      </div>
-                    </div>
-                  </div>
-                  <!--div class="w-4 h-4 bg-white rounded inset-x-0 mx-auto absolute rotate-45 mt-[-1px]"></div-->
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="px-4 py-3 sm:px-6 text-right">
-            <button type="button" class="w-full inline-flex justify-center rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-base font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 sm:mt-0 sm:ml-3 sm:w-auto sm:text-sm" id="modal-cancel-button">
-              Cancel
-            </button>
-            <button type="button" class="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-red-600 text-base font-medium text-white hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 sm:ml-3 sm:w-auto sm:text-sm mt-3" onclick="UI.showDeleteExerciseAlert(${index})">
-              Delete
-            </button>
-            <button type="button" class="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-blue-600 text-base font-medium text-white hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 sm:ml-3 sm:w-auto sm:text-sm mt-3">
-              Update
-            </button>
-          </div>
+      <div class="mt-2 hidden" id="uploaded-image-progress-bar">
+        <h3 class="text-md mb-1">Uploading...</h3>
+        <div class="w-full h-2 rounded bg-gray-600">
+          <div class="h-full bg-green-400 rounded duration-200"></div>
         </div>
       </div>
-    </div>`
+    </span>`
   );
 }
 
-export function newExerciseModal() {
+function loggedOffExerciseImageUploadSection() {
+  return (
+    /* html */
+    `<span>
+      <div class="myLabel">
+        <div class="border-dashed border-2 border-gray-400 bg-blue-50 p-6 text-center rounded">
+          <div class="text-gray-700 text-8xl my-8"><i class="fas fa-file-upload"></i></div>
+          <div class="text-gray-700 text-lg font-bold mt-4">Sign in to upload images for exercises</div>
+          <!--div>Upload an image or GIF file for exercise</div-->
+          <div>(Maximum file size is 5 MB)</div>
+        </div>
+      </div>
+    </span>`
+  );
+}
+
+function normalExerciseModalContent(exercise: NormalExerciseType, loggedInImageUploadSecion: boolean) {
+  return (
+    /* html */
+    `<span>
+      ${loggedInImageUploadSecion ? loggedInExerciseImageUploadSection() : loggedOffExerciseImageUploadSection()}
+      
+      <input value="normal" hidden id="exerciseInputsType">
+
+      <div class="flex h-24 mt-6 flex-col">
+        <div class="text-center mr-3 h-full w-full">
+          <input class="rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-base font-medium text-gray-700 focus:outline-none w-full h-12" id="modal-title" autocomplete="off" value="${
+            exercise.name
+          }" placeholder="Exercise name" required maxlength="100">
+        </div>
+
+        <div class="flex items-center justify-center h-full w-full mt-2 relative select-none bg-white">
+          <div class="flex w-full h-12 text-black bg-white rounded-md border border-gray-300 shadow-sm px-2 py-1.5 edit-exercise-type">
+            <input 
+              type="number" 
+              value="${exercise.amount}" 
+              class="w-1/3 sm:w-full outline-none p-1" 
+              onchange="this.value = this.value < 1 ? 1 : this.value"
+              required
+              id="exercise-amount"
+            >
+            <select class="bg-white w-full outline-none" onchange="UI.updateExerciseModalValues(event)" id="exercise-type">
+              <option ${exercise.type == 'TIMED' ? 'selected' : ''} value="TIMED">seconds</option>
+              <option ${exercise.type == 'REPS' ? 'selected' : ''} value="REPS">reps</option>
+              <option ${exercise.type == 'TIMED-REPS' ? 'selected' : ''} value="TIMED-REPS">timed reps</option>
+            </select>
+            <div class="bg-white h-full w-full flex justify-center sm:block">
+              <div class="timed-reps flex p-1${exercise.type == 'TIMED-REPS' ? '' : ' hidden'}">
+                <div>per</div>
+                <div class="flex mx-2">
+                  <span id="inbetween-span">${exercise.type == 'TIMED-REPS' ? exercise.inbetween : '5'}</span>
+                  <input hidden value="${exercise.type == 'TIMED-REPS' ? exercise.inbetween : '5'}" id="inbetween-input">
+                </div>
+                <div>secs</div>
+                <div class="ml-2 flex flex-col">
+                  <button type="button" class="h-3 w-4 p-0.5 bg-gray-300 outline-none mb-[1px]" onclick="UI.changeInbetween('up')">
+                    <img src="/assets/icons/up.svg" class="h-full w-full">
+                  </button>
+                  <button type="button" class="h-3 w-4 p-0.5 bg-gray-300 outline-none mt-[1px]" onclick="UI.changeInbetween('down')">
+                    <img src="/assets/icons/down.svg" class="h-full w-full">
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </span>`
+  );
+}
+
+function videoExerciseModalContent(exercise: VideoExerciseType) {
+  return (
+    /* html */
+    `<span class="block">
+      <input value="video" hidden id="exerciseInputsType">
+
+      <div class="flex flex-col">
+        <div class="text-center w-full">
+          <input class="rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-base font-medium text-gray-700 focus:outline-none w-full h-12" id="modal-title" placeholder="Exercise name" autocomplete="off" required maxlength="100" value="${exercise.name}">
+        </div>
+        
+        <div class="text-center w-full mt-3">
+          <input class="rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-base font-medium text-gray-700 focus:outline-none w-full h-12" id="video-url" placeholder="Youtube Video URL" required maxlength="100" value="${exercise.url}">
+        </div>
+
+        <div class="mt-3 w-full h-[200px] xs:h-[300px] sm:h-[300px] md:h-[300px]" id="player"></div>
+      </div>
+    </span>`
+  );
+}
+
+export function exerciseModal(index: number, exercise: ExerciseType, loggedInImageUploadSecion = false) {
+  return (
+    /* html */
+    `<div
+        class="fixed z-50 inset-0 overflow-y-auto ease-out duration-300 hidden opacity-0"
+        aria-labelledby="modal-title"
+        role="dialog"
+        aria-modal="true"
+        id="modal-element"
+      >
+        <div class="flex items-end justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
+          <div class="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity" aria-hidden="true"></div>
+          <span class="hidden sm:inline-block sm:align-middle sm:h-screen" aria-hidden="true">&#8203;</span>
+          <form class="modal-rect w-full inline-block align-bottom bg-gray-100 rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95" id="update-exercise-form">
+            <div class="px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
+              <input hidden value="${index}" id="exercise-index">
+
+              <span>
+                ${exercise.type == 'VIDEO' ? videoExerciseModalContent(exercise) : normalExerciseModalContent(exercise, loggedInImageUploadSecion)}
+              <span>
+            </div>
+            <div class="px-4 py-3 sm:px-6 text-right">
+              <button type="button" class="w-full inline-flex justify-center rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-base font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 sm:mt-0 sm:ml-3 sm:w-auto sm:text-sm" id="modal-cancel-button">
+                Cancel
+              </button>
+              <button type="button" class="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-red-600 text-base font-medium text-white hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 sm:ml-3 sm:w-auto sm:text-sm mt-3" onclick="UI.showDeleteExerciseAlert(${index})">
+                Delete
+              </button>
+              <button type="submit" class="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-blue-600 text-base font-medium text-white hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 sm:ml-3 sm:w-auto sm:text-sm mt-3">
+                Update
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>`
+  );
+}
+
+export function normalExerciseInputs(loggedInImageUploadSecion: boolean) {
+  return (
+    /* html */
+    `<span class="block">
+      ${loggedInImageUploadSecion ? loggedInExerciseImageUploadSection() : loggedOffExerciseImageUploadSection()}
+
+      <input value="normal" hidden id="exerciseInputsType">
+
+      <div class="flex h-24 mt-6 flex-col">
+        <div class="text-center mr-3 h-full w-full">
+          <input class="rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-base font-medium text-gray-700 focus:outline-none w-full h-12" id="modal-title" placeholder="Exercise name" autocomplete="off" required maxlength="100">
+        </div>
+
+        <div class="flex items-center justify-center h-full w-full mt-2 relative select-none bg-white">
+          <div class="flex w-full h-12 text-black bg-white rounded-md border border-gray-300 shadow-sm px-2 py-1.5 edit-exercise-type">
+            <input 
+              type="number" 
+              value="60" 
+              class="w-1/3 sm:w-full outline-none p-1" 
+              onchange="this.value = this.value < 1 ? 1 : this.value"
+              required
+              id="exercise-amount"
+            >
+            <select class="bg-white w-full outline-none" onchange="UI.updateExerciseModalValues(event)" id="exercise-type">
+              <option value="TIMED">seconds</option>
+              <option value="REPS">reps</option>
+              <option value="TIMED-REPS">timed reps</option>
+            </select>
+            <div class="bg-white h-full w-full flex justify-center sm:block">
+              <div class="timed-reps flex p-1 hidden">
+                <div>per</div>
+                <div class="flex mx-2">
+                  <span id="inbetween-span">5</span>
+                  <input hidden value="5" id="inbetween-input">
+                </div>
+                <div>secs</div>
+                <div class="ml-2 flex flex-col">
+                  <button type="button" class="h-3 w-4 p-0.5 bg-gray-300 outline-none mb-[1px]" onclick="UI.changeInbetween('up')">
+                    <img src="/assets/icons/up.svg" class="h-full w-full">
+                  </button>
+                  <button type="button" class="h-3 w-4 p-0.5 bg-gray-300 outline-none mt-[1px]" onclick="UI.changeInbetween('down')">
+                    <img src="/assets/icons/down.svg" class="h-full w-full">
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </span>`
+  );
+}
+
+export function videoExerciseInputs() {
+  return (
+    /* html */
+    `<span class="block">
+      <input value="video" hidden id="exerciseInputsType">
+
+      <div class="flex flex-col mt-6">
+        <div class="text-center w-full">
+          <input class="rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-base font-medium text-gray-700 focus:outline-none w-full h-12" id="modal-title" placeholder="Exercise name" autocomplete="off" required maxlength="100">
+        </div>
+        
+        <div class="text-center w-full mt-3">
+          <input class="rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-base font-medium text-gray-700 focus:outline-none w-full h-12" id="video-url" placeholder="Youtube Video URL" required maxlength="100">
+        </div>
+
+        <div class="mt-3 w-full h-[200px] xs:h-[300px] sm:h-[300px] md:h-[300px]" id="player"></div>
+      </div>
+    </span>`
+  );
+}
+
+export function newExerciseModal(loggedInImageUploadSecion = false) {
   return (
     /* html */
     `<div
@@ -196,78 +332,35 @@ export function newExerciseModal() {
       <div class="flex items-end justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
         <div class="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity" aria-hidden="true"></div>
         <span class="hidden sm:inline-block sm:align-middle sm:h-screen" aria-hidden="true">&#8203;</span>
-        <div class="modal-rect w-full inline-block align-bottom bg-gray-100 rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95">
+        <form class="modal-rect w-full inline-block align-bottom bg-gray-100 rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95" id="new-exercise-form">
           <div class="px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
             <h2 class="text-lg text-center mb-4">New Exercise</h2>
-            <div id="exercise-uploaded-image-container"></div>
-            
-            <label class="myLabel" id="exerciseImageDropzone">
-              <div class="border-dashed border-2 border-gray-400 bg-blue-50 p-6 text-center rounded cursor-pointer">
-                <div class="text-gray-700 text-8xl my-8"><i class="fas fa-file-upload"></i></div>
-                <div class="text-gray-700 text-lg font-bold mt-4">Drag and drop or click here</div>
-                <div>Upload an image or GIF file for exercise</div>
-                <div>(Maximum file size is 5 MB)</div>
-              </div>
-              <input type="file" hidden id="exerciseImageDropzoneInput" />
-            </label>
 
-            <div class="mt-2 hidden" id="uploaded-image-progress-bar">
-              <h3 class="text-md mb-1">Uploading...</h3>
-              <div class="w-full h-2 rounded bg-gray-600">
-                <div class="h-full bg-green-400 rounded duration-200"></div>
-              </div>
+            <input hidden value="0" id="exercise-index">
+
+            <div class="flex justify-center items-center text-lg my-3" id="change-exercise-inputs-type">
+              <button type="button" class="border-l rounded-l border-y border-gray-300 px-3 py-2 w-full md:w-2/5 disabled:bg-gray-200 exercise-inputs-type-toggle" disabled>
+                Normal
+              </button>
+              <button type="button" class="border-r rounded-r border-y border-gray-300 px-3 py-2 w-full md:w-2/5 disabled:bg-gray-200 exercise-inputs-type-toggle">
+                Video
+              </button>
             </div>
 
-            <div class="flex h-24 mt-6 flex-col">
-              <div class="text-center mr-3 h-full w-full">
-                <input class="rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-base font-medium text-gray-700 focus:outline-none w-full h-12" id="modal-title" placeholder="Exercise name">
-              </div>
-
-              <div class="flex items-center justify-center h-full w-full mt-2 relative select-none bg-white">
-                <div class="flex w-full h-12 text-black bg-white rounded-md border border-gray-300 shadow-sm px-2 py-1.5 edit-exercise-type">
-                  <input 
-                    type="number" 
-                    value="60" 
-                    class="w-full outline-none p-1" 
-                    onchange="this.value = this.value < 0 ? 0 : this.value"
-                  >
-                  <select class="bg-white w-full outline-none" onchange="UI.updateExerciseModalValues(event)">
-                    <option value="TIMED">seconds</option>
-                    <option value="REPS">reps</option>
-                    <option value="TIMED-REPS">timed reps</option>
-                  </select>
-                  <div class="bg-white h-full w-full">
-                    <div class="timed-reps flex p-1 hidden">
-                      <div>per</div>
-                      <div class="flex mx-2">
-                        <span id="inbetween-span">5</span>
-                        <input hidden value="5" id="inbetween-input">
-                      </div>
-                      <div>seconds</div>
-                      <div class="ml-2 flex flex-col">
-                        <button class="h-3 w-4 p-0.5 bg-gray-300 outline-none mb-[1px]" onclick="UI.changeInbetween('up')">
-                          <img src="/assets/icons/up.svg" class="h-full w-full">
-                        </button>
-                        <button class="h-3 w-4 p-0.5 bg-gray-300 outline-none mt-[1px]" onclick="UI.changeInbetween('down')">
-                          <img src="/assets/icons/down.svg" class="h-full w-full">
-                        </button>
-                      </div>
-                    </div>
-                  </div>
-                  <!--div class="w-4 h-4 bg-white rounded inset-x-0 mx-auto absolute rotate-45 mt-[-1px]"></div-->
-                </div>
-              </div>
-            </div>
+            <span id="exerciseInputsTypeSection" class="block">
+              ${normalExerciseInputs(loggedInImageUploadSecion)}
+            <span>  
           </div>
+
           <div class="px-4 py-3 sm:px-6 text-right">
             <button type="button" class="w-full inline-flex justify-center rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-base font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 sm:mt-0 sm:ml-3 sm:w-auto sm:text-sm" id="modal-cancel-button">
               Cancel
             </button>
-            <button type="button" class="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-blue-600 text-base font-medium text-white hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 sm:ml-3 sm:w-auto sm:text-sm mt-3">
+            <button type="submit" class="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-blue-600 text-base font-medium text-white hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 sm:ml-3 sm:w-auto sm:text-sm mt-3">
               Create
             </button>
           </div>
-        </div>
+        </form>
       </div>
     </div>`
   );
@@ -310,27 +403,43 @@ export function newWorkoutModal() {
   );
 }
 
-export function deleteExerciseAlert(index: number) {
+export function deleteAlert(title: string, msg: string, deleteFunction: string) {
   return (
     /* html */
-    `<div class="z-50 absolute inset-0 hidden duration-300 opacity-0 bg-[#3d3d3d50]">
+    `<div class="z-50 fixed inset-0 hidden duration-300 opacity-0 bg-[#3d3d3d50]">
       <div role="alert" class="absolute w-[calc(100%-1rem)] md:w-6/12 mt-2 mx-auto left-0 right-0 shadow-lg">
         <div class="bg-red-500 text-white font-bold rounded-t px-4 py-2 flex">
-          Delete exercise
+          ${title}
           <button class="ml-auto alert-cancel-button">
             <i class="fas fa-times"></i>
           </button>
         </div>
         <div class="border rounded-b bg-red-100 px-4 py-3 text-red-700 text-right">
-          <p class="text-center sm:text-left mb-2">Are you sure you want to delete this item?</p>
+          <p class="text-center sm:text-left mb-2">${msg}</p>
           <div class="flex">
-            <button type="button" class="w-full mr-2 sm:mr-0 inline-flex justify-center rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 sm:ml-auto sm:w-auto text-sm alert-cancel-button">
+            <button type="button" class="w-full mr-2 sm:mr-0 inline-flex justify-center rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 sm:ml-auto sm:w-auto text-sm alert-cancel-button" id="alert-cancel-button">
               Cancel
             </button>
-            <button type="button" class="w-full ml-2 sm:ml-4 inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-red-600 text-white hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 sm:ml-3 sm:w-auto text-sm" onclick="UI.deleteExercise(this, ${index})">
+            <button type="button" class="w-full ml-2 sm:ml-4 inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-red-600 text-white hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 sm:ml-3 sm:w-auto text-sm" onclick="${deleteFunction}">
               Delete
             </button>
           </div>
+        </div>
+      </div>
+    </div>`
+  );
+}
+
+export function infoAlert(msg: string) {
+  return (
+    /* html */
+    `<div class="z-50 absolute inset-0 hidden duration-300 opacity-0 bg-[#3d3d3d50]">
+      <div role="alert" class="absolute w-[calc(100%-1rem)] md:w-6/12 mt-2 mx-auto left-0 right-0 shadow-lg">
+        <div class="bg-gray-700 flex flex-col sm:flex-row items-center text-white font-bold rounded px-2 py-2 sm:py-0">
+          <div class="my-2 leading-5 text-center sm:text-left mr-4">${msg}</div>
+          <button type="button" class="w-full inline-flex justify-center rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 sm:ml-auto sm:w-auto text-sm my-2 alert-cancel-button">
+            Dismiss
+          </button>
         </div>
       </div>
     </div>`

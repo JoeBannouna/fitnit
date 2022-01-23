@@ -1,8 +1,8 @@
-import { currentWorkout, modifyCurrentWorkout, workouts } from '../global';
+import { currentWorkout, currentWorkoutIndex, modifyCurrentWorkout, workouts } from '../global';
 import Workout from '../models/Workout';
-import { fadeIn, fadeOut, hideModal, renderModal } from './animations';
+import { fadeIn, fadeOut, hideModal, renderAlert, renderModal, showModal } from './animations';
 import { renderExercisesHTML } from './exercise';
-import { newWorkoutModal, workoutBar } from './templates';
+import { deleteAlert, newWorkoutModal, workoutBar } from './templates';
 
 // Rendering workouts
 const workoutsContainer = document.getElementById('workouts-container');
@@ -40,6 +40,10 @@ const changeWorkoutNameInput = document.getElementById('change-workout-name-inpu
 const changeWorkoutNameForm = document.getElementById('change-workout-name-form') as HTMLFormElement;
 const changeWorkoutNameButton = document.getElementById('change-workout-name-button');
 const changeWorkoutNameEditButton = document.getElementById('change-workout-name-edit-button');
+const restIntervalsInput = document.getElementById('rest-input') as HTMLInputElement;
+const restIntervalsSpan = document.getElementById('rest-span');
+const restIntervalsButton = document.getElementById('rest-button') as HTMLButtonElement;
+const restIntervalsForm = document.getElementById('rest-form') as HTMLFormElement;
 
 function changeWorkoutName() {
   changeWorkoutNameButton.style.display = 'block';
@@ -60,13 +64,17 @@ function defaultWorkoutNameUI() {
 
 function loadWorkout(index?: number) {
   // SET CURRENT WORKOUT ID
-  if (index != null) modifyCurrentWorkout(workouts[index]);
+  if (index != null) modifyCurrentWorkout(index);
 
   // RENDERING HTML
 
   // Title area
   changeWorkoutNameInput.value = currentWorkout.name;
   defaultWorkoutNameUI();
+
+  // Resr intervals
+  restIntervalsInput.value = currentWorkout.rest.toString();
+  restIntervalsSpan.innerHTML = currentWorkout.rest.toString();
 
   // Exercises
   renderExercisesHTML();
@@ -78,17 +86,40 @@ function loadWorkout(index?: number) {
 // Edit a workout
 function saveWorkoutName(e: Event) {
   e.preventDefault && e.preventDefault();
-  if (Workout.editName(currentWorkout.id, changeWorkoutNameInput.value)) {
-    currentWorkout.name = changeWorkoutNameInput.value;
-  }
+  Workout.editName(currentWorkoutIndex, changeWorkoutNameInput.value);
+  currentWorkout.name = changeWorkoutNameInput.value;
   defaultWorkoutNameUI();
 }
 
 changeWorkoutNameEditButton.onclick = changeWorkoutName;
-changeWorkoutNameButton.onclick = saveWorkoutName;
 changeWorkoutNameForm.onsubmit = saveWorkoutName;
 workOutBackButton.onclick = toggleWorkoutsSection;
 
+restIntervalsButton.onclick = () => {
+  (restIntervalsForm.children[2] as HTMLButtonElement).disabled = false;
+  restIntervalsForm.classList.remove('hidden');
+  setTimeout(() => {
+    restIntervalsForm.classList.remove('opacity-0');
+    restIntervalsForm.classList.add('opacity-100');
+
+    restIntervalsInput.focus();
+  }, 0);
+};
+
+restIntervalsForm.onsubmit = e => {
+  e.preventDefault();
+  (e.submitter as HTMLButtonElement).disabled = true;
+  Workout.editRest(currentWorkoutIndex, parseFloat(restIntervalsInput.value));
+  restIntervalsSpan.innerHTML = restIntervalsInput.value;
+
+  restIntervalsForm.classList.remove('opacity-100');
+  restIntervalsForm.classList.add('opacity-0');
+  setTimeout(() => {
+    restIntervalsForm.classList.add('hidden');
+  }, 300);
+};
+
+// Creating a new workout
 const newWorkoutButton = document.getElementById('add-workout-button');
 newWorkoutButton.onclick = () => {
   renderModal(() => newWorkoutModal());
@@ -113,7 +144,18 @@ newWorkoutButton.onclick = () => {
   };
 };
 
-export {
-  loadWorkout,
-  // deleteWorkout,
-};
+function showDeleteWorkoutAlert(index: number) {
+  renderAlert(() => deleteAlert('Delete workout', 'Are you sure you want to delete this item?', `UI.deleteWorkout(this, ${index})`));
+  (document.getElementById('alert-cancel-button') as HTMLButtonElement).focus();
+}
+
+function deleteWorkout(button: HTMLButtonElement, index: number) {
+  button.disabled = true;
+
+  Workout.delete(index);
+  renderWorkouts();
+
+  fadeOut(document.getElementById('alert-container').children[0] as HTMLElement);
+}
+
+export { loadWorkout, showDeleteWorkoutAlert, deleteWorkout };

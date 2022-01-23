@@ -58,7 +58,6 @@ function renderAlert(alertTemplate: (...args: any[]) => string) {
   alertCancelButtons.forEach((alertCancelButton: HTMLElement) => (alertCancelButton.onclick = () => fadeOut(alertElement)));
 
   fadeIn(alertElement);
-  console.log(alertElement);
 }
 
 export { fadeIn, fadeOut, showModal, hideModal, renderModal, renderAlert };

@@ -1,4 +1,4 @@
-import { UPLOAD_EXERCISE_IMAGE_URL } from "../global";
+import { UPLOAD_EXERCISE_IMAGE_URL } from '../global';
 
 function hideUploadedImage() {
   const dropzone = document.getElementById('exerciseImageDropzone');
@@ -85,6 +85,34 @@ function readAndUploadFile(file: File) {
 
     rawBinaryStringReader.readAsBinaryString(file);
   }
+}
+
+function uploadFile(data: string | ArrayBuffer, url: string, callback = () => {}) {
+  $.ajax({
+    xhr: function () {
+      var xhr = new window.XMLHttpRequest();
+
+      xhr.upload.addEventListener(
+        'progress',
+        function (e3) {
+          if (e3.lengthComputable) {
+            var percentComplete = e3.loaded / e3.total;
+            percentComplete = Math.round(percentComplete * 100);
+
+            updateProgressBar(percentComplete);
+          }
+        },
+        false
+      );
+
+      return xhr;
+    },
+    url: url,
+    type: 'POST',
+    data: data,
+    contentType: 'application/octet-stream',
+    success: callback,
+  });
 }
 
 export function exerciseImageDropzoneUpload() {

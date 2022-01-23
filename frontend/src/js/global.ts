@@ -6,7 +6,11 @@ export let loggedIn = false;
 export const modifyLoggedIn = (val: boolean) => (loggedIn = val);
 
 export let currentWorkout: WorkoutType;
-export const modifyCurrentWorkout = (val: WorkoutType) => (currentWorkout = val);
+export let currentWorkoutIndex: number;
+export const modifyCurrentWorkout = (val: number) => {
+  currentWorkoutIndex = val;
+  currentWorkout = workouts[currentWorkoutIndex];
+};
 
 export let workouts: WorkoutType[];
 
