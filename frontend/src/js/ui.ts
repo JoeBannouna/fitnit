@@ -1,7 +1,7 @@
 import * as workout from './ui/workout';
 import * as exercise from './ui/exercise';
 
-// Dropdown button
+// Navbar dropdown button
 $('.main-dropdown-button').on('click', () => $('#main-dropdown').slideToggle());
 
 // Navbar links selection

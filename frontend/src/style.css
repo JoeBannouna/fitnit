@@ -6,6 +6,7 @@ body {
   font-family: 'Titillium Web', sans-serif;
   overscroll-behavior-x: none;
   overscroll-behavior-y: none;
+  box-sizing: border-box;
 }
 
 .timer-section {
@@ -98,8 +99,7 @@ hr.navbar-hr {
 
 /* width */
 ::-webkit-scrollbar {
-  width: 4px;
-  height: 4px;
+  width: 8px;
 }
 
 /* Track */
@@ -110,7 +110,7 @@ hr.navbar-hr {
 /* Handle */
 ::-webkit-scrollbar-thumb {
   background: rgb(174, 174, 174);
-  border-radius: 20px;
+  /* border-radius: 20px; */
 }
 
 /* Handle on hover */
@@ -120,4 +120,12 @@ hr.navbar-hr {
 
 .workout-gear-button:hover > span i {
   transform: rotate(120deg);
+}
+
+.exercise-box-selected {
+  @apply bg-zinc-300;
+}
+
+.rest-box-selected {
+  @apply bg-blue-500;
 }

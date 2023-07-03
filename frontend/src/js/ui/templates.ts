@@ -1,6 +1,14 @@
 import { ExerciseType, NormalExerciseType, VideoExerciseType, WorkoutType } from '../types';
+import { getYoutubeVideoThumbnailUrl } from './youtube';
 
 export function exerciseBar(exercise: ExerciseType, index: number) {
+  let exerciseUnit;
+
+  if (exercise.type == 'REPS') exerciseUnit = 'text-orange-500';
+  else if (exercise.type == 'TIMED') exerciseUnit = 'text-blue-500';
+  else if (exercise.type == 'TIMED-REPS') exerciseUnit = 'text-lime-500';
+  else if (exercise.type == 'VIDEO') exerciseUnit = 'text-red-600';
+
   return (
     /* html */
     `<div class="duration-300 relative" id="exercise-${index}">
@@ -13,8 +21,10 @@ export function exerciseBar(exercise: ExerciseType, index: number) {
           <div class="bg-white my-3 px-4 py-3 rounded-l-lg mr-0 shadow flex w-full text-left overflow-x-auto">
             <input class="text-sm w-full outline-none select-none" value="${exercise.name}" readonly>
           </div>
-          <div class="workout-gear-button bg-white mx-0 my-3 w-32 py-3 shadow flex justify-center items-center text-blue-500">
-            <strong class="text-lg self-center">${exercise.type == 'VIDEO' ? '<i class="fab fa-youtube"></i>' : exercise.amount}</strong>
+          <div class="bg-white mx-0 my-3 w-32 py-3 shadow flex justify-center items-center ${exerciseUnit}">
+            <strong class="text-lg self-center">
+              ${exercise.type == 'VIDEO' ? '<i class="fab fa-youtube"></i>' : exercise.amount}
+            </strong>
           </div>
           <button class="workout-gear-button bg-white mx-3 my-3 px-4 py-3 rounded-r-lg ml-0 shadow flex text-gray-500 items-center" onclick="UI.showExerciseModal(${index})">
             <span class="ml-auto text-lg"><i class="fas fa-cog duration-300"></i></span>
@@ -27,14 +37,45 @@ export function exerciseBar(exercise: ExerciseType, index: number) {
   );
 }
 
+export function selectedWorkoutExercise(exercise: ExerciseType, index: number) {
+  if (exercise.type == 'VIDEO') {
+    return (
+      /* html */
+      `<button class="exercise-box px-4 py-4 box-border bg-gray-200 active:text-gray-400 outline-none drop-shadow shadow-blue-400 w-full duration-100 border-t border-gray-400 outline-none" id="exercise-box-${index}">
+        <div class="mb-3 flex justify-center items-center">
+          <div>${exercise.name}</div>
+          <i class="text-red-600 text-2xl ml-2 fab fa-youtube"></i>
+        </div>
+        <img src="${getYoutubeVideoThumbnailUrl(exercise.url)}" class="w-full">
+      </button>`
+    );
+  } else {
+    return (
+      /* html */
+      `<button class="exercise-box px-4 py-4 box-border bg-gray-200 active:text-gray-400 outline-none drop-shadow shadow-blue-400 w-full duration-100 border-t border-gray-400" id="exercise-box-${index}">
+        ${exercise.name}
+      </button>`
+    );
+  }
+}
+
+export function restBox(rest: number) {
+  return (
+    /* html */
+    `<button class="rest-box flex justify-center items-center bg-blue-400 active:text-gray-400 text-white px-2 py-3 w-full duration-100 outline-none">
+      Rest ${rest} seconds
+    </button>`
+  );
+}
+
 export function workoutBar(workout: WorkoutType, index: number) {
   return (
     /* html */
     `<div class="flex workout">
-      <button class="bg-white mx-6 my-3 px-4 py-3 rounded-l-lg mr-0 shadow flex w-full text-left" onclick="UI.selectWorkout('${index}')">
+      <button class="bg-white mx-6 my-3 px-4 py-3 rounded-l-lg mr-0 shadow flex w-full text-left" onclick="UI.selectWorkout(this, '${index}')">
         <strong class="mr-2 text-lg self-center">${index + 1}</strong> <span class="text-sm my-auto">${workout.name}</span>
       </button>
-      <button class="workout-gear-button bg-white my-3 px-4 py-3 ml-0 shadow flex text-gray-500 items-center" onclick="UI.loadWorkout('${index}')">
+      <button class="workout-gear-button bg-white my-3 px-4 py-3 ml-0 shadow flex text-gray-500 items-center" onclick="UI.loadWorkout(this, '${index}')">
         <span class="ml-auto text-lg"><i class="fas fa-cog duration-300"></i></span>
       </button>
       <button class="bg-white mx-6 my-3 px-4 py-3 rounded-r-lg ml-0 shadow flex text-red-400 hover:text-red-600 items-center" onclick="UI.showDeleteWorkoutAlert('${index}')">
@@ -194,14 +235,39 @@ function videoExerciseModalContent(exercise: VideoExerciseType) {
 
       <div class="flex flex-col">
         <div class="text-center w-full">
-          <input class="rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-base font-medium text-gray-700 focus:outline-none w-full h-12" id="modal-title" placeholder="Exercise name" autocomplete="off" required maxlength="100" value="${exercise.name}">
+          <input class="rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-base font-medium text-gray-700 focus:outline-none w-full h-12" id="modal-title" placeholder="Exercise name" autocomplete="off" required maxlength="100" value="${
+            exercise.name
+          }">
         </div>
         
         <div class="text-center w-full mt-3">
-          <input class="rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-base font-medium text-gray-700 focus:outline-none w-full h-12" id="video-url" placeholder="Youtube Video URL" required maxlength="100" value="${exercise.url}">
+          <input class="rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-base font-medium text-gray-700 focus:outline-none w-full h-12" id="video-url" placeholder="Youtube Video URL" required maxlength="100" value="${
+            exercise.url
+          }">
         </div>
 
         <div class="mt-3 w-full h-[200px] xs:h-[300px] sm:h-[300px] md:h-[300px]" id="player"></div>
+
+        <div class="flex mt-3">
+          <div class="w-1/3 text-center py-4">
+            <input type="checkbox" id="customTimeCheckBox" ${exercise.period ? 'checked' : ''}>
+            <div><label for="customTimeCheckBox" class="cursor-pointer">Time interval</label></div>
+          </div>
+
+          <div class="ml-4 video-seconds-input opacity-50">
+            <label for="videoStartSeconds">Start (seconds)</label>
+            <input class="p-2 border border-gray-400 rounded outline-none w-full" type="number" readonly value="${
+              exercise.period ? exercise.period.startSeconds : '0'
+            }" id="videoStartSeconds">
+          </div>
+
+          <div class="ml-4 video-seconds-input opacity-50">
+            <label for="videoEndSeconds">End (seconds)</label>
+            <input class="p-2 border border-gray-400 rounded outline-none w-full" type="number" readonly value="${
+              exercise.period ? exercise.period.endSeconds : '10'
+            }" id="videoEndSeconds">
+          </div>
+        </div>
       </div>
     </span>`
   );
@@ -314,6 +380,23 @@ export function videoExerciseInputs() {
         </div>
 
         <div class="mt-3 w-full h-[200px] xs:h-[300px] sm:h-[300px] md:h-[300px]" id="player"></div>
+
+        <div class="flex mt-3">
+          <div class="w-1/3 text-center py-4">
+            <input type="checkbox" id="customTimeCheckBox">
+            <div><label for="customTimeCheckBox" class="cursor-pointer">Time interval</label></div>
+          </div>
+
+          <div class="ml-4 video-seconds-input opacity-50">
+            <label for="videoStartSeconds">Start (seconds)</label>
+            <input class="p-2 border border-gray-400 rounded outline-none w-full" type="number" readonly value="0" id="videoStartSeconds">
+          </div>
+
+          <div class="ml-4 video-seconds-input opacity-50">
+            <label for="videoEndSeconds">End (seconds)</label>
+            <input class="p-2 border border-gray-400 rounded outline-none w-full" type="number" readonly value="10" id="videoEndSeconds">
+          </div>
+        </div>
       </div>
     </span>`
   );

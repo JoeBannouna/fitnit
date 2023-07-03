@@ -1,38 +1,50 @@
-import { currentWorkout, currentWorkoutIndex, modifyCurrentWorkout, workouts } from '../global';
+import { currentWorkout, currentWorkoutIndex, loggedIn, modifyCurrentExercise, modifyCurrentWorkout, workouts } from '../global';
 import Workout from '../models/Workout';
-import { fadeIn, fadeOut, hideModal, renderAlert, renderModal, showModal } from './animations';
-import { renderExercisesHTML } from './exercise';
+import { fadeIn, fadeOut, hideModal, renderAlert, renderModal } from './animations';
+import { renderExercisesHTML, renderSelectedWorkoutExercisesHTML } from './exercise';
+import { resetCurrentActivity, selectCurrentActivity, togglePlay } from './player';
 import { deleteAlert, newWorkoutModal, workoutBar } from './templates';
 
 // Rendering workouts
 const workoutsContainer = document.getElementById('workouts-container');
 
 function renderWorkouts() {
-  const workoutsHTML = workouts.map(workoutBar).join('');
-  workoutsContainer.innerHTML = workoutsHTML;
+  if (workouts.length) {
+    const workoutsHTML = workouts.map(workoutBar).join('');
+    workoutsContainer.innerHTML = workoutsHTML;
+  } else if (!workouts.length && !loggedIn) {
+    workoutsContainer.innerHTML =
+      /* html */
+      `<div class="flex justify-center items-center text-center px-4 py-20">
+        Can't find your workouts? Sign in to access them.
+      </div>`;
+  }
 }
 
 renderWorkouts();
 
 // Toggling between All Workouts section and a single workout section
 const controlPanelButton: HTMLElement = document.querySelector('.control-panel-button');
-const singleWorkoutSection = document.getElementById('single-workout-section');
 const allWorkoutSection = document.getElementById('all-workouts-section');
+const singleWorkoutSection = document.getElementById('single-workout-section');
+const selectedWorkoutSection = document.getElementById('selected-workout-section');
 const workOutBackButton = document.getElementById('workout-back-button');
+const slectedWorkoutBackButton = document.getElementById('selected-workout-back-button');
 
 let workoutsIsOpen = true;
-function toggleWorkoutsSection() {
+function toggleWorkoutsSection(e: Event = null, sectionElement: HTMLElement = singleWorkoutSection, callback = () => {}, controlPanelButtonHidden = true) {
   if (workoutsIsOpen) {
     allWorkoutSection.style.width = '0';
-    singleWorkoutSection.style.width = '100%';
-    fadeOut(controlPanelButton);
+    sectionElement.style.width = '100%';
+    controlPanelButtonHidden && fadeOut(controlPanelButton);
   } else {
     renderWorkouts();
     allWorkoutSection.style.width = '100%';
-    singleWorkoutSection.style.width = '0';
-    fadeIn(controlPanelButton);
+    sectionElement.style.width = '0';
+    controlPanelButtonHidden && fadeIn(controlPanelButton);
   }
   workoutsIsOpen = !workoutsIsOpen;
+  callback();
 }
 
 // Loading a workout
@@ -40,6 +52,7 @@ const changeWorkoutNameInput = document.getElementById('change-workout-name-inpu
 const changeWorkoutNameForm = document.getElementById('change-workout-name-form') as HTMLFormElement;
 const changeWorkoutNameButton = document.getElementById('change-workout-name-button');
 const changeWorkoutNameEditButton = document.getElementById('change-workout-name-edit-button');
+
 const restIntervalsInput = document.getElementById('rest-input') as HTMLInputElement;
 const restIntervalsSpan = document.getElementById('rest-span');
 const restIntervalsButton = document.getElementById('rest-button') as HTMLButtonElement;
@@ -62,7 +75,9 @@ function defaultWorkoutNameUI() {
   changeWorkoutNameInput.style.color = 'white';
 }
 
-function loadWorkout(index?: number) {
+function loadWorkout(button: HTMLButtonElement | null, index?: number) {
+  if (button) button.blur();
+
   // SET CURRENT WORKOUT ID
   if (index != null) modifyCurrentWorkout(index);
 
@@ -94,6 +109,7 @@ function saveWorkoutName(e: Event) {
 changeWorkoutNameEditButton.onclick = changeWorkoutName;
 changeWorkoutNameForm.onsubmit = saveWorkoutName;
 workOutBackButton.onclick = toggleWorkoutsSection;
+slectedWorkoutBackButton.onclick = () => toggleWorkoutsSection(null, selectedWorkoutSection, deselctWorkout, false);
 
 restIntervalsButton.onclick = () => {
   (restIntervalsForm.children[2] as HTMLButtonElement).disabled = false;
@@ -104,6 +120,15 @@ restIntervalsButton.onclick = () => {
 
     restIntervalsInput.focus();
   }, 0);
+};
+
+restIntervalsInput.onblur = () => {
+  restIntervalsForm.classList.remove('opacity-100');
+  restIntervalsForm.classList.add('opacity-0');
+  setTimeout(() => {
+    restIntervalsForm.classList.add('hidden');
+    restIntervalsInput.value = currentWorkout.rest.toString();
+  }, 300);
 };
 
 restIntervalsForm.onsubmit = e => {
@@ -140,7 +165,7 @@ newWorkoutButton.onclick = () => {
 
     renderWorkouts();
     hideModal(document.getElementById('modal-container').children[0] as HTMLElement);
-    loadWorkout(workouts.length - 1);
+    loadWorkout(null, workouts.length - 1);
   };
 };
 
@@ -158,4 +183,45 @@ function deleteWorkout(button: HTMLButtonElement, index: number) {
   fadeOut(document.getElementById('alert-container').children[0] as HTMLElement);
 }
 
-export { loadWorkout, showDeleteWorkoutAlert, deleteWorkout };
+function deselctWorkout() {
+  modifyCurrentExercise(null);
+  modifyCurrentWorkout(null);
+  resetCurrentActivity();
+  document.removeEventListener('keypress', e => {
+    if (e.code == 'Space') {
+      togglePlay(undefined, true);
+    }
+  });
+
+  document.getElementById('timer-section-cover').classList.remove('hidden');
+  document.getElementById('timer-title').innerHTML = 'Current Exercise';
+  document.getElementById('timer-number').innerHTML = '60';
+}
+
+function selectWorkout(button: HTMLButtonElement | null, index: number) {
+  if (button) button.blur();
+
+  modifyCurrentWorkout(index);
+  currentWorkout.exercises.length ? modifyCurrentExercise(0) : modifyCurrentExercise(null);
+
+  // Title area
+  (document.getElementById('workout-name-input') as HTMLInputElement).value = currentWorkout.name;
+
+  // Info area
+  // document.getElementById('workout-info-box').innerHTML
+
+  // Exercises
+  renderSelectedWorkoutExercisesHTML();
+  selectCurrentActivity();
+
+  document.getElementById('timer-section-cover').classList.add('hidden');
+  toggleWorkoutsSection(null, selectedWorkoutSection, () => {}, false);
+
+  document.addEventListener('keypress', e => {
+    if (e.code == 'Space') {
+      togglePlay(undefined, true);
+    }
+  });
+}
+
+export { loadWorkout, selectWorkout, showDeleteWorkoutAlert, deleteWorkout };

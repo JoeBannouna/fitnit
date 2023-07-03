@@ -3,9 +3,14 @@ Send info alerts for appropriate things
 Put a limit on the amount of workouts and exercises a user can have
 Implement Routines (weekly, monthly, etc..)
 Implement fullscreen (to fix mobile screen irritations)
-Add a "Can't find your workouts? Sign in to access them." when user has no workouts and is not signed in
+Implement support for 'back' button on phone
+Implement router for navbar
+Transfer all workouts from local to account upon signup
+Ask user if they want to transfer currently offline workouts to their account each time they sign in (if they have offline workouts)
+Add an info panel to workouts, including shit like: 'estimated time to complete'
 
 
+✅Add a "Can't find your workouts? Sign in to access them." when user has no workouts and is not signed in
 ✅Implement the ability to make a "youtube video" exercise
 ✅Ability to create, edit, and delete exercises
 ✅Workout Name cannot be empty

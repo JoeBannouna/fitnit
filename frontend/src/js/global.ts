@@ -1,4 +1,4 @@
-import { WorkoutType } from './types';
+import { ExerciseType, WorkoutType } from './types';
 import StorageWrapper from './models/StorageWrapper';
 
 // State variables
@@ -7,9 +7,16 @@ export const modifyLoggedIn = (val: boolean) => (loggedIn = val);
 
 export let currentWorkout: WorkoutType;
 export let currentWorkoutIndex: number;
-export const modifyCurrentWorkout = (val: number) => {
-  currentWorkoutIndex = val;
+export const modifyCurrentWorkout = (index: number) => {
+  currentWorkoutIndex = index;
   currentWorkout = workouts[currentWorkoutIndex];
+};
+
+export let currentExercise: ExerciseType;
+export let currentExerciseIndex: number;
+export const modifyCurrentExercise = (index: number) => {
+  currentExerciseIndex = index;
+  currentExercise = workouts[currentWorkoutIndex].exercises[currentExerciseIndex];
 };
 
 export let workouts: WorkoutType[];
@@ -141,8 +148,6 @@ if (loggedIn) {
 // ];
 
 export const modifyWorkouts = (val: WorkoutType[]) => (workouts = val);
-
-console.log(workouts);
 
 // Endpoint URLs
 export const UPLOAD_EXERCISE_IMAGE_URL = 'http://127.0.0.1:3000/';

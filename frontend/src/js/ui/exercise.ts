@@ -2,16 +2,50 @@ import { currentWorkout, currentWorkoutIndex, loggedIn } from '../global';
 import Exercise from '../models/Exercise';
 import { ExerciseType, NormalExerciseType, VideoExerciseType } from '../types';
 import { fadeOut, hideModal, renderAlert, renderModal } from './animations';
-import { deleteAlert, exerciseBar, exerciseModal, newExerciseModal, normalExerciseInputs, videoExerciseInputs } from './templates';
+import { selectCurrentActivity } from './player';
+import {
+  deleteAlert,
+  exerciseBar,
+  exerciseModal,
+  infoAlert,
+  newExerciseModal,
+  normalExerciseInputs,
+  restBox,
+  selectedWorkoutExercise,
+  videoExerciseInputs,
+} from './templates';
 import { exerciseImageDropzoneUpload } from './upload';
-import { loadVideoFromUrl, onYouTubeIframeAPIReady } from './youtube';
+import { cueVideoFromUrl, onYouTubeIframeAPIReady } from './youtube';
 
 // Exercise
 function renderExercisesHTML() {
   const singleExercisesSection = document.getElementById('single-exercises-section');
-  const exercisesHTML = currentWorkout.exercises.map(exerciseBar).join('');
-  singleExercisesSection.innerHTML = '<div><div class="dropzone h-px w-full" id="exercise-dropzone-0"></div></div>';
-  singleExercisesSection.innerHTML += exercisesHTML;
+  if (currentWorkout.exercises.length) {
+    const exercisesHTML = currentWorkout.exercises.map(exerciseBar).join('');
+    singleExercisesSection.innerHTML = '<div><div class="dropzone h-px w-full" id="exercise-dropzone-0"></div></div>';
+    singleExercisesSection.innerHTML += exercisesHTML;
+  } else {
+    singleExercisesSection.innerHTML =
+      /* html */
+      `<div class="bg-gray-200 flex justify-center items-center text-center px-4 py-20">
+        Workout exercises will appear here
+      </div>`;
+  }
+}
+
+function renderSelectedWorkoutExercisesHTML() {
+  const selectedExercisesSection = document.getElementById('selected-exercises-section');
+  const exercisesHTML = currentWorkout.exercises.map(selectedWorkoutExercise).join(currentWorkout.rest ? restBox(currentWorkout.rest) : '');
+  selectedExercisesSection.innerHTML = exercisesHTML;
+  document.querySelectorAll('.rest-box').forEach((restBox: HTMLElement, index) => {
+    restBox.id = 'rest-box-' + index;
+    restBox.onmousedown = () => selectCurrentActivity(index, 'rest', true);
+  });
+
+  document.querySelectorAll('.exercise-box').forEach((exerciseBox: HTMLElement, index) => {
+    // exerciseBox.id = 'rest-box-' + index;
+    exerciseBox.onmousedown = () => selectCurrentActivity(index, 'exercise', true);
+  });
 }
 
 function showExerciseModal(index: number) {
@@ -21,11 +55,15 @@ function showExerciseModal(index: number) {
 
   if (exercise.type == 'VIDEO') {
     // Load IFrame youtube API
-    onYouTubeIframeAPIReady(() => loadVideoFromUrl(exercise.url));
+    onYouTubeIframeAPIReady(() => cueVideoFromUrl(exercise.url));
 
     // Listing for change in youtube url input
     const videoInput = document.getElementById('video-url') as HTMLInputElement;
-    videoInput.oninput = e => loadVideoFromUrl((e.target as HTMLInputElement).value);
+    videoInput.oninput = e => cueVideoFromUrl((e.target as HTMLInputElement).value);
+
+    const customTimeCheckBox = document.getElementById('customTimeCheckBox') as HTMLInputElement;
+    customTimeCheckBox.oninput = () => toggleVideoExerciseTimeInterval(customTimeCheckBox.checked);
+    toggleVideoExerciseTimeInterval(customTimeCheckBox.checked);
   }
 
   const form = document.getElementById('update-exercise-form') as HTMLFormElement;
@@ -86,6 +124,20 @@ const submitVals = (mode: 'update' | 'new', exercise: ExerciseType, index = 0) =
   }
 };
 
+function toggleVideoExerciseTimeInterval(bool: boolean) {
+  if (bool) {
+    document.querySelectorAll('.video-seconds-input').forEach(element => {
+      element.classList.remove('opacity-50');
+      (element.children[1] as HTMLInputElement).readOnly = false;
+    });
+  } else {
+    document.querySelectorAll('.video-seconds-input').forEach(element => {
+      element.classList.add('opacity-50');
+      (element.children[1] as HTMLInputElement).readOnly = true;
+    });
+  }
+}
+
 function submitNewExerciseValues(e: SubmitEvent, mode: 'update' | 'new') {
   e.preventDefault();
   (e.submitter as HTMLButtonElement).disabled = true;
@@ -115,10 +167,30 @@ function submitNewExerciseValues(e: SubmitEvent, mode: 'update' | 'new') {
   } else if (exerciseInputsType.value == 'video') {
     const url = document.getElementById('video-url') as HTMLInputElement;
 
+    const customTimeCheckBox = document.getElementById('customTimeCheckBox') as HTMLInputElement;
+    const videoStartSecondsInput = document.getElementById('videoStartSeconds') as HTMLInputElement;
+    const videoEndSecondsInput = document.getElementById('videoEndSeconds') as HTMLInputElement;
+
     const exercise = {} as VideoExerciseType;
     exercise.name = name.value;
     exercise.url = url.value;
     exercise.type = 'VIDEO';
+
+    if (customTimeCheckBox.checked) {
+      const videoStartSeconds = parseFloat(videoStartSecondsInput.value);
+      const videoEndSeconds = parseFloat(videoEndSecondsInput.value);
+
+      if (videoStartSeconds < videoEndSeconds) {
+        exercise.period = {
+          startSeconds: videoStartSeconds,
+          endSeconds: videoEndSeconds,
+        };
+      } else {
+        renderAlert(() => infoAlert('Start seconds cannot be bigger than End seconds'));
+        (e.submitter as HTMLButtonElement).disabled = false;
+        return;
+      }
+    }
 
     if (loggedIn) {
       // Process image upload and ID here??
@@ -156,7 +228,10 @@ function renderNewExerciseModal() {
 
     // Listing for change in youtube url input
     const videoInput = document.getElementById('video-url') as HTMLInputElement;
-    videoInput.oninput = e => loadVideoFromUrl((e.target as HTMLInputElement).value);
+    videoInput.oninput = e => cueVideoFromUrl((e.target as HTMLInputElement).value);
+
+    const customTimeCheckBox = document.getElementById('customTimeCheckBox') as HTMLInputElement;
+    customTimeCheckBox.oninput = () => toggleVideoExerciseTimeInterval(customTimeCheckBox.checked);
   };
 
   // Submitting the form
@@ -168,4 +243,13 @@ function renderNewExerciseModal() {
 const newExerciseButton = document.getElementById('add-exercise-button');
 newExerciseButton.onclick = renderNewExerciseModal;
 
-export { renderExercisesHTML, showExerciseModal, updateExerciseModalValues, changeInbetween, showDeleteExerciseAlert, hideDeleteExerciseAlert, deleteExercise };
+export {
+  renderExercisesHTML,
+  renderSelectedWorkoutExercisesHTML,
+  showExerciseModal,
+  updateExerciseModalValues,
+  changeInbetween,
+  showDeleteExerciseAlert,
+  hideDeleteExerciseAlert,
+  deleteExercise,
+};
