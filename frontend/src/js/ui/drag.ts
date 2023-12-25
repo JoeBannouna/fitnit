@@ -24,19 +24,21 @@ const opacity100 = (event: any) => {
 };
 
 const z20 = (element: HTMLElement) => {
-  element.parentElement.classList.add('z-20');
-  element.parentElement.classList.remove('z-30');
-  element.classList.add('z-20');
-  element.classList.remove('z-30');
+  element?.parentElement?.classList.add('z-20');
+  element?.parentElement?.classList.remove('z-30');
+  element?.classList.add('z-20');
+  element?.classList.remove('z-30');
 };
 
 const z30 = (element: HTMLElement) => {
-  element.parentElement.classList.add('z-30');
-  element.parentElement.classList.remove('z-20');
-  element.classList.add('z-30');
-  element.classList.remove('z-20');
+  element?.parentElement?.classList.add('z-30');
+  element?.parentElement?.classList.remove('z-20');
+  element?.classList.add('z-30');
+  element?.classList.remove('z-20');
 };
 
+let isCurrentElementBeingCloned = false;
+let illusionCreated = false;
 function dragMoveListener(event: any) {
   const target = event.target as HTMLElement;
   const exerciseBar = target.parentElement.parentElement;
@@ -44,6 +46,28 @@ function dragMoveListener(event: any) {
   exerciseBar.classList.remove('duration-300');
   z30(exerciseBar);
   target.classList.add('current-drag');
+
+  if (event.altKey) {
+    isCurrentElementBeingCloned = true;
+    currentDrag().style.marginBottom = currentDrag().clientHeight + 'px';
+  }
+
+  if (isCurrentElementBeingCloned && !illusionCreated) {
+    const spanContainer = document.createElement("span");
+    spanContainer.appendChild(currentDrag().children[0].cloneNode(true));
+    currentDrag().appendChild(spanContainer);
+    
+    console.log(currentDrag().children[1]);
+    (currentDrag().children[1] as HTMLElement).id = null;
+    (currentDrag().children[1].children[0] as HTMLElement).classList.remove('current-drag');
+    (currentDrag().children[1] as HTMLElement).style.display = 'block';
+    (currentDrag().children[0] as HTMLElement).style.position = 'absolute';
+    // (currentDrag().children[1].children[0] as HTMLElement).id = null;
+    // (currentDrag().children[1].children[0] as HTMLElement).style = ;/
+    
+    illusionCreated = true;
+  }
+
   const y = (parseFloat(exerciseBar.getAttribute('data-y')) || 0) + event.dy;
   exerciseBar.style.transform = 'translate(0px, ' + y + 'px)';
   exerciseBar.setAttribute('data-y', y);
@@ -56,6 +80,7 @@ function drageEndListener(event: any) {
 
   exerciseBar.classList.add('duration-300');
   z20(exerciseBar);
+  // currentDrag().style.marginBottom = null;
   target.classList.remove('current-drag');
   exerciseBar.style.transform = 'translate(0px, 0px)';
   exerciseBar.setAttribute('data-y', '0');
@@ -154,7 +179,7 @@ interact('.dropzone').dropzone({
     }
   },
   ondrop: function (event) {
-    if (dropzoneAccepted(event)) {
+    if (dropzoneAccepted(event) || isCurrentElementBeingCloned) {
       // Get required data
       const currentDragElement = currentDrag();
       const currentDragId = parseFloat(currentDragElement.id.split('-')[1]);
@@ -173,11 +198,20 @@ interact('.dropzone').dropzone({
       currentDragElement.setAttribute('data-x', '0');
 
       // Re-render the exercises
-      const arr = [...currentWorkout.exercises]
+      const arr = [...currentWorkout.exercises];
       arrayMove(arr, currentDragId, newIndex);
+
+      // If the element is being clone, add a clone in the array
+      if (isCurrentElementBeingCloned) arr.splice(currentDragId <= newIndex ? currentDragId : newIndex + 2, 0, arr[newIndex]);
+
       Workout.updateExercisesPosition(currentWorkoutIndex, arr);
-      setTimeout(renderExercisesHTML, 100);
       
+      // No animation if it is a clone operation
+      setTimeout(renderExercisesHTML, isCurrentElementBeingCloned ? 0 : 100);
+
+      // Set back options
+      isCurrentElementBeingCloned = false;
+      illusionCreated = false;
     }
   },
 });

@@ -27,23 +27,44 @@ var opacity100 = function (event) {
     event.target.classList.remove('opacity-50');
 };
 var z20 = function (element) {
-    element.parentElement.classList.add('z-20');
-    element.parentElement.classList.remove('z-30');
-    element.classList.add('z-20');
-    element.classList.remove('z-30');
+    var _a, _b;
+    (_a = element === null || element === void 0 ? void 0 : element.parentElement) === null || _a === void 0 ? void 0 : _a.classList.add('z-20');
+    (_b = element === null || element === void 0 ? void 0 : element.parentElement) === null || _b === void 0 ? void 0 : _b.classList.remove('z-30');
+    element === null || element === void 0 ? void 0 : element.classList.add('z-20');
+    element === null || element === void 0 ? void 0 : element.classList.remove('z-30');
 };
 var z30 = function (element) {
-    element.parentElement.classList.add('z-30');
-    element.parentElement.classList.remove('z-20');
-    element.classList.add('z-30');
-    element.classList.remove('z-20');
+    var _a, _b;
+    (_a = element === null || element === void 0 ? void 0 : element.parentElement) === null || _a === void 0 ? void 0 : _a.classList.add('z-30');
+    (_b = element === null || element === void 0 ? void 0 : element.parentElement) === null || _b === void 0 ? void 0 : _b.classList.remove('z-20');
+    element === null || element === void 0 ? void 0 : element.classList.add('z-30');
+    element === null || element === void 0 ? void 0 : element.classList.remove('z-20');
 };
+var isCurrentElementBeingCloned = false;
+var illusionCreated = false;
 function dragMoveListener(event) {
     var target = event.target;
     var exerciseBar = target.parentElement.parentElement;
     exerciseBar.classList.remove('duration-300');
     z30(exerciseBar);
     target.classList.add('current-drag');
+    if (event.altKey) {
+        isCurrentElementBeingCloned = true;
+        currentDrag().style.marginBottom = currentDrag().clientHeight + 'px';
+    }
+    if (isCurrentElementBeingCloned && !illusionCreated) {
+        var spanContainer = document.createElement("span");
+        spanContainer.appendChild(currentDrag().children[0].cloneNode(true));
+        currentDrag().appendChild(spanContainer);
+        console.log(currentDrag().children[1]);
+        currentDrag().children[1].id = null;
+        currentDrag().children[1].children[0].classList.remove('current-drag');
+        currentDrag().children[1].style.display = 'block';
+        currentDrag().children[0].style.position = 'absolute';
+        // (currentDrag().children[1].children[0] as HTMLElement).id = null;
+        // (currentDrag().children[1].children[0] as HTMLElement).style = ;/
+        illusionCreated = true;
+    }
     var y = (parseFloat(exerciseBar.getAttribute('data-y')) || 0) + event.dy;
     exerciseBar.style.transform = 'translate(0px, ' + y + 'px)';
     exerciseBar.setAttribute('data-y', y);
@@ -54,6 +75,7 @@ function drageEndListener(event) {
     var exerciseBar = target.parentElement.parentElement;
     exerciseBar.classList.add('duration-300');
     z20(exerciseBar);
+    // currentDrag().style.marginBottom = null;
     target.classList.remove('current-drag');
     exerciseBar.style.transform = 'translate(0px, 0px)';
     exerciseBar.setAttribute('data-y', '0');
@@ -134,7 +156,7 @@ interact('.dropzone').dropzone({
         }
     },
     ondrop: function (event) {
-        if (dropzoneAccepted(event)) {
+        if (dropzoneAccepted(event) || isCurrentElementBeingCloned) {
             // Get required data
             var currentDragElement = currentDrag();
             var currentDragId = parseFloat(currentDragElement.id.split('-')[1]);
@@ -152,8 +174,15 @@ interact('.dropzone').dropzone({
             // Re-render the exercises
             var arr = __spreadArray([], currentWorkout.exercises, true);
             arrayMove(arr, currentDragId, newIndex);
+            // If the element is being clone, add a clone in the array
+            if (isCurrentElementBeingCloned)
+                arr.splice(currentDragId <= newIndex ? currentDragId : newIndex + 2, 0, arr[newIndex]);
             Workout.updateExercisesPosition(currentWorkoutIndex, arr);
-            setTimeout(renderExercisesHTML, 100);
+            // No animation if it is a clone operation
+            setTimeout(renderExercisesHTML, isCurrentElementBeingCloned ? 0 : 100);
+            // Set back options
+            isCurrentElementBeingCloned = false;
+            illusionCreated = false;
         }
     },
 });

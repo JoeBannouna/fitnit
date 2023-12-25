@@ -204,6 +204,8 @@ function submitNewExerciseValues(e: SubmitEvent, mode: 'update' | 'new') {
 
 function renderNewExerciseModal() {
   renderModal(() => newExerciseModal(loggedIn));
+  document.getElementById('modal-title').focus();
+
   if (loggedIn) exerciseImageDropzoneUpload();
 
   // Switching between modes
@@ -236,7 +238,10 @@ function renderNewExerciseModal() {
 
   // Submitting the form
   const form = document.getElementById('new-exercise-form') as HTMLFormElement;
-  form.onsubmit = e => submitNewExerciseValues(e, 'new');
+  form.onsubmit = e => {
+    submitNewExerciseValues(e, 'new');
+    document.getElementById('add-exercise-button').focus();
+  };
 }
 
 // Creating a new exercise

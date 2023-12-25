@@ -168,6 +168,7 @@ function submitNewExerciseValues(e, mode) {
 }
 function renderNewExerciseModal() {
     renderModal(function () { return newExerciseModal(loggedIn); });
+    document.getElementById('modal-title').focus();
     if (loggedIn)
         exerciseImageDropzoneUpload();
     // Switching between modes
@@ -194,7 +195,10 @@ function renderNewExerciseModal() {
     };
     // Submitting the form
     var form = document.getElementById('new-exercise-form');
-    form.onsubmit = function (e) { return submitNewExerciseValues(e, 'new'); };
+    form.onsubmit = function (e) {
+        submitNewExerciseValues(e, 'new');
+        document.getElementById('add-exercise-button').focus();
+    };
 }
 // Creating a new exercise
 var newExerciseButton = document.getElementById('add-exercise-button');

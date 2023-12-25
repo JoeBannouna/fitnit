@@ -1901,6 +1901,10 @@ hr.navbar-hr {
   --tw-gradient-to: #06b6d4;
 }
 
+.hover\:to-cyan-600:hover {
+  --tw-gradient-to: #0891b2;
+}
+
 .hover\:text-blue-400:hover {
   --tw-text-opacity: 1;
   color: rgb(96 165 250 / var(--tw-text-opacity));
@@ -1914,6 +1918,16 @@ hr.navbar-hr {
 .hover\:text-red-600:hover {
   --tw-text-opacity: 1;
   color: rgb(220 38 38 / var(--tw-text-opacity));
+}
+
+.focus\:from-blue-900:focus {
+  --tw-gradient-from: #1e3a8a;
+  --tw-gradient-to: rgb(30 58 138 / 0);
+  --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to);
+}
+
+.focus\:to-cyan-600:focus {
+  --tw-gradient-to: #0891b2;
 }
 
 .focus\:outline-none:focus {
@@ -1944,6 +1958,22 @@ hr.navbar-hr {
 
 .focus\:ring-offset-2:focus {
   --tw-ring-offset-width: 2px;
+}
+
+.active\:from-blue-900:active {
+  --tw-gradient-from: #1e3a8a;
+  --tw-gradient-to: rgb(30 58 138 / 0);
+  --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to);
+}
+
+.active\:from-blue-800:active {
+  --tw-gradient-from: #1e40af;
+  --tw-gradient-to: rgb(30 64 175 / 0);
+  --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to);
+}
+
+.active\:to-cyan-600:active {
+  --tw-gradient-to: #0891b2;
 }
 
 .active\:text-gray-400:active {
