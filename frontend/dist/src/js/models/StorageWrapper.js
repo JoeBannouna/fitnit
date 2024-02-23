@@ -28,12 +28,22 @@ var StorageWrapper = /** @class */ (function () {
         var _this = this;
         return this.fetchWorkoutsIndexes().map(function (index) { return _this.fetchWorkout(index); });
     };
+    StorageWrapper.fetchWorkoutString = function (index) {
+        return localStorage.getItem('workout-' + index);
+    };
     StorageWrapper.fetchWorkout = function (index) {
-        return JSON.parse(localStorage.getItem('workout-' + index));
+        return JSON.parse(this.fetchWorkoutString(index));
     };
     StorageWrapper.updateWorkout = function (index, workout) {
         localStorage.setItem('workout-' + index, JSON.stringify(workout));
         return true;
+    };
+    // Write workout bruteforce into localStorage (should only be used for Composer class for importing)
+    StorageWrapper.writeWorkout = function (workoutJSON) {
+        var workoutsIndexes = this.fetchWorkoutsIndexes();
+        var index = workoutsIndexes.length !== 0 ? workoutsIndexes[workoutsIndexes.length - 1] + 1 : 0;
+        this.addWorkoutIndex(index);
+        localStorage.setItem('workout-' + index, workoutJSON);
     };
     StorageWrapper.createWorkout = function (workout) {
         var workoutsIndexes = this.fetchWorkoutsIndexes();

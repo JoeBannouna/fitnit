@@ -1,4 +1,4 @@
-import { ExerciseType, WorkoutType } from "../types";
+import { ExerciseType, WorkoutType } from '../types';
 
 class StorageWrapper {
   static fetchWorkoutsIndexes() {
@@ -33,13 +33,26 @@ class StorageWrapper {
     return this.fetchWorkoutsIndexes().map(index => this.fetchWorkout(index));
   }
 
+  static fetchWorkoutString(index: number) {
+    return localStorage.getItem('workout-' + index);
+  }
+
   static fetchWorkout(index: number) {
-    return JSON.parse(localStorage.getItem('workout-' + index)) as WorkoutType;
+    return JSON.parse(this.fetchWorkoutString(index)) as WorkoutType;
   }
 
   static updateWorkout(index: number, workout: WorkoutType) {
     localStorage.setItem('workout-' + index, JSON.stringify(workout));
     return true;
+  }
+
+  // Write workout bruteforce into localStorage (should only be used for Composer class for importing)
+  static writeWorkout(workoutJSON: string) {
+    const workoutsIndexes = this.fetchWorkoutsIndexes();
+    const index = workoutsIndexes.length !== 0 ? workoutsIndexes[workoutsIndexes.length - 1] + 1 : 0;
+    this.addWorkoutIndex(index);
+
+    localStorage.setItem('workout-' + index, workoutJSON);
   }
 
   static createWorkout(workout: WorkoutType) {

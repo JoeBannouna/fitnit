@@ -1,0 +1,5 @@
+export default function workoutBar(workout, index) {
+    return (
+    /* html */
+    "<div class=\"flex workout\">\n      <button class=\"bg-white mx-6 my-3 px-4 py-3 rounded-l-lg mr-0 shadow flex w-full text-left\" onclick=\"UI.selectWorkout(this, '".concat(index, "')\">\n        <strong class=\"mr-2 text-lg self-center\">").concat(index + 1, "</strong> <span class=\"text-sm my-auto\">").concat(workout.name, "</span>\n      </button>\n      <button class=\"workout-gear-button bg-white my-3 px-4 py-3 ml-0 shadow flex text-gray-500 items-center\" onclick=\"UI.loadWorkout(this, '").concat(index, "')\">\n        <span class=\"ml-auto text-lg\"><i class=\"fas fa-cog duration-300\"></i></span>\n      </button>\n      <button class=\"bg-white mx-6 my-3 px-4 py-3 rounded-r-lg ml-0 shadow flex text-red-400 hover:text-red-600 items-center\" onclick=\"UI.showDeleteWorkoutAlert('").concat(index, "')\">\n        <span class=\"ml-auto text-lg\"><i class=\"far fa-trash-alt\"></i></span>\n      </button>\n    </div>"));
+}
