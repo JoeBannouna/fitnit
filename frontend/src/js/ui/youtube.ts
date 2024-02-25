@@ -2,6 +2,7 @@ import { YTClassType } from '../types';
 
 // Load youtube IFrame Player API code asynchronously
 const tag = document.createElement('script');
+tag.onload = () => window.dispatchEvent(new Event('ytLoaded'));
 tag.src = 'https://www.youtube.com/iframe_api';
 
 const firstScriptTag = document.getElementsByTagName('script')[0];

@@ -47,18 +47,7 @@ eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export */ __webpac
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
-eval("__webpack_require__.r(__webpack_exports__);\n/* harmony import */ var _ui_youtube__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./ui/youtube */ \"./src/js/ui/youtube.ts\");\n/* harmony import */ var _ui__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./ui */ \"./src/js/ui.ts\");\n/* harmony import */ var _models_Router__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./models/Router */ \"./src/js/models/Router.ts\");\n/* harmony import */ var _libs_swiped_events__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./libs/swiped-events */ \"./src/js/libs/swiped-events.js\");\n/* harmony import */ var _libs_swiped_events__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(_libs_swiped_events__WEBPACK_IMPORTED_MODULE_3__);\n/* harmony import */ var _ui_drag__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./ui/drag */ \"./src/js/ui/drag.ts\");\n/* harmony import */ var _models_Composer__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./models/Composer */ \"./src/js/models/Composer.ts\");\n/* provided dependency */ var $ = __webpack_require__(/*! jquery */ \"./node_modules/jquery/dist/jquery.js\");\n$('.loading-screen-content').fadeIn('slow');\n\n\n\n\n// @ts-ignore\nwindow.UI = _ui__WEBPACK_IMPORTED_MODULE_1__[\"default\"];\n// @ts-ignore\nwindow.Router = _models_Router__WEBPACK_IMPORTED_MODULE_2__[\"default\"];\nwindow.dispatchEvent(_models_Router__WEBPACK_IMPORTED_MODULE_2__[\"default\"].routeChanged);\n\n\nsetTimeout(function () { return $('.loading-screen').fadeOut('fast'); }, 1000);\n_models_Composer__WEBPACK_IMPORTED_MODULE_5__[\"default\"].exportWorkout(0).then(function (res) { return console.log(res); });\n\n\n//# sourceURL=webpack://fitness-webapp/./src/js/main.ts?");
-
-/***/ }),
-
-/***/ "./src/js/models/Composer.ts":
-/*!***********************************!*\
-  !*** ./src/js/models/Composer.ts ***!
-  \***********************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export */ __webpack_require__.d(__webpack_exports__, {\n/* harmony export */   \"default\": () => (__WEBPACK_DEFAULT_EXPORT__)\n/* harmony export */ });\n/* harmony import */ var _StorageWrapper__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./StorageWrapper */ \"./src/js/models/StorageWrapper.ts\");\nvar __awaiter = (undefined && undefined.__awaiter) || function (thisArg, _arguments, P, generator) {\n    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }\n    return new (P || (P = Promise))(function (resolve, reject) {\n        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }\n        function rejected(value) { try { step(generator[\"throw\"](value)); } catch (e) { reject(e); } }\n        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }\n        step((generator = generator.apply(thisArg, _arguments || [])).next());\n    });\n};\nvar __generator = (undefined && undefined.__generator) || function (thisArg, body) {\n    var _ = { label: 0, sent: function() { if (t[0] & 1) throw t[1]; return t[1]; }, trys: [], ops: [] }, f, y, t, g;\n    return g = { next: verb(0), \"throw\": verb(1), \"return\": verb(2) }, typeof Symbol === \"function\" && (g[Symbol.iterator] = function() { return this; }), g;\n    function verb(n) { return function (v) { return step([n, v]); }; }\n    function step(op) {\n        if (f) throw new TypeError(\"Generator is already executing.\");\n        while (g && (g = 0, op[0] && (_ = 0)), _) try {\n            if (f = 1, y && (t = op[0] & 2 ? y[\"return\"] : op[0] ? y[\"throw\"] || ((t = y[\"return\"]) && t.call(y), 0) : y.next) && !(t = t.call(y, op[1])).done) return t;\n            if (y = 0, t) op = [op[0] & 2, t.value];\n            switch (op[0]) {\n                case 0: case 1: t = op; break;\n                case 4: _.label++; return { value: op[1], done: false };\n                case 5: _.label++; y = op[1]; op = [0]; continue;\n                case 7: op = _.ops.pop(); _.trys.pop(); continue;\n                default:\n                    if (!(t = _.trys, t = t.length > 0 && t[t.length - 1]) && (op[0] === 6 || op[0] === 2)) { _ = 0; continue; }\n                    if (op[0] === 3 && (!t || (op[1] > t[0] && op[1] < t[3]))) { _.label = op[1]; break; }\n                    if (op[0] === 6 && _.label < t[1]) { _.label = t[1]; t = op; break; }\n                    if (t && _.label < t[2]) { _.label = t[2]; _.ops.push(op); break; }\n                    if (t[2]) _.ops.pop();\n                    _.trys.pop(); continue;\n            }\n            op = body.call(thisArg, _);\n        } catch (e) { op = [6, e]; y = 0; } finally { f = t = 0; }\n        if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };\n    }\n};\n\nvar Composer = /** @class */ (function () {\n    function Composer() {\n    }\n    Composer.compress = function (string, encoding) {\n        if (encoding === void 0) { encoding = 'gzip'; }\n        return __awaiter(this, void 0, void 0, function () {\n            var byteArray, cs, writer, result;\n            return __generator(this, function (_a) {\n                switch (_a.label) {\n                    case 0:\n                        byteArray = new TextEncoder().encode(string);\n                        cs = new CompressionStream(encoding);\n                        writer = cs.writable.getWriter();\n                        writer.write(byteArray);\n                        writer.close();\n                        return [4 /*yield*/, new Response(cs.readable).arrayBuffer()];\n                    case 1:\n                        result = _a.sent();\n                        return [2 /*return*/, result];\n                }\n            });\n        });\n    };\n    Composer.decompress = function (byteArray, encoding) {\n        if (encoding === void 0) { encoding = 'gzip'; }\n        return __awaiter(this, void 0, void 0, function () {\n            var cs, writer, result, _a, _b, error_1;\n            return __generator(this, function (_c) {\n                switch (_c.label) {\n                    case 0:\n                        cs = new DecompressionStream(encoding);\n                        writer = cs.writable.getWriter();\n                        writer.write(byteArray);\n                        writer.close();\n                        _c.label = 1;\n                    case 1:\n                        _c.trys.push([1, 3, , 4]);\n                        _b = (_a = new TextDecoder()).decode;\n                        return [4 /*yield*/, new Response(cs.readable).arrayBuffer()];\n                    case 2:\n                        result = _b.apply(_a, [_c.sent()]);\n                        return [3 /*break*/, 4];\n                    case 3:\n                        error_1 = _c.sent();\n                        result = '';\n                        return [3 /*break*/, 4];\n                    case 4: return [2 /*return*/, result];\n                }\n            });\n        });\n    };\n    Composer.arrayBufferToBase64 = function (buffer) {\n        var binary = '';\n        var bytes = new Uint8Array(buffer);\n        var len = bytes.byteLength;\n        for (var i = 0; i < len; i++) {\n            binary += String.fromCharCode(bytes[i]);\n        }\n        return window.btoa(binary);\n    };\n    Composer.base64ToArrayBuffer = function (base64) {\n        var binaryString = window.atob(base64);\n        var bytes = new Uint8Array(binaryString.length);\n        for (var i = 0; i < binaryString.length; i++) {\n            bytes[i] = binaryString.charCodeAt(i);\n        }\n        return bytes.buffer;\n    };\n    Composer.isJsonString = function (str) {\n        try {\n            JSON.parse(str);\n        }\n        catch (e) {\n            return false;\n        }\n        return true;\n    };\n    Composer.exportWorkout = function (workoutId) {\n        return __awaiter(this, void 0, void 0, function () {\n            var _a;\n            return __generator(this, function (_b) {\n                switch (_b.label) {\n                    case 0:\n                        _a = this.arrayBufferToBase64;\n                        return [4 /*yield*/, this.compress(_StorageWrapper__WEBPACK_IMPORTED_MODULE_0__[\"default\"].fetchWorkoutString(workoutId))];\n                    case 1: return [2 /*return*/, _a.apply(this, [_b.sent()])];\n                }\n            });\n        });\n    };\n    Composer.getWorkoutJSON = function (base64) {\n        return __awaiter(this, void 0, void 0, function () {\n            var workoutJSON;\n            return __generator(this, function (_a) {\n                switch (_a.label) {\n                    case 0: return [4 /*yield*/, Composer.decompress(Composer.base64ToArrayBuffer(base64))];\n                    case 1:\n                        workoutJSON = _a.sent();\n                        if (!this.isJsonString(workoutJSON))\n                            return [2 /*return*/, false];\n                        return [2 /*return*/, workoutJSON];\n                }\n            });\n        });\n    };\n    Composer.importWorkout = function (base64) {\n        return __awaiter(this, void 0, void 0, function () {\n            var workoutJSON;\n            return __generator(this, function (_a) {\n                switch (_a.label) {\n                    case 0: return [4 /*yield*/, this.getWorkoutJSON(base64)];\n                    case 1:\n                        workoutJSON = _a.sent();\n                        if (!workoutJSON)\n                            return [2 /*return*/, false];\n                        _StorageWrapper__WEBPACK_IMPORTED_MODULE_0__[\"default\"].writeWorkout(workoutJSON);\n                        return [2 /*return*/, true];\n                }\n            });\n        });\n    };\n    return Composer;\n}());\n/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (Composer);\n\n\n//# sourceURL=webpack://fitness-webapp/./src/js/models/Composer.ts?");
+eval("__webpack_require__.r(__webpack_exports__);\n/* harmony import */ var _ui_youtube__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./ui/youtube */ \"./src/js/ui/youtube.ts\");\n/* harmony import */ var _libs_swiped_events__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./libs/swiped-events */ \"./src/js/libs/swiped-events.js\");\n/* harmony import */ var _libs_swiped_events__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_libs_swiped_events__WEBPACK_IMPORTED_MODULE_1__);\n/* harmony import */ var _ui_drag__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./ui/drag */ \"./src/js/ui/drag.ts\");\n/* provided dependency */ var $ = __webpack_require__(/*! jquery */ \"./node_modules/jquery/dist/jquery.js\");\nvar __awaiter = (undefined && undefined.__awaiter) || function (thisArg, _arguments, P, generator) {\n    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }\n    return new (P || (P = Promise))(function (resolve, reject) {\n        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }\n        function rejected(value) { try { step(generator[\"throw\"](value)); } catch (e) { reject(e); } }\n        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }\n        step((generator = generator.apply(thisArg, _arguments || [])).next());\n    });\n};\nvar __generator = (undefined && undefined.__generator) || function (thisArg, body) {\n    var _ = { label: 0, sent: function() { if (t[0] & 1) throw t[1]; return t[1]; }, trys: [], ops: [] }, f, y, t, g;\n    return g = { next: verb(0), \"throw\": verb(1), \"return\": verb(2) }, typeof Symbol === \"function\" && (g[Symbol.iterator] = function() { return this; }), g;\n    function verb(n) { return function (v) { return step([n, v]); }; }\n    function step(op) {\n        if (f) throw new TypeError(\"Generator is already executing.\");\n        while (g && (g = 0, op[0] && (_ = 0)), _) try {\n            if (f = 1, y && (t = op[0] & 2 ? y[\"return\"] : op[0] ? y[\"throw\"] || ((t = y[\"return\"]) && t.call(y), 0) : y.next) && !(t = t.call(y, op[1])).done) return t;\n            if (y = 0, t) op = [op[0] & 2, t.value];\n            switch (op[0]) {\n                case 0: case 1: t = op; break;\n                case 4: _.label++; return { value: op[1], done: false };\n                case 5: _.label++; y = op[1]; op = [0]; continue;\n                case 7: op = _.ops.pop(); _.trys.pop(); continue;\n                default:\n                    if (!(t = _.trys, t = t.length > 0 && t[t.length - 1]) && (op[0] === 6 || op[0] === 2)) { _ = 0; continue; }\n                    if (op[0] === 3 && (!t || (op[1] > t[0] && op[1] < t[3]))) { _.label = op[1]; break; }\n                    if (op[0] === 6 && _.label < t[1]) { _.label = t[1]; t = op; break; }\n                    if (t && _.label < t[2]) { _.label = t[2]; _.ops.push(op); break; }\n                    if (t[2]) _.ops.pop();\n                    _.trys.pop(); continue;\n            }\n            op = body.call(thisArg, _);\n        } catch (e) { op = [6, e]; y = 0; } finally { f = t = 0; }\n        if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };\n    }\n};\n$('.loading-screen-content').fadeIn('slow');\n\n\n\nwindow.addEventListener('ytLoaded', function () { return __awaiter(void 0, void 0, void 0, function () {\n    var UI, Router;\n    return __generator(this, function (_a) {\n        switch (_a.label) {\n            case 0: return [4 /*yield*/, __webpack_require__.e(/*! import() */ \"src_js_ui_ts\").then(__webpack_require__.bind(__webpack_require__, /*! ./ui */ \"./src/js/ui.ts\"))];\n            case 1:\n                UI = (_a.sent()).default;\n                return [4 /*yield*/, __webpack_require__.e(/*! import() */ \"src_js_models_Router_ts\").then(__webpack_require__.bind(__webpack_require__, /*! ./models/Router */ \"./src/js/models/Router.ts\"))];\n            case 2:\n                Router = (_a.sent()).default;\n                // @ts-ignore\n                window.UI = UI;\n                // @ts-ignore\n                window.Router = Router;\n                window.dispatchEvent(Router.routeChanged);\n                setTimeout(function () { return $('.loading-screen').fadeOut('fast'); }, 1000);\n                return [2 /*return*/];\n        }\n    });\n}); });\n\n\n//# sourceURL=webpack://fitness-webapp/./src/js/main.ts?");
 
 /***/ }),
 
@@ -70,17 +59,6 @@ eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export */ __webpac
 
 "use strict";
 eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export */ __webpack_require__.d(__webpack_exports__, {\n/* harmony export */   \"default\": () => (__WEBPACK_DEFAULT_EXPORT__)\n/* harmony export */ });\n/* harmony import */ var _global__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../global */ \"./src/js/global.ts\");\n/* harmony import */ var _StorageWrapper__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./StorageWrapper */ \"./src/js/models/StorageWrapper.ts\");\n\n\n// Exercise class connects UI to backend (database or localStorage)\nvar Exercise = /** @class */ (function () {\n    function Exercise(workoutIndex, exercise) {\n        // Save the exercise to backend or localStorage\n        // Return exercise object to UI so it could be updated to the local state\n        if (_global__WEBPACK_IMPORTED_MODULE_0__.loggedIn) {\n        }\n        else {\n            if (_StorageWrapper__WEBPACK_IMPORTED_MODULE_1__[\"default\"].addExercise(workoutIndex, exercise)) {\n                _global__WEBPACK_IMPORTED_MODULE_0__.workouts[workoutIndex].exercises.push(exercise);\n            }\n        }\n    }\n    Exercise.update = function (workoutIndex, index, exercise) {\n        if (_global__WEBPACK_IMPORTED_MODULE_0__.loggedIn) {\n        }\n        else {\n            if (_StorageWrapper__WEBPACK_IMPORTED_MODULE_1__[\"default\"].updateExercise(workoutIndex, index, exercise)) {\n                _global__WEBPACK_IMPORTED_MODULE_0__.workouts[workoutIndex].exercises[index] = exercise;\n            }\n        }\n    };\n    Exercise.checkIfIdExists = function (id) {\n        // If logged in, make a database request\n        // If not, check localStorage\n    };\n    Exercise.delete = function (workoutIndex, index) {\n        if (_global__WEBPACK_IMPORTED_MODULE_0__.loggedIn) {\n        }\n        else {\n            if (_StorageWrapper__WEBPACK_IMPORTED_MODULE_1__[\"default\"].removeExercise(workoutIndex, index)) {\n                _global__WEBPACK_IMPORTED_MODULE_0__.workouts[workoutIndex].exercises.splice(index, 1);\n            }\n        }\n    };\n    return Exercise;\n}());\n/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (Exercise);\n\n\n//# sourceURL=webpack://fitness-webapp/./src/js/models/Exercise.ts?");
-
-/***/ }),
-
-/***/ "./src/js/models/Router.ts":
-/*!*********************************!*\
-  !*** ./src/js/models/Router.ts ***!
-  \*********************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export */ __webpack_require__.d(__webpack_exports__, {\n/* harmony export */   \"default\": () => (__WEBPACK_DEFAULT_EXPORT__)\n/* harmony export */ });\nvar Router = /** @class */ (function () {\n    /**\n     * The Router's constructor should always be private to prevent direct\n     * construction calls with the `new` operator.\n     */\n    function Router() {\n        var _this = this;\n        this.currentPage = /^$/;\n        this.routeChanged = new Event('routeChanged');\n        window.addEventListener('popstate', function () {\n            window.dispatchEvent(_this.routeChanged);\n            _this.getCurrentPageData();\n        });\n    }\n    /**\n     * The static method that controls the access to the singleton instance.\n     *\n     * This implementation let you subclass the Router class while keeping\n     * just one instance of each subclass around.\n     */\n    Router.getInstance = function () {\n        if (!Router.instance) {\n            Router.instance = new Router();\n        }\n        return Router.instance;\n    };\n    /**\n     * Finally, any singleton should define some business logic, which can be\n     * executed on its instance.\n     */\n    Router.prototype.getCurrentPageData = function () {\n        var layers = window.location.pathname == '/' ? [''] : window.location.pathname.split('/').filter(function (val) { return val != ''; });\n        var arg = layers.join('/');\n        var found = false;\n        var vals = [];\n        for (var i = 0; i < Router.pages.length; i++)\n            if (Router.pages[i].reg.test(arg)) {\n                found = true;\n                this.currentPage = Router.pages[i].reg;\n                for (var j = 0; j < Router.pages[i].tokens.length; j++)\n                    vals.push(layers[Router.pages[i].tokens[j]]);\n                break;\n            }\n        if (found) {\n            return vals;\n        }\n        else {\n            this.currentPage = /^$/;\n            return false;\n        }\n    };\n    Router.prototype.goTo = function (location) {\n        window.history.pushState(null, null, location);\n        this.getCurrentPageData();\n        window.dispatchEvent(this.routeChanged);\n    };\n    Router.prototype.replace = function (location) {\n        window.history.replaceState(null, null, location);\n        this.getCurrentPageData();\n        window.dispatchEvent(this.routeChanged);\n    };\n    Router.pages = [{ reg: /workout\\/\\w.*/, tokens: [1] }];\n    return Router;\n}());\n/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (Router.getInstance());\n\n\n//# sourceURL=webpack://fitness-webapp/./src/js/models/Router.ts?");
 
 /***/ }),
 
@@ -103,17 +81,6 @@ eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export */ __webpac
 
 "use strict";
 eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export */ __webpack_require__.d(__webpack_exports__, {\n/* harmony export */   \"default\": () => (__WEBPACK_DEFAULT_EXPORT__)\n/* harmony export */ });\n/* harmony import */ var _global__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../global */ \"./src/js/global.ts\");\n/* harmony import */ var _StorageWrapper__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./StorageWrapper */ \"./src/js/models/StorageWrapper.ts\");\nvar __assign = (undefined && undefined.__assign) || function () {\n    __assign = Object.assign || function(t) {\n        for (var s, i = 1, n = arguments.length; i < n; i++) {\n            s = arguments[i];\n            for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p))\n                t[p] = s[p];\n        }\n        return t;\n    };\n    return __assign.apply(this, arguments);\n};\n\n\n// Workout class connects UI to backend (database or localStorage)\nvar Workout = /** @class */ (function () {\n    function Workout(workout) {\n        // Save the workout to backend or localStorage\n        // Return workout object to UI so it could be updated to the local state\n        if (_global__WEBPACK_IMPORTED_MODULE_0__.loggedIn) {\n        }\n        else {\n            if (_StorageWrapper__WEBPACK_IMPORTED_MODULE_1__[\"default\"].createWorkout(workout)) {\n                _global__WEBPACK_IMPORTED_MODULE_0__.workouts.push(workout);\n            }\n        }\n    }\n    Workout.updateExercisesPosition = function (index, exercises) {\n        if (_global__WEBPACK_IMPORTED_MODULE_0__.loggedIn) {\n        }\n        else {\n            if (_StorageWrapper__WEBPACK_IMPORTED_MODULE_1__[\"default\"].updateExercises(index, exercises)) {\n                _global__WEBPACK_IMPORTED_MODULE_0__.workouts[index].exercises = exercises;\n            }\n        }\n    };\n    Workout.checkIfIdExists = function (id) {\n        // If logged in, make a database request\n        // If not, check localStorage\n    };\n    Workout.editName = function (index, name) {\n        // Check if user is logged in\n        // If yes, save it in database\n        // If no, save it in localStorage\n        if (_global__WEBPACK_IMPORTED_MODULE_0__.loggedIn) {\n        }\n        else {\n            if (_StorageWrapper__WEBPACK_IMPORTED_MODULE_1__[\"default\"].updateWorkout(index, __assign(__assign({}, _global__WEBPACK_IMPORTED_MODULE_0__.workouts[index]), { name: name }))) {\n                _global__WEBPACK_IMPORTED_MODULE_0__.workouts[index].name = name;\n            }\n        }\n    };\n    Workout.editRest = function (index, rest) {\n        // Check if user is logged in\n        // If yes, save it in database\n        // If no, save it in localStorage\n        if (_global__WEBPACK_IMPORTED_MODULE_0__.loggedIn) {\n        }\n        else {\n            if (_StorageWrapper__WEBPACK_IMPORTED_MODULE_1__[\"default\"].updateWorkout(index, __assign(__assign({}, _global__WEBPACK_IMPORTED_MODULE_0__.workouts[index]), { rest: rest }))) {\n                _global__WEBPACK_IMPORTED_MODULE_0__.workouts[index].rest = rest;\n            }\n        }\n    };\n    Workout.moveExercise = function (workoutId, exerciseId, newIndex) {\n        // Change position of both exercises in database / localStorage\n        return true;\n    };\n    Workout.delete = function (index) {\n        if (_global__WEBPACK_IMPORTED_MODULE_0__.loggedIn) {\n        }\n        else {\n            if (_StorageWrapper__WEBPACK_IMPORTED_MODULE_1__[\"default\"].deleteWorkout(index)) {\n                _global__WEBPACK_IMPORTED_MODULE_0__.workouts.splice(index, 1);\n            }\n        }\n    };\n    return Workout;\n}());\n/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (Workout);\n\n\n//# sourceURL=webpack://fitness-webapp/./src/js/models/Workout.ts?");
-
-/***/ }),
-
-/***/ "./src/js/ui.ts":
-/*!**********************!*\
-  !*** ./src/js/ui.ts ***!
-  \**********************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export */ __webpack_require__.d(__webpack_exports__, {\n/* harmony export */   \"default\": () => (__WEBPACK_DEFAULT_EXPORT__)\n/* harmony export */ });\n/* harmony import */ var _ui_workout__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./ui/workout */ \"./src/js/ui/workout.ts\");\n/* harmony import */ var _ui_exercise__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./ui/exercise */ \"./src/js/ui/exercise.ts\");\n/* provided dependency */ var $ = __webpack_require__(/*! jquery */ \"./node_modules/jquery/dist/jquery.js\");\nvar __assign = (undefined && undefined.__assign) || function () {\n    __assign = Object.assign || function(t) {\n        for (var s, i = 1, n = arguments.length; i < n; i++) {\n            s = arguments[i];\n            for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p))\n                t[p] = s[p];\n        }\n        return t;\n    };\n    return __assign.apply(this, arguments);\n};\n\n\n// Navbar dropdown button\n$('.main-dropdown-button').on('click', function () { return $('#main-dropdown').slideToggle(); });\n// Navbar links selection\nvar navbarOptions = document.querySelectorAll('.main-dropdown-ul li');\nnavbarOptions.forEach(function (li) {\n    li.onclick = function () {\n        navbarOptions.forEach(function (childLi) { return childLi.classList.remove('selected'); });\n        li.classList.add('selected');\n    };\n});\n// Control panel section toggle\nvar controlPanelSectionIsOpen = !($(window).width() < 1024);\nvar controlPanelButton = document.querySelector('.control-panel-button');\nvar controlPanelSection = document.querySelector('.control-panel');\nvar timerSection = document.querySelector('.timer-section');\ncontrolPanelButton.innerHTML = controlPanelSectionIsOpen ? '❱' : '❰';\nfunction controlPanelPanelToggle() {\n    var isMobileScreen = $(window).width() < 1024;\n    if (controlPanelSectionIsOpen) {\n        controlPanelSection.style.width = '0';\n        timerSection.style.width = '100%';\n        controlPanelButton.innerHTML = '❰';\n        isMobileScreen ? (controlPanelButton.style.transform = 'translateX(-20px)') : '';\n    }\n    else {\n        controlPanelSection.style.width = isMobileScreen ? '100%' : '25%';\n        timerSection.style.width = isMobileScreen ? '0%' : '75%';\n        isMobileScreen ? (controlPanelButton.style.transform = 'translateX(0px) scale(-1)') : (controlPanelButton.innerHTML = '❱');\n    }\n    controlPanelSectionIsOpen = !controlPanelSectionIsOpen;\n}\ncontrolPanelButton.onclick = controlPanelPanelToggle;\ncontrolPanelButton.addEventListener('swiped-left', controlPanelPanelToggle);\ncontrolPanelButton.addEventListener('swiped-right', controlPanelPanelToggle);\n// Exporting global functions\nvar UI = __assign(__assign({}, _ui_workout__WEBPACK_IMPORTED_MODULE_0__), _ui_exercise__WEBPACK_IMPORTED_MODULE_1__);\n/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (UI);\n\n\n//# sourceURL=webpack://fitness-webapp/./src/js/ui.ts?");
 
 /***/ }),
 
@@ -293,17 +260,6 @@ eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export */ __webpac
 
 /***/ }),
 
-/***/ "./src/js/ui/templates/shareWorkoutModal.ts":
-/*!**************************************************!*\
-  !*** ./src/js/ui/templates/shareWorkoutModal.ts ***!
-  \**************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export */ __webpack_require__.d(__webpack_exports__, {\n/* harmony export */   \"default\": () => (/* binding */ shareWorkoutModal)\n/* harmony export */ });\nfunction shareWorkoutModal(link) {\n    return (\n    /* html */\n    \"<div\\n      class=\\\"fixed z-50 inset-0 overflow-y-auto ease-out duration-300 hidden opacity-0\\\"\\n      aria-labelledby=\\\"modal-title\\\"\\n      role=\\\"dialog\\\"\\n      aria-modal=\\\"true\\\"\\n      id=\\\"modal-element\\\"\\n    >\\n      <div class=\\\"flex items-end justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0\\\">\\n        <div class=\\\"fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity\\\" aria-hidden=\\\"true\\\"></div>\\n        <span class=\\\"hidden sm:inline-block sm:align-middle sm:h-screen\\\" aria-hidden=\\\"true\\\">&#8203;</span>\\n        <div class=\\\"modal-rect w-full inline-block align-bottom bg-gray-100 rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95\\\" id=\\\"modal-rect\\\">\\n          <div class=\\\"px-4 pt-5 pb-4 sm:p-6 sm:pb-4\\\">\\n            <h2 class=\\\"text-lg text-center mb-4\\\">Share Workout</h2>\\n            \\n            <div class=\\\"flex mt-6 flex-col\\\">\\n              <div class=\\\"text-center mr-3 h-full w-full\\\">\\n                <input class=\\\"rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-base font-medium text-gray-700 focus:outline-none w-full h-12\\\" placeholder=\\\"Workout link\\\" autocomplete=\\\"off\\\" readonly value=\\\"\".concat(link, \"\\\" id=\\\"shareLinkInput\\\">\\n              </div>\\n            </div>\\n          </div>\\n          <div class=\\\"px-4 py-3 sm:px-6 text-right\\\">\\n            <button type=\\\"button\\\" class=\\\"w-full inline-flex justify-center rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-base font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 sm:mt-0 sm:ml-3 sm:w-auto sm:text-sm\\\" id=\\\"modal-cancel-button\\\">\\n              Back\\n            </button>\\n            <button type=\\\"button\\\" class=\\\"w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-blue-600 text-base font-medium text-white hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 sm:ml-3 sm:w-auto sm:text-sm mt-3\\\" onclick=\\\"document.getElementById('shareLinkInput').select(); document.getElementById('shareLinkInput').setSelectionRange(0, 99999); navigator.clipboard.writeText(document.getElementById('shareLinkInput').value);\\\">\\n              Copy\\n            </button>\\n          </div>\\n        </div>\\n      </div>\\n    </div>\"));\n}\n\n\n//# sourceURL=webpack://fitness-webapp/./src/js/ui/templates/shareWorkoutModal.ts?");
-
-/***/ }),
-
 /***/ "./src/js/ui/templates/videoExerciseModalContent.ts":
 /*!**********************************************************!*\
   !*** ./src/js/ui/templates/videoExerciseModalContent.ts ***!
@@ -337,17 +293,6 @@ eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export */ __webpac
 
 /***/ }),
 
-/***/ "./src/js/ui/workout.ts":
-/*!******************************!*\
-  !*** ./src/js/ui/workout.ts ***!
-  \******************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export */ __webpack_require__.d(__webpack_exports__, {\n/* harmony export */   \"deleteWorkout\": () => (/* binding */ deleteWorkout),\n/* harmony export */   \"loadWorkout\": () => (/* binding */ loadWorkout),\n/* harmony export */   \"selectWorkout\": () => (/* binding */ selectWorkout),\n/* harmony export */   \"showDeleteWorkoutAlert\": () => (/* binding */ showDeleteWorkoutAlert)\n/* harmony export */ });\n/* harmony import */ var _global__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../global */ \"./src/js/global.ts\");\n/* harmony import */ var _models_Composer__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../models/Composer */ \"./src/js/models/Composer.ts\");\n/* harmony import */ var _models_Router__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../models/Router */ \"./src/js/models/Router.ts\");\n/* harmony import */ var _models_Workout__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../models/Workout */ \"./src/js/models/Workout.ts\");\n/* harmony import */ var _animations__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./animations */ \"./src/js/ui/animations.ts\");\n/* harmony import */ var _exercise__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./exercise */ \"./src/js/ui/exercise.ts\");\n/* harmony import */ var _player__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./player */ \"./src/js/ui/player.ts\");\n/* harmony import */ var _templates__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./templates */ \"./src/js/ui/templates.ts\");\n/* harmony import */ var _templates_shareWorkoutModal__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./templates/shareWorkoutModal */ \"./src/js/ui/templates/shareWorkoutModal.ts\");\nvar __assign = (undefined && undefined.__assign) || function () {\n    __assign = Object.assign || function(t) {\n        for (var s, i = 1, n = arguments.length; i < n; i++) {\n            s = arguments[i];\n            for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p))\n                t[p] = s[p];\n        }\n        return t;\n    };\n    return __assign.apply(this, arguments);\n};\nvar __awaiter = (undefined && undefined.__awaiter) || function (thisArg, _arguments, P, generator) {\n    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }\n    return new (P || (P = Promise))(function (resolve, reject) {\n        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }\n        function rejected(value) { try { step(generator[\"throw\"](value)); } catch (e) { reject(e); } }\n        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }\n        step((generator = generator.apply(thisArg, _arguments || [])).next());\n    });\n};\nvar __generator = (undefined && undefined.__generator) || function (thisArg, body) {\n    var _ = { label: 0, sent: function() { if (t[0] & 1) throw t[1]; return t[1]; }, trys: [], ops: [] }, f, y, t, g;\n    return g = { next: verb(0), \"throw\": verb(1), \"return\": verb(2) }, typeof Symbol === \"function\" && (g[Symbol.iterator] = function() { return this; }), g;\n    function verb(n) { return function (v) { return step([n, v]); }; }\n    function step(op) {\n        if (f) throw new TypeError(\"Generator is already executing.\");\n        while (g && (g = 0, op[0] && (_ = 0)), _) try {\n            if (f = 1, y && (t = op[0] & 2 ? y[\"return\"] : op[0] ? y[\"throw\"] || ((t = y[\"return\"]) && t.call(y), 0) : y.next) && !(t = t.call(y, op[1])).done) return t;\n            if (y = 0, t) op = [op[0] & 2, t.value];\n            switch (op[0]) {\n                case 0: case 1: t = op; break;\n                case 4: _.label++; return { value: op[1], done: false };\n                case 5: _.label++; y = op[1]; op = [0]; continue;\n                case 7: op = _.ops.pop(); _.trys.pop(); continue;\n                default:\n                    if (!(t = _.trys, t = t.length > 0 && t[t.length - 1]) && (op[0] === 6 || op[0] === 2)) { _ = 0; continue; }\n                    if (op[0] === 3 && (!t || (op[1] > t[0] && op[1] < t[3]))) { _.label = op[1]; break; }\n                    if (op[0] === 6 && _.label < t[1]) { _.label = t[1]; t = op; break; }\n                    if (t && _.label < t[2]) { _.label = t[2]; _.ops.push(op); break; }\n                    if (t[2]) _.ops.pop();\n                    _.trys.pop(); continue;\n            }\n            op = body.call(thisArg, _);\n        } catch (e) { op = [6, e]; y = 0; } finally { f = t = 0; }\n        if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };\n    }\n};\n\n\n\n\n\n\n\n\n\n// Rendering workouts\nvar workoutsContainer = document.getElementById('workouts-container');\nfunction renderWorkouts() {\n    if (_global__WEBPACK_IMPORTED_MODULE_0__.workouts.length) {\n        var workoutsHTML = _global__WEBPACK_IMPORTED_MODULE_0__.workouts.map(_templates__WEBPACK_IMPORTED_MODULE_7__.workoutBar).join('');\n        workoutsContainer.innerHTML = workoutsHTML;\n    }\n    else if (!_global__WEBPACK_IMPORTED_MODULE_0__.workouts.length && !_global__WEBPACK_IMPORTED_MODULE_0__.loggedIn) {\n        workoutsContainer.innerHTML =\n            /* html */\n            \"<div class=\\\"flex justify-center items-center text-center px-4 py-20\\\">\\n        Can't find your workouts? Sign in to access them.\\n      </div>\";\n    }\n}\nrenderWorkouts();\n// Toggling between All Workouts section and a single workout section\nvar controlPanelButton = document.querySelector('.control-panel-button');\nvar allWorkoutSection = document.getElementById('all-workouts-section');\nvar singleWorkoutSection = document.getElementById('single-workout-section');\nvar selectedWorkoutSection = document.getElementById('selected-workout-section');\nvar workOutBackButton = document.getElementById('workout-back-button');\nvar selectedWorkoutBackButton = document.getElementById('selected-workout-back-button');\nvar workoutsIsOpen = true;\nfunction toggleWorkoutsSection(e, sectionElement, callback, controlPanelButtonHidden) {\n    if (e === void 0) { e = null; }\n    if (sectionElement === void 0) { sectionElement = singleWorkoutSection; }\n    if (callback === void 0) { callback = function () { }; }\n    if (controlPanelButtonHidden === void 0) { controlPanelButtonHidden = true; }\n    if (workoutsIsOpen) {\n        allWorkoutSection.style.width = '0';\n        sectionElement.style.width = '100%';\n        controlPanelButtonHidden && (0,_animations__WEBPACK_IMPORTED_MODULE_4__.fadeOut)(controlPanelButton);\n    }\n    else {\n        renderWorkouts();\n        allWorkoutSection.style.width = '100%';\n        sectionElement.style.width = '0';\n        controlPanelButtonHidden && (0,_animations__WEBPACK_IMPORTED_MODULE_4__.fadeIn)(controlPanelButton);\n    }\n    workoutsIsOpen = !workoutsIsOpen;\n    callback();\n}\n// Loading a workout\nvar changeWorkoutNameInput = document.getElementById('change-workout-name-input');\nvar changeWorkoutNameForm = document.getElementById('change-workout-name-form');\nvar changeWorkoutNameButton = document.getElementById('change-workout-name-button');\nvar changeWorkoutNameEditButton = document.getElementById('change-workout-name-edit-button');\nvar restIntervalsInput = document.getElementById('rest-input');\nvar restIntervalsSpan = document.getElementById('rest-span');\nvar restIntervalsButton = document.getElementById('rest-button');\nvar restIntervalsForm = document.getElementById('rest-form');\nfunction changeWorkoutName() {\n    changeWorkoutNameButton.style.display = 'block';\n    changeWorkoutNameEditButton.style.display = 'none';\n    changeWorkoutNameInput.readOnly = false;\n    changeWorkoutNameInput.focus();\n    changeWorkoutNameInput.style.background = 'white';\n    changeWorkoutNameInput.style.color = 'black';\n}\nfunction defaultWorkoutNameUI() {\n    changeWorkoutNameButton.style.display = 'none';\n    changeWorkoutNameEditButton.style.display = 'block';\n    changeWorkoutNameInput.readOnly = true;\n    changeWorkoutNameInput.style.background = 'transparent';\n    changeWorkoutNameInput.style.color = 'white';\n}\nfunction loadWorkout(button, index) {\n    if (button)\n        button.blur();\n    // SET CURRENT WORKOUT ID\n    if (index != null)\n        (0,_global__WEBPACK_IMPORTED_MODULE_0__.modifyCurrentWorkout)(index);\n    // RENDERING HTML\n    // Title area\n    changeWorkoutNameInput.value = _global__WEBPACK_IMPORTED_MODULE_0__.currentWorkout.name;\n    defaultWorkoutNameUI();\n    // Resr intervals\n    restIntervalsInput.value = _global__WEBPACK_IMPORTED_MODULE_0__.currentWorkout.rest.toString();\n    restIntervalsSpan.innerHTML = _global__WEBPACK_IMPORTED_MODULE_0__.currentWorkout.rest.toString();\n    // Exercises\n    (0,_exercise__WEBPACK_IMPORTED_MODULE_5__.renderExercisesHTML)();\n    // ANIMATE\n    toggleWorkoutsSection();\n}\n// Edit a workout\nfunction saveWorkoutName(e) {\n    e.preventDefault && e.preventDefault();\n    _models_Workout__WEBPACK_IMPORTED_MODULE_3__[\"default\"].editName(_global__WEBPACK_IMPORTED_MODULE_0__.currentWorkoutIndex, changeWorkoutNameInput.value);\n    _global__WEBPACK_IMPORTED_MODULE_0__.currentWorkout.name = changeWorkoutNameInput.value;\n    defaultWorkoutNameUI();\n}\nchangeWorkoutNameEditButton.onclick = changeWorkoutName;\nchangeWorkoutNameForm.onsubmit = saveWorkoutName;\nworkOutBackButton.onclick = toggleWorkoutsSection;\nselectedWorkoutBackButton.onclick = function () { return toggleWorkoutsSection(null, selectedWorkoutSection, deselectWorkout, false); };\nrestIntervalsButton.onclick = function () {\n    restIntervalsForm.children[2].disabled = false;\n    restIntervalsForm.classList.remove('hidden');\n    setTimeout(function () {\n        restIntervalsForm.classList.remove('opacity-0');\n        restIntervalsForm.classList.add('opacity-100');\n        restIntervalsInput.focus();\n    }, 0);\n};\nrestIntervalsInput.onblur = function () {\n    restIntervalsForm.classList.remove('opacity-100');\n    restIntervalsForm.classList.add('opacity-0');\n    setTimeout(function () {\n        restIntervalsForm.classList.add('hidden');\n        restIntervalsInput.value = _global__WEBPACK_IMPORTED_MODULE_0__.currentWorkout.rest.toString();\n    }, 300);\n};\nrestIntervalsForm.onsubmit = function (e) {\n    e.preventDefault();\n    e.submitter.disabled = true;\n    _models_Workout__WEBPACK_IMPORTED_MODULE_3__[\"default\"].editRest(_global__WEBPACK_IMPORTED_MODULE_0__.currentWorkoutIndex, parseFloat(restIntervalsInput.value));\n    restIntervalsSpan.innerHTML = restIntervalsInput.value;\n    restIntervalsForm.classList.remove('opacity-100');\n    restIntervalsForm.classList.add('opacity-0');\n    setTimeout(function () {\n        restIntervalsForm.classList.add('hidden');\n    }, 300);\n};\n// Creating a new workout\nvar newWorkoutButton = document.getElementById('add-workout-button');\nnewWorkoutButton.onclick = function () {\n    (0,_animations__WEBPACK_IMPORTED_MODULE_4__.renderModal)(function () { return (0,_templates__WEBPACK_IMPORTED_MODULE_7__.newWorkoutModal)(); });\n    var form = document.getElementById('modal-rect');\n    var name = document.getElementById('workout-name');\n    name.focus();\n    form.onsubmit = function (e) {\n        e.preventDefault();\n        e.submitter.disabled = true;\n        new _models_Workout__WEBPACK_IMPORTED_MODULE_3__[\"default\"]({\n            name: name.value,\n            rest: 5,\n            exercises: [],\n        });\n        renderWorkouts();\n        (0,_animations__WEBPACK_IMPORTED_MODULE_4__.hideModal)(document.getElementById('modal-container').children[0]);\n        loadWorkout(null, _global__WEBPACK_IMPORTED_MODULE_0__.workouts.length - 1);\n    };\n};\nfunction showDeleteWorkoutAlert(index) {\n    (0,_animations__WEBPACK_IMPORTED_MODULE_4__.renderAlert)(function () { return (0,_templates__WEBPACK_IMPORTED_MODULE_7__.deleteAlert)('Delete workout', 'Are you sure you want to delete this item?', \"UI.deleteWorkout(this, \".concat(index, \")\")); });\n    document.getElementById('alert-cancel-button').focus();\n}\nfunction deleteWorkout(button, index) {\n    button.disabled = true;\n    _models_Workout__WEBPACK_IMPORTED_MODULE_3__[\"default\"][\"delete\"](index);\n    renderWorkouts();\n    (0,_animations__WEBPACK_IMPORTED_MODULE_4__.fadeOut)(document.getElementById('alert-container').children[0]);\n}\nfunction deselectWorkout() {\n    (0,_global__WEBPACK_IMPORTED_MODULE_0__.modifyCurrentExercise)(null);\n    (0,_global__WEBPACK_IMPORTED_MODULE_0__.modifyCurrentWorkout)(null);\n    (0,_player__WEBPACK_IMPORTED_MODULE_6__.resetCurrentActivity)();\n    document.removeEventListener('keypress', function (e) {\n        if (e.code == 'Space') {\n            (0,_player__WEBPACK_IMPORTED_MODULE_6__.togglePlay)(undefined, true);\n        }\n    });\n    var data = _models_Router__WEBPACK_IMPORTED_MODULE_2__[\"default\"].getCurrentPageData();\n    if (_models_Router__WEBPACK_IMPORTED_MODULE_2__[\"default\"].currentPage.test('workout/something') && data)\n        _models_Router__WEBPACK_IMPORTED_MODULE_2__[\"default\"].replace('/');\n    document.getElementById('timer-section-cover').classList.remove('hidden');\n    document.getElementById('timer-title').innerHTML = 'Current Exercise';\n    document.getElementById('timer-number').innerHTML = '60';\n}\nfunction selectWorkout(button, index) {\n    if (button)\n        button.blur();\n    (0,_global__WEBPACK_IMPORTED_MODULE_0__.modifyCurrentWorkout)(index);\n    _global__WEBPACK_IMPORTED_MODULE_0__.currentWorkout.exercises.length ? (0,_global__WEBPACK_IMPORTED_MODULE_0__.modifyCurrentExercise)(0) : (0,_global__WEBPACK_IMPORTED_MODULE_0__.modifyCurrentExercise)(null);\n    // Title area\n    document.getElementById('workout-name-input').value = _global__WEBPACK_IMPORTED_MODULE_0__.currentWorkout.name;\n    // Info area\n    // document.getElementById('workout-info-box').innerHTML\n    // Exercises\n    (0,_exercise__WEBPACK_IMPORTED_MODULE_5__.renderSelectedWorkoutExercisesHTML)();\n    (0,_player__WEBPACK_IMPORTED_MODULE_6__.selectCurrentActivity)();\n    document.getElementById('timer-section-cover').classList.add('hidden');\n    toggleWorkoutsSection(null, selectedWorkoutSection, function () { }, false);\n    document.addEventListener('keypress', function (e) {\n        if (e.code == 'Space') {\n            (0,_player__WEBPACK_IMPORTED_MODULE_6__.togglePlay)(undefined, true);\n        }\n    });\n}\nvar importWorkoutBox = document.getElementById('import-workout-box');\nvar importWorkoutButton = importWorkoutBox.children[1];\nvar exportWorkoutBox = document.getElementById('export-workout-box');\nvar exportWorkoutButton = exportWorkoutBox.children[0];\nexportWorkoutButton.onclick = function () {\n    _models_Composer__WEBPACK_IMPORTED_MODULE_1__[\"default\"].exportWorkout(_global__WEBPACK_IMPORTED_MODULE_0__.currentWorkoutIndex).then(function (res) {\n        var link = window.location.origin + '/workout/' + encodeURIComponent(res);\n        (0,_animations__WEBPACK_IMPORTED_MODULE_4__.renderModal)(function () { return (0,_templates_shareWorkoutModal__WEBPACK_IMPORTED_MODULE_8__[\"default\"])(link); });\n    });\n};\nimportWorkoutButton.onclick = function () {\n    new _models_Workout__WEBPACK_IMPORTED_MODULE_3__[\"default\"](__assign({}, _global__WEBPACK_IMPORTED_MODULE_0__.currentWorkout));\n    selectedWorkoutBackButton.click();\n};\nwindow.addEventListener('routeChanged', function () { return __awaiter(void 0, void 0, void 0, function () {\n    var data, compressedWorkout, workoutJSON;\n    return __generator(this, function (_a) {\n        switch (_a.label) {\n            case 0:\n                data = _models_Router__WEBPACK_IMPORTED_MODULE_2__[\"default\"].getCurrentPageData();\n                if (!(_models_Router__WEBPACK_IMPORTED_MODULE_2__[\"default\"].currentPage.test('workout/something') && data)) return [3 /*break*/, 2];\n                compressedWorkout = decodeURIComponent(data[0]);\n                return [4 /*yield*/, _models_Composer__WEBPACK_IMPORTED_MODULE_1__[\"default\"].getWorkoutJSON(compressedWorkout)];\n            case 1:\n                workoutJSON = _a.sent();\n                if (workoutJSON) {\n                    importWorkoutBox.classList.remove('hidden');\n                    (0,_global__WEBPACK_IMPORTED_MODULE_0__.setSharedWorkout)(workoutJSON);\n                    selectWorkout(null, -1);\n                }\n                else {\n                    (0,_global__WEBPACK_IMPORTED_MODULE_0__.setSharedWorkout)(\"{\\\"name\\\": \\\"Error, invalid link\\\", \\\"res\\\": 1, \\\"exercises\\\": [] }\");\n                    selectWorkout(null, -1);\n                }\n                return [3 /*break*/, 3];\n            case 2:\n                importWorkoutBox.classList.add('hidden');\n                _a.label = 3;\n            case 3: return [2 /*return*/];\n        }\n    });\n}); });\n\n\n\n//# sourceURL=webpack://fitness-webapp/./src/js/ui/workout.ts?");
-
-/***/ }),
-
 /***/ "./src/js/ui/youtube.ts":
 /*!******************************!*\
   !*** ./src/js/ui/youtube.ts ***!
@@ -355,7 +300,7 @@ eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export */ __webpac
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
-eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export */ __webpack_require__.d(__webpack_exports__, {\n/* harmony export */   \"cueVideoFromUrl\": () => (/* binding */ cueVideoFromUrl),\n/* harmony export */   \"getYoutubeVideoThumbnailUrl\": () => (/* binding */ getYoutubeVideoThumbnailUrl),\n/* harmony export */   \"onYouTubeIframeAPIReady\": () => (/* binding */ onYouTubeIframeAPIReady),\n/* harmony export */   \"youtube_parser\": () => (/* binding */ youtube_parser)\n/* harmony export */ });\n// Load youtube IFrame Player API code asynchronously\nvar tag = document.createElement('script');\ntag.src = 'https://www.youtube.com/iframe_api';\nvar firstScriptTag = document.getElementsByTagName('script')[0];\nfirstScriptTag.parentNode.insertBefore(tag, firstScriptTag);\n// Get video ID from youtube video URL\nfunction youtube_parser(url) {\n    var regExp = /^.*((youtu.be\\/)|(v\\/)|(\\/u\\/\\w\\/)|(embed\\/)|(watch\\?))\\??v?=?([^#&?]*).*/;\n    var match = url.match(regExp);\n    return match && match[7].length == 11 ? match[7] : false;\n}\n// Load IFrame player API\nvar playerObj;\nfunction onYouTubeIframeAPIReady(callback) {\n    if (callback === void 0) { callback = function () { }; }\n    // @ts-ignore\n    playerObj = new YT.Player('player', {\n        events: {\n            onReady: callback,\n        },\n    });\n    return playerObj;\n}\n// Load a video\nfunction cueVideoFromUrl(url, seconds) {\n    if (seconds === void 0) { seconds = false; }\n    if (seconds)\n        playerObj.cueVideoById({ videoId: youtube_parser(url), startSeconds: seconds.start, endSeconds: seconds.end });\n    else\n        playerObj.cueVideoById({ videoId: youtube_parser(url), startSeconds: 0 });\n}\nfunction getYoutubeVideoThumbnailUrl(url) {\n    var id = youtube_parser(url);\n    return \"https://img.youtube.com/vi/\".concat(id, \"/mqdefault.jpg\");\n}\n\n\n//# sourceURL=webpack://fitness-webapp/./src/js/ui/youtube.ts?");
+eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export */ __webpack_require__.d(__webpack_exports__, {\n/* harmony export */   \"cueVideoFromUrl\": () => (/* binding */ cueVideoFromUrl),\n/* harmony export */   \"getYoutubeVideoThumbnailUrl\": () => (/* binding */ getYoutubeVideoThumbnailUrl),\n/* harmony export */   \"onYouTubeIframeAPIReady\": () => (/* binding */ onYouTubeIframeAPIReady),\n/* harmony export */   \"youtube_parser\": () => (/* binding */ youtube_parser)\n/* harmony export */ });\n// Load youtube IFrame Player API code asynchronously\nvar tag = document.createElement('script');\ntag.onload = function () { return window.dispatchEvent(new Event('ytLoaded')); };\ntag.src = 'https://www.youtube.com/iframe_api';\nvar firstScriptTag = document.getElementsByTagName('script')[0];\nfirstScriptTag.parentNode.insertBefore(tag, firstScriptTag);\n// Get video ID from youtube video URL\nfunction youtube_parser(url) {\n    var regExp = /^.*((youtu.be\\/)|(v\\/)|(\\/u\\/\\w\\/)|(embed\\/)|(watch\\?))\\??v?=?([^#&?]*).*/;\n    var match = url.match(regExp);\n    return match && match[7].length == 11 ? match[7] : false;\n}\n// Load IFrame player API\nvar playerObj;\nfunction onYouTubeIframeAPIReady(callback) {\n    if (callback === void 0) { callback = function () { }; }\n    // @ts-ignore\n    playerObj = new YT.Player('player', {\n        events: {\n            onReady: callback,\n        },\n    });\n    return playerObj;\n}\n// Load a video\nfunction cueVideoFromUrl(url, seconds) {\n    if (seconds === void 0) { seconds = false; }\n    if (seconds)\n        playerObj.cueVideoById({ videoId: youtube_parser(url), startSeconds: seconds.start, endSeconds: seconds.end });\n    else\n        playerObj.cueVideoById({ videoId: youtube_parser(url), startSeconds: 0 });\n}\nfunction getYoutubeVideoThumbnailUrl(url) {\n    var id = youtube_parser(url);\n    return \"https://img.youtube.com/vi/\".concat(id, \"/mqdefault.jpg\");\n}\n\n\n//# sourceURL=webpack://fitness-webapp/./src/js/ui/youtube.ts?");
 
 /***/ }),
 
@@ -406,6 +351,9 @@ eval("/*!\n * swiped-events.js - v@version@\n * Pure JavaScript swipe events\n *
 /******/ 		return module.exports;
 /******/ 	}
 /******/ 	
+/******/ 	// expose the modules object (__webpack_modules__)
+/******/ 	__webpack_require__.m = __webpack_modules__;
+/******/ 	
 /************************************************************************/
 /******/ 	/* webpack/runtime/compat get default export */
 /******/ 	(() => {
@@ -431,9 +379,88 @@ eval("/*!\n * swiped-events.js - v@version@\n * Pure JavaScript swipe events\n *
 /******/ 		};
 /******/ 	})();
 /******/ 	
+/******/ 	/* webpack/runtime/ensure chunk */
+/******/ 	(() => {
+/******/ 		__webpack_require__.f = {};
+/******/ 		// This file contains only the entry chunk.
+/******/ 		// The chunk loading function for additional chunks
+/******/ 		__webpack_require__.e = (chunkId) => {
+/******/ 			return Promise.all(Object.keys(__webpack_require__.f).reduce((promises, key) => {
+/******/ 				__webpack_require__.f[key](chunkId, promises);
+/******/ 				return promises;
+/******/ 			}, []));
+/******/ 		};
+/******/ 	})();
+/******/ 	
+/******/ 	/* webpack/runtime/get javascript chunk filename */
+/******/ 	(() => {
+/******/ 		// This function allow to reference async chunks
+/******/ 		__webpack_require__.u = (chunkId) => {
+/******/ 			// return url for filenames based on template
+/******/ 			return "" + chunkId + ".main.js";
+/******/ 		};
+/******/ 	})();
+/******/ 	
+/******/ 	/* webpack/runtime/global */
+/******/ 	(() => {
+/******/ 		__webpack_require__.g = (function() {
+/******/ 			if (typeof globalThis === 'object') return globalThis;
+/******/ 			try {
+/******/ 				return this || new Function('return this')();
+/******/ 			} catch (e) {
+/******/ 				if (typeof window === 'object') return window;
+/******/ 			}
+/******/ 		})();
+/******/ 	})();
+/******/ 	
 /******/ 	/* webpack/runtime/hasOwnProperty shorthand */
 /******/ 	(() => {
 /******/ 		__webpack_require__.o = (obj, prop) => (Object.prototype.hasOwnProperty.call(obj, prop))
+/******/ 	})();
+/******/ 	
+/******/ 	/* webpack/runtime/load script */
+/******/ 	(() => {
+/******/ 		var inProgress = {};
+/******/ 		var dataWebpackPrefix = "fitness-webapp:";
+/******/ 		// loadScript function to load a script via script tag
+/******/ 		__webpack_require__.l = (url, done, key, chunkId) => {
+/******/ 			if(inProgress[url]) { inProgress[url].push(done); return; }
+/******/ 			var script, needAttach;
+/******/ 			if(key !== undefined) {
+/******/ 				var scripts = document.getElementsByTagName("script");
+/******/ 				for(var i = 0; i < scripts.length; i++) {
+/******/ 					var s = scripts[i];
+/******/ 					if(s.getAttribute("src") == url || s.getAttribute("data-webpack") == dataWebpackPrefix + key) { script = s; break; }
+/******/ 				}
+/******/ 			}
+/******/ 			if(!script) {
+/******/ 				needAttach = true;
+/******/ 				script = document.createElement('script');
+/******/ 		
+/******/ 				script.charset = 'utf-8';
+/******/ 				script.timeout = 120;
+/******/ 				if (__webpack_require__.nc) {
+/******/ 					script.setAttribute("nonce", __webpack_require__.nc);
+/******/ 				}
+/******/ 				script.setAttribute("data-webpack", dataWebpackPrefix + key);
+/******/ 				script.src = url;
+/******/ 			}
+/******/ 			inProgress[url] = [done];
+/******/ 			var onScriptComplete = (prev, event) => {
+/******/ 				// avoid mem leaks in IE.
+/******/ 				script.onerror = script.onload = null;
+/******/ 				clearTimeout(timeout);
+/******/ 				var doneFns = inProgress[url];
+/******/ 				delete inProgress[url];
+/******/ 				script.parentNode && script.parentNode.removeChild(script);
+/******/ 				doneFns && doneFns.forEach((fn) => (fn(event)));
+/******/ 				if(prev) return prev(event);
+/******/ 			};
+/******/ 			var timeout = setTimeout(onScriptComplete.bind(null, undefined, { type: 'timeout', target: script }), 120000);
+/******/ 			script.onerror = onScriptComplete.bind(null, script.onerror);
+/******/ 			script.onload = onScriptComplete.bind(null, script.onload);
+/******/ 			needAttach && document.head.appendChild(script);
+/******/ 		};
 /******/ 	})();
 /******/ 	
 /******/ 	/* webpack/runtime/make namespace object */
@@ -445,6 +472,116 @@ eval("/*!\n * swiped-events.js - v@version@\n * Pure JavaScript swipe events\n *
 /******/ 			}
 /******/ 			Object.defineProperty(exports, '__esModule', { value: true });
 /******/ 		};
+/******/ 	})();
+/******/ 	
+/******/ 	/* webpack/runtime/publicPath */
+/******/ 	(() => {
+/******/ 		var scriptUrl;
+/******/ 		if (__webpack_require__.g.importScripts) scriptUrl = __webpack_require__.g.location + "";
+/******/ 		var document = __webpack_require__.g.document;
+/******/ 		if (!scriptUrl && document) {
+/******/ 			if (document.currentScript)
+/******/ 				scriptUrl = document.currentScript.src
+/******/ 			if (!scriptUrl) {
+/******/ 				var scripts = document.getElementsByTagName("script");
+/******/ 				if(scripts.length) scriptUrl = scripts[scripts.length - 1].src
+/******/ 			}
+/******/ 		}
+/******/ 		// When supporting browsers where an automatic publicPath is not supported you must specify an output.publicPath manually via configuration
+/******/ 		// or pass an empty string ("") and set the __webpack_public_path__ variable from your code to use your own logic.
+/******/ 		if (!scriptUrl) throw new Error("Automatic publicPath is not supported in this browser");
+/******/ 		scriptUrl = scriptUrl.replace(/#.*$/, "").replace(/\?.*$/, "").replace(/\/[^\/]+$/, "/");
+/******/ 		__webpack_require__.p = scriptUrl;
+/******/ 	})();
+/******/ 	
+/******/ 	/* webpack/runtime/jsonp chunk loading */
+/******/ 	(() => {
+/******/ 		// no baseURI
+/******/ 		
+/******/ 		// object to store loaded and loading chunks
+/******/ 		// undefined = chunk not loaded, null = chunk preloaded/prefetched
+/******/ 		// [resolve, reject, Promise] = chunk loading, 0 = chunk loaded
+/******/ 		var installedChunks = {
+/******/ 			"main": 0
+/******/ 		};
+/******/ 		
+/******/ 		__webpack_require__.f.j = (chunkId, promises) => {
+/******/ 				// JSONP chunk loading for javascript
+/******/ 				var installedChunkData = __webpack_require__.o(installedChunks, chunkId) ? installedChunks[chunkId] : undefined;
+/******/ 				if(installedChunkData !== 0) { // 0 means "already installed".
+/******/ 		
+/******/ 					// a Promise means "currently loading".
+/******/ 					if(installedChunkData) {
+/******/ 						promises.push(installedChunkData[2]);
+/******/ 					} else {
+/******/ 						if(true) { // all chunks have JS
+/******/ 							// setup Promise in chunk cache
+/******/ 							var promise = new Promise((resolve, reject) => (installedChunkData = installedChunks[chunkId] = [resolve, reject]));
+/******/ 							promises.push(installedChunkData[2] = promise);
+/******/ 		
+/******/ 							// start chunk loading
+/******/ 							var url = __webpack_require__.p + __webpack_require__.u(chunkId);
+/******/ 							// create error before stack unwound to get useful stacktrace later
+/******/ 							var error = new Error();
+/******/ 							var loadingEnded = (event) => {
+/******/ 								if(__webpack_require__.o(installedChunks, chunkId)) {
+/******/ 									installedChunkData = installedChunks[chunkId];
+/******/ 									if(installedChunkData !== 0) installedChunks[chunkId] = undefined;
+/******/ 									if(installedChunkData) {
+/******/ 										var errorType = event && (event.type === 'load' ? 'missing' : event.type);
+/******/ 										var realSrc = event && event.target && event.target.src;
+/******/ 										error.message = 'Loading chunk ' + chunkId + ' failed.\n(' + errorType + ': ' + realSrc + ')';
+/******/ 										error.name = 'ChunkLoadError';
+/******/ 										error.type = errorType;
+/******/ 										error.request = realSrc;
+/******/ 										installedChunkData[1](error);
+/******/ 									}
+/******/ 								}
+/******/ 							};
+/******/ 							__webpack_require__.l(url, loadingEnded, "chunk-" + chunkId, chunkId);
+/******/ 						} else installedChunks[chunkId] = 0;
+/******/ 					}
+/******/ 				}
+/******/ 		};
+/******/ 		
+/******/ 		// no prefetching
+/******/ 		
+/******/ 		// no preloaded
+/******/ 		
+/******/ 		// no HMR
+/******/ 		
+/******/ 		// no HMR manifest
+/******/ 		
+/******/ 		// no on chunks loaded
+/******/ 		
+/******/ 		// install a JSONP callback for chunk loading
+/******/ 		var webpackJsonpCallback = (parentChunkLoadingFunction, data) => {
+/******/ 			var [chunkIds, moreModules, runtime] = data;
+/******/ 			// add "moreModules" to the modules object,
+/******/ 			// then flag all "chunkIds" as loaded and fire callback
+/******/ 			var moduleId, chunkId, i = 0;
+/******/ 			if(chunkIds.some((id) => (installedChunks[id] !== 0))) {
+/******/ 				for(moduleId in moreModules) {
+/******/ 					if(__webpack_require__.o(moreModules, moduleId)) {
+/******/ 						__webpack_require__.m[moduleId] = moreModules[moduleId];
+/******/ 					}
+/******/ 				}
+/******/ 				if(runtime) var result = runtime(__webpack_require__);
+/******/ 			}
+/******/ 			if(parentChunkLoadingFunction) parentChunkLoadingFunction(data);
+/******/ 			for(;i < chunkIds.length; i++) {
+/******/ 				chunkId = chunkIds[i];
+/******/ 				if(__webpack_require__.o(installedChunks, chunkId) && installedChunks[chunkId]) {
+/******/ 					installedChunks[chunkId][0]();
+/******/ 				}
+/******/ 				installedChunks[chunkId] = 0;
+/******/ 			}
+/******/ 		
+/******/ 		}
+/******/ 		
+/******/ 		var chunkLoadingGlobal = self["webpackChunkfitness_webapp"] = self["webpackChunkfitness_webapp"] || [];
+/******/ 		chunkLoadingGlobal.forEach(webpackJsonpCallback.bind(null, 0));
+/******/ 		chunkLoadingGlobal.push = webpackJsonpCallback.bind(null, chunkLoadingGlobal.push.bind(chunkLoadingGlobal));
 /******/ 	})();
 /******/ 	
 /************************************************************************/

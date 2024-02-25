@@ -1,19 +1,21 @@
 $('.loading-screen-content').fadeIn('slow');
 
 import './ui/youtube';
-
-import UI from './ui';
-import Router from './models/Router';
 import './libs/swiped-events';
-
-// @ts-ignore
-window.UI = UI;
-// @ts-ignore
-window.Router = Router;
-window.dispatchEvent(Router.routeChanged);
-
 import './ui/drag';
-import Composer from './models/Composer';
 
-setTimeout(() => $('.loading-screen').fadeOut('fast'), 1000);
-Composer.exportWorkout(0).then(res => console.log(res));
+window.addEventListener('ytLoaded', async () => {
+  // import UI from './ui';
+  const UI = (await import('./ui')).default;
+
+  // import Router from './models/Router';
+  const Router = (await import('./models/Router')).default;
+
+  // @ts-ignore
+  window.UI = UI;
+  // @ts-ignore
+  window.Router = Router;
+  window.dispatchEvent(Router.routeChanged);
+
+  setTimeout(() => $('.loading-screen').fadeOut('fast'), 1000);
+});
