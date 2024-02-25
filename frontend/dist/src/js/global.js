@@ -6,13 +6,17 @@ export var currentWorkout;
 export var currentWorkoutIndex;
 export var modifyCurrentWorkout = function (index) {
     currentWorkoutIndex = index;
-    currentWorkout = workouts[currentWorkoutIndex];
+    if (index != -1)
+        currentWorkout = workouts[currentWorkoutIndex];
+};
+export var setSharedWorkout = function (workoutJSON) {
+    currentWorkout = JSON.parse(workoutJSON);
 };
 export var currentExercise;
 export var currentExerciseIndex;
 export var modifyCurrentExercise = function (index) {
     currentExerciseIndex = index;
-    currentExercise = workouts[currentWorkoutIndex].exercises[currentExerciseIndex];
+    currentExercise = currentWorkout.exercises[currentExerciseIndex];
 };
 export var workouts;
 if (loggedIn) {

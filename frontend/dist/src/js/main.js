@@ -6,6 +6,9 @@ import './libs/swiped-events';
 // @ts-ignore
 window.UI = UI;
 // @ts-ignore
-window.Router = Router.getInstance();
+window.Router = Router;
+window.dispatchEvent(Router.routeChanged);
 import './ui/drag';
+import Composer from './models/Composer';
 setTimeout(function () { return $('.loading-screen').fadeOut('fast'); }, 1000);
+Composer.exportWorkout(0).then(function (res) { return console.log(res); });

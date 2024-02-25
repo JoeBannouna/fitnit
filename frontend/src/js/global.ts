@@ -9,14 +9,18 @@ export let currentWorkout: WorkoutType;
 export let currentWorkoutIndex: number;
 export const modifyCurrentWorkout = (index: number) => {
   currentWorkoutIndex = index;
-  currentWorkout = workouts[currentWorkoutIndex];
+  if (index != -1) currentWorkout = workouts[currentWorkoutIndex];
+};
+
+export const setSharedWorkout = (workoutJSON: string) => {
+  currentWorkout = JSON.parse(workoutJSON);
 };
 
 export let currentExercise: ExerciseType;
 export let currentExerciseIndex: number;
 export const modifyCurrentExercise = (index: number) => {
   currentExerciseIndex = index;
-  currentExercise = workouts[currentWorkoutIndex].exercises[currentExerciseIndex];
+  currentExercise = currentWorkout.exercises[currentExerciseIndex];
 };
 
 export let workouts: WorkoutType[];

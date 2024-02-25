@@ -1,7 +1,7 @@
 import StorageWrapper from './StorageWrapper';
 
 class Composer {
-  private static async compress(string: string, encoding: 'gzip' = 'gzip') {
+  static async compress(string: string, encoding: 'gzip' = 'gzip') {
     const byteArray = new TextEncoder().encode(string);
     const cs = new CompressionStream(encoding);
     const writer = cs.writable.getWriter();
@@ -11,12 +11,17 @@ class Composer {
     return result;
   }
 
-  private static async decompress(byteArray: ArrayBuffer, encoding: 'gzip' = 'gzip') {
+  static async decompress(byteArray: ArrayBuffer, encoding: 'gzip' = 'gzip') {
     const cs = new DecompressionStream(encoding);
     const writer = cs.writable.getWriter();
     writer.write(byteArray);
     writer.close();
-    let result = new TextDecoder().decode(await new Response(cs.readable).arrayBuffer());
+    let result;
+    try {
+      result = new TextDecoder().decode(await new Response(cs.readable).arrayBuffer());
+    } catch (error) {
+      result = '';
+    }
 
     return result;
   }
@@ -53,9 +58,15 @@ class Composer {
     return this.arrayBufferToBase64(await this.compress(StorageWrapper.fetchWorkoutString(workoutId)));
   }
 
-  static async importWorkout(base64: string) {
+  static async getWorkoutJSON(base64: string) {
     const workoutJSON = await Composer.decompress(Composer.base64ToArrayBuffer(base64));
     if (!this.isJsonString(workoutJSON)) return false;
+    return workoutJSON;
+  }
+
+  static async importWorkout(base64: string) {
+    const workoutJSON = await this.getWorkoutJSON(base64);
+    if (!workoutJSON) return false;
 
     StorageWrapper.writeWorkout(workoutJSON);
     return true;

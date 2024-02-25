@@ -22,7 +22,7 @@ function showModal(modalElement: HTMLElement) {
 
     addMultipleClasses(modalElement, ['opacity-100', 'ease-out', 'duration-300']);
     addMultipleClasses(modalRect, ['ease-out', 'duration-300', 'opacity-100', 'translate-y-0', 'sm:scale-100']);
-  }, 0);
+  }, 20);
 }
 
 function hideModal(modalElement: HTMLElement) {

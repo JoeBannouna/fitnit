@@ -116,6 +116,12 @@
                 </button>
               </form>
             </div>
+            
+            <!-- Exporting workout link -->
+            <div class="mx-4 mt-4 text-sm" id="export-workout-box">
+              <button class="w-full rounded-lg shadow text-white font-medium p-3 bg-blue-400">Share workout</button>
+            </div>
+            
             <div class="flex justify-center items-center p-3 mt-2 relative">
               <button class="border border-gray-400 bg-gray-200 rounded-xl p-3" id="rest-button">
                 <span class="font-bold">Rest intervals:</span>
@@ -147,10 +153,15 @@
               </div>
             </div>
 
-            <div class="bg-white rounded-lg shadow m-4 p-3 text-sm" id="workout-info-box">
+            <div class="m-4 text-sm hidden" id="import-workout-box">
+              <p class="text-center mb-1.5">Press back to discard this workout.</p>
+              <button class="w-full rounded-lg shadow text-white font-medium p-3 bg-blue-400">Save workout locally</button>
+            </div>
+
+            <!-- <div class="bg-white rounded-lg shadow m-4 p-3 text-sm" id="workout-info-box">
               <div class="leading-7"><span>Number of exercises: </span><span></span></div>
               <div class="leading-7"><span>Estimated completion time: </span><span></span></div>
-            </div>
+            </div> -->
 
             <div id="selected-exercises-section"></div>
           </div>

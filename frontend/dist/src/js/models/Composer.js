@@ -61,7 +61,7 @@ var Composer = /** @class */ (function () {
     Composer.decompress = function (byteArray, encoding) {
         if (encoding === void 0) { encoding = 'gzip'; }
         return __awaiter(this, void 0, void 0, function () {
-            var cs, writer, result, _a, _b;
+            var cs, writer, result, _a, _b, error_1;
             return __generator(this, function (_c) {
                 switch (_c.label) {
                     case 0:
@@ -69,11 +69,19 @@ var Composer = /** @class */ (function () {
                         writer = cs.writable.getWriter();
                         writer.write(byteArray);
                         writer.close();
+                        _c.label = 1;
+                    case 1:
+                        _c.trys.push([1, 3, , 4]);
                         _b = (_a = new TextDecoder()).decode;
                         return [4 /*yield*/, new Response(cs.readable).arrayBuffer()];
-                    case 1:
+                    case 2:
                         result = _b.apply(_a, [_c.sent()]);
-                        return [2 /*return*/, result];
+                        return [3 /*break*/, 4];
+                    case 3:
+                        error_1 = _c.sent();
+                        result = '';
+                        return [3 /*break*/, 4];
+                    case 4: return [2 /*return*/, result];
                 }
             });
         });
@@ -117,7 +125,7 @@ var Composer = /** @class */ (function () {
             });
         });
     };
-    Composer.importWorkout = function (base64) {
+    Composer.getWorkoutJSON = function (base64) {
         return __awaiter(this, void 0, void 0, function () {
             var workoutJSON;
             return __generator(this, function (_a) {
@@ -126,6 +134,21 @@ var Composer = /** @class */ (function () {
                     case 1:
                         workoutJSON = _a.sent();
                         if (!this.isJsonString(workoutJSON))
+                            return [2 /*return*/, false];
+                        return [2 /*return*/, workoutJSON];
+                }
+            });
+        });
+    };
+    Composer.importWorkout = function (base64) {
+        return __awaiter(this, void 0, void 0, function () {
+            var workoutJSON;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0: return [4 /*yield*/, this.getWorkoutJSON(base64)];
+                    case 1:
+                        workoutJSON = _a.sent();
+                        if (!workoutJSON)
                             return [2 /*return*/, false];
                         StorageWrapper.writeWorkout(workoutJSON);
                         return [2 /*return*/, true];

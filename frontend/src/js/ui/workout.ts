@@ -1,9 +1,12 @@
-import { currentWorkout, currentWorkoutIndex, loggedIn, modifyCurrentExercise, modifyCurrentWorkout, workouts } from '../global';
+import { currentWorkout, currentWorkoutIndex, loggedIn, modifyCurrentExercise, modifyCurrentWorkout, setSharedWorkout, workouts } from '../global';
+import Composer from '../models/Composer';
+import Router from '../models/Router';
 import Workout from '../models/Workout';
 import { fadeIn, fadeOut, hideModal, renderAlert, renderModal } from './animations';
 import { renderExercisesHTML, renderSelectedWorkoutExercisesHTML } from './exercise';
 import { resetCurrentActivity, selectCurrentActivity, togglePlay } from './player';
 import { deleteAlert, newWorkoutModal, workoutBar } from './templates';
+import shareWorkoutModal from './templates/shareWorkoutModal';
 
 // Rendering workouts
 const workoutsContainer = document.getElementById('workouts-container');
@@ -29,7 +32,7 @@ const allWorkoutSection = document.getElementById('all-workouts-section');
 const singleWorkoutSection = document.getElementById('single-workout-section');
 const selectedWorkoutSection = document.getElementById('selected-workout-section');
 const workOutBackButton = document.getElementById('workout-back-button');
-const slectedWorkoutBackButton = document.getElementById('selected-workout-back-button');
+const selectedWorkoutBackButton = document.getElementById('selected-workout-back-button');
 
 let workoutsIsOpen = true;
 function toggleWorkoutsSection(e: Event = null, sectionElement: HTMLElement = singleWorkoutSection, callback = () => {}, controlPanelButtonHidden = true) {
@@ -109,7 +112,7 @@ function saveWorkoutName(e: Event) {
 changeWorkoutNameEditButton.onclick = changeWorkoutName;
 changeWorkoutNameForm.onsubmit = saveWorkoutName;
 workOutBackButton.onclick = toggleWorkoutsSection;
-slectedWorkoutBackButton.onclick = () => toggleWorkoutsSection(null, selectedWorkoutSection, deselctWorkout, false);
+selectedWorkoutBackButton.onclick = () => toggleWorkoutsSection(null, selectedWorkoutSection, deselectWorkout, false);
 
 restIntervalsButton.onclick = () => {
   (restIntervalsForm.children[2] as HTMLButtonElement).disabled = false;
@@ -183,7 +186,7 @@ function deleteWorkout(button: HTMLButtonElement, index: number) {
   fadeOut(document.getElementById('alert-container').children[0] as HTMLElement);
 }
 
-function deselctWorkout() {
+function deselectWorkout() {
   modifyCurrentExercise(null);
   modifyCurrentWorkout(null);
   resetCurrentActivity();
@@ -192,6 +195,9 @@ function deselctWorkout() {
       togglePlay(undefined, true);
     }
   });
+
+  const data = Router.getCurrentPageData();
+  if (Router.currentPage.test('workout/something') && data) Router.replace('/');
 
   document.getElementById('timer-section-cover').classList.remove('hidden');
   document.getElementById('timer-title').innerHTML = 'Current Exercise';
@@ -223,5 +229,41 @@ function selectWorkout(button: HTMLButtonElement | null, index: number) {
     }
   });
 }
+
+const importWorkoutBox = document.getElementById('import-workout-box');
+const importWorkoutButton = importWorkoutBox.children[1] as HTMLButtonElement;
+
+const exportWorkoutBox = document.getElementById('export-workout-box');
+const exportWorkoutButton = exportWorkoutBox.children[0] as HTMLButtonElement;
+
+exportWorkoutButton.onclick = () => {
+  Composer.exportWorkout(currentWorkoutIndex).then(res => {
+    let link = window.location.origin + '/workout/' + encodeURIComponent(res);
+    renderModal(() => shareWorkoutModal(link));
+  });
+};
+
+importWorkoutButton.onclick = () => {
+  new Workout({ ...currentWorkout });
+  selectedWorkoutBackButton.click();
+};
+
+window.addEventListener('routeChanged', async () => {
+  const data = Router.getCurrentPageData();
+  if (Router.currentPage.test('workout/something') && data) {
+    const compressedWorkout = decodeURIComponent(data[0]);
+    const workoutJSON = await Composer.getWorkoutJSON(compressedWorkout);
+    if (workoutJSON) {
+      importWorkoutBox.classList.remove('hidden');
+      setSharedWorkout(workoutJSON);
+      selectWorkout(null, -1);
+    } else {
+      setSharedWorkout(`{"name": "Error, invalid link", "res": 1, "exercises": [] }`);
+      selectWorkout(null, -1);
+    }
+  } else {
+    importWorkoutBox.classList.add('hidden');
+  }
+});
 
 export { loadWorkout, selectWorkout, showDeleteWorkoutAlert, deleteWorkout };

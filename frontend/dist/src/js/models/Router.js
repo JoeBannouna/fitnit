@@ -6,7 +6,11 @@ var Router = /** @class */ (function () {
     function Router() {
         var _this = this;
         this.currentPage = /^$/;
-        window.addEventListener('popstate', function () { return _this.getCurrentPageData(); });
+        this.routeChanged = new Event('routeChanged');
+        window.addEventListener('popstate', function () {
+            window.dispatchEvent(_this.routeChanged);
+            _this.getCurrentPageData();
+        });
     }
     /**
      * The static method that controls the access to the singleton instance.
@@ -37,13 +41,25 @@ var Router = /** @class */ (function () {
                     vals.push(layers[Router.pages[i].tokens[j]]);
                 break;
             }
-        return found ? vals : false;
+        if (found) {
+            return vals;
+        }
+        else {
+            this.currentPage = /^$/;
+            return false;
+        }
     };
     Router.prototype.goTo = function (location) {
         window.history.pushState(null, null, location);
         this.getCurrentPageData();
+        window.dispatchEvent(this.routeChanged);
+    };
+    Router.prototype.replace = function (location) {
+        window.history.replaceState(null, null, location);
+        this.getCurrentPageData();
+        window.dispatchEvent(this.routeChanged);
     };
     Router.pages = [{ reg: /workout\/\w.*/, tokens: [1] }];
     return Router;
 }());
-export default Router;
+export default Router.getInstance();

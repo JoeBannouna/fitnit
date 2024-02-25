@@ -1,6 +1,9 @@
-export default class Router {
+class Router {
   static pages = [{ reg: /workout\/\w.*/, tokens: [1] }];
   currentPage: RegExp = /^$/;
+
+  routeChanged = new Event('routeChanged');
+
   private static instance: Router;
 
   /**
@@ -8,7 +11,10 @@ export default class Router {
    * construction calls with the `new` operator.
    */
   private constructor() {
-    window.addEventListener('popstate', () => this.getCurrentPageData());
+    window.addEventListener('popstate', () => {
+      window.dispatchEvent(this.routeChanged);
+      this.getCurrentPageData();
+    });
   }
 
   /**
@@ -43,11 +49,25 @@ export default class Router {
         break;
       }
 
-    return found ? vals : false;
+    if (found) {
+      return vals;
+    } else {
+      this.currentPage = /^$/;
+      return false;
+    }
   }
 
   public goTo(location: string) {
     window.history.pushState(null, null, location);
     this.getCurrentPageData();
+    window.dispatchEvent(this.routeChanged);
+  }
+  
+  public replace(location: string) {
+    window.history.replaceState(null, null, location);
+    this.getCurrentPageData();
+    window.dispatchEvent(this.routeChanged);
   }
 }
+
+export default Router.getInstance();

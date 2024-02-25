@@ -804,6 +804,10 @@ video {
   margin-bottom: 0.75rem;
 }
 
+.mb-1\.5 {
+  margin-bottom: 0.375rem;
+}
+
 .box-border {
   box-sizing: border-box;
 }
@@ -974,6 +978,10 @@ video {
 
 .w-7 {
   width: 1.75rem;
+}
+
+.w-\[100\%-2\.75rem\] {
+  width: 100%-2.75rem;
 }
 
 .flex-shrink-0 {
@@ -1501,6 +1509,10 @@ video {
 
 .font-medium {
   font-weight: 500;
+}
+
+.font-normal {
+  font-weight: 400;
 }
 
 .uppercase {
