@@ -1,6 +1,6 @@
 # FitNit
 
-[FitNit](https://fitnit.netlify.com/) is a fitness app written in Typescript. It is aimed at creating and editing workouts and to efficently make workout routines and stick to them.
+[FitNit](https://fitnit.netlify.app/) is a fitness app written in Typescript. It is aimed at creating and editing workouts and to efficently make workout routines and stick to them.
 
 ## Development
 
